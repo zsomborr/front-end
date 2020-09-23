@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import {
   Container,
@@ -14,6 +14,15 @@ const Registration = (props) => {
   const showPasswordInput = useRef();
   const authService = props.authService;
   const history = useHistory();
+  const [passwordType, setPasswordType] = useState("password");
+
+  const togglePassword = () => {
+    if (passwordType === "password") {
+      setPasswordType("text");
+    } else {
+      setPasswordType("password");
+    }
+  };
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -56,22 +65,19 @@ const Registration = (props) => {
             <InputGroup className="mb-2 mr-sm-2">
               <Form.Control
                 id="password"
-                type="password"
+                type={passwordType}
                 placeholder="Password"
+                minLength="8"
+                required
               />
-              <div className="input-group">
-                <input
-                  ref={showPasswordInput}
-                  type="password"
-                  name="password"
-                  id="inputPassword"
-                  data-toggle="password"
-                  class="form-control"
-                  placeholder="Password"
-                  minlength="8"
-                  required
-                />
-              </div>
+              <InputGroup.Prepend
+                className="passwordIconHover"
+                onClick={togglePassword}
+              >
+                <InputGroup.Text>
+                  <i className="fa fa-eye password-icon" />
+                </InputGroup.Text>
+              </InputGroup.Prepend>
             </InputGroup>
 
             <Button

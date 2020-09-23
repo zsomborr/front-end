@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+.passwordIconHover * {
+  transition: 0.4s;
+  background-color: whitesmoke !important;
+}
+
+.passwordIconHover:hover * {
+  font-size: large;
+  background-color: rgb(197, 218, 255) !important;
+}
