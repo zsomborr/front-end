@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {
+  Alert,
   Container,
   Col,
   Button,
@@ -11,8 +12,12 @@ import {
 } from "react-bootstrap";
 import WebsiteDescription from "./WebsiteDescription";
 
-const Login = () => {
+const Login = (props) => {
   const [passwordType, setPasswordType] = useState("password");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const history = useHistory();
 
   const togglePassword = () => {
     if (passwordType === "password") {
@@ -22,11 +27,32 @@ const Login = () => {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await props.studentService.login(email, password);
+      history.push("/");
+    } catch (e) {
+      if (e.response.status === 403) {
+        setErrorMessage("Invalid email or password!");
+      }
+    }
+  };
+
   return (
     <Container>
       <Row>
         <Col xs={12} lg={6}>
           <p className="h2">Login</p>
+          {0 < errorMessage.length && (
+            <Alert
+              key="searchBarError"
+              variant="danger"
+              className="text-center text-lg-left"
+            >
+              {errorMessage}
+            </Alert>
+          )}
           <Form>
             <Form.Label htmlFor="email" srOnly>
               Email address
@@ -35,7 +61,11 @@ const Login = () => {
               <InputGroup.Prepend>
                 <InputGroup.Text>@</InputGroup.Text>
               </InputGroup.Prepend>
-              <FormControl id="email" placeholder="Email address" />
+              <FormControl
+                id="email"
+                placeholder="Email address"
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </InputGroup>
             <Form.Label htmlFor="password" srOnly>
               Password
@@ -50,6 +80,7 @@ const Login = () => {
                 id="password"
                 type={passwordType}
                 placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
               />
               <InputGroup.Prepend
                 className="passwordIconHover"
@@ -64,7 +95,7 @@ const Login = () => {
               variant="primary"
               type="submit"
               className="mb-2 mr-sm-2"
-              disabled
+              onClick={handleSubmit}
             >
               Login
             </Button>
