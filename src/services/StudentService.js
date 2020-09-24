@@ -12,4 +12,11 @@ export default class StudentService extends SpringBootService {
       email: email,
     });
   }
+
+  login(username, password) {
+    return axios.post(`${this.baseURL}/auth/login`, {
+      username: username,
+      password: password,
+    });
+  }
 }
