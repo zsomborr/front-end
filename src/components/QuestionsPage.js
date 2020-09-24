@@ -12,15 +12,24 @@ import {
   Row,
 } from "react-bootstrap";
 import AddNewQuestionModal from "./AddNewQuestionModal";
+import QuestionsDisplayer from "./QuestionsDisplayer";
 
 const QuestionsPage = (props) => {
-  const [questions, setQuestions] = useState([]);
+  const questionsService = props.questionsService;
+  const [questions, setQuestions] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    questionsService.getAllQuestions(setQuestions);
+  }, []);
 
-  const addQuestion = () => {
-    //send request
+  const addQuestion = (questionData) => {
+    questionData.userId = 1; //TODO userId to add
+    questionsService.addNewQuestion(questionData, reloadQuestions);
+  };
+
+  const reloadQuestions = () => {
+    questionsService.getAllQuestions(setQuestions);
   };
 
   return (
@@ -55,15 +64,8 @@ const QuestionsPage = (props) => {
           </Col>
         </Row>
       </Container>
-      <Container>
-        <div className="questionsBox">
-          {/* Display questions here as shown below */}
-          <QuestionPreview />
-          <QuestionPreview />
-          <QuestionPreview />
-          <QuestionPreview />
-          <QuestionPreview />
-        </div>
+      <Container className="questionsBox">
+        <QuestionsDisplayer questions={questions} />
       </Container>
     </Container>
   );

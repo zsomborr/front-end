@@ -37,7 +37,14 @@ const AddNewQuestionModal = (props) => {
       <Modal.Body>
         <Form>
           <Form.Label>Title</Form.Label>
-          <FormControl id="title" placeholder="Title" required />
+          <FormControl
+            id="title"
+            placeholder="Title"
+            required
+            onChange={(e) => {
+              title = e.target.value;
+            }}
+          />
           <Form.Label>Description</Form.Label>
           <br></br>
           <textarea
@@ -45,6 +52,9 @@ const AddNewQuestionModal = (props) => {
             id="description"
             placeholder="Tell us your problem more detailed"
             style={{ width: "100%" }}
+            onChange={(e) => {
+              description = e.target.value;
+            }}
           />
         </Form>
       </Modal.Body>

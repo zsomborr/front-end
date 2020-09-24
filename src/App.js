@@ -5,9 +5,12 @@ import QuestionsPage from "./components/QuestionsPage";
 import Registration from "./components/Registration";
 import StudentService from "./services/StudentService";
 import SingleQuestionPage from "./components/SingleQuestionPage";
+import QuestionsService from "./services/QuestionsService";
 
 function App() {
   const studentService = new StudentService();
+  const questionsService = new QuestionsService();
+
   return (
     <div>
       <Router>
@@ -24,7 +27,7 @@ function App() {
         <Route
           key="questionsPage"
           path="/questions"
-          render={() => <QuestionsPage />}
+          render={() => <QuestionsPage questionsService={questionsService} />}
         />
         <Route
           key="singleQuestion"
