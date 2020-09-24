@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Login from "./components/Login";
+import QuestionPage from "./components/QuestionsPage";
 import Registration from "./components/Registration";
 import StudentService from "./services/StudentService";
 
@@ -19,6 +20,11 @@ function App() {
           path="/login"
           render={() => <Login studentService={studentService} />}
         ></Route>
+        <Route
+          key="questionsPage"
+          path="/questions"
+          render={() => <QuestionPage />}
+        />
       </Router>
     </div>
   );

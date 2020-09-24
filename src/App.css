@@ -1,3 +1,28 @@
+#mainBody {
+  background: url("https://cdn.hipwallpaper.com/i/6/86/Vt3R60.jpg") no-repeat;
+
+  background-position: center center;
+
+  background-repeat: no-repeat;
+
+  background-attachment: fixed;
+
+  background-size: cover;
+
+  background-color: #464646;
+}
+.commonText {
+  font-family: "Signika", sans-serif;
+  color: aliceblue;
+}
+
+.questionsBox {
+  width: 100%;
+  height: auto;
+  border: rgba(173, 212, 231, 0.657) solid 2px;
+  background-color: rgba(183, 206, 236, 0.74);
+}
+
 .App {
   text-align: center;
 }
