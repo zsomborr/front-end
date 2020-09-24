@@ -10,16 +10,26 @@ import {
   FormControl,
   InputGroup,
   Row,
-  Modal,
 } from "react-bootstrap";
+import AddNewQuestionModal from "./AddNewQuestionModal";
 
 const QuestionsPage = (props) => {
   const [questions, setQuestions] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {}, []);
 
+  const addQuestion = () => {
+    //send request
+  };
+
   return (
     <Container>
+      <AddNewQuestionModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        sendQuestion={addQuestion}
+      />
       <h1 className="commonText">NAVBAR</h1>
       <Container>
         <Row>
@@ -30,12 +40,20 @@ const QuestionsPage = (props) => {
             <h3 className="commonText">Search bar</h3>
           </Col>
           <Col>
-            <Button className="commonText">Add new question</Button>
+            <Button
+              className="commonText"
+              onClick={() => {
+                setIsModalOpen(!isModalOpen);
+              }}
+            >
+              Add new question
+            </Button>
           </Col>
         </Row>
       </Container>
       <Container>
         <div className="questionsBox">
+          {/* Display questions here as shown below */}
           <QuestionPreview />
           <QuestionPreview />
           <QuestionPreview />
