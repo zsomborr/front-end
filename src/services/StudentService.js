@@ -2,14 +2,16 @@ import axios from "axios";
 import SpringBootService from "./SpringBootService";
 
 export default class StudentService extends SpringBootService {
-  login(email, password) {
+  login(username, password) {
+    console.log("login called!");
     return axios.post(`${this.baseURL}/auth/login`, {
-      email: email,
+      username: username,
       password: password,
     });
   }
 
   registration(firstName, lastName, username, email, password) {
+    console.log("Registration called!");
     return axios.post(`${this.baseURL}/reg/registration`, {
       username: username,
       password: password,

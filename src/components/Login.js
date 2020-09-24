@@ -14,7 +14,7 @@ import WebsiteDescription from "./WebsiteDescription";
 
 const Login = (props) => {
   const [passwordType, setPasswordType] = useState("password");
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const history = useHistory();
@@ -30,7 +30,7 @@ const Login = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await props.studentService.login(email, password);
+      await props.studentService.login(username, password);
       history.push("/");
     } catch (e) {
       if (e.response.status === 403) {
@@ -54,17 +54,17 @@ const Login = (props) => {
             </Alert>
           )}
           <Form>
-            <Form.Label htmlFor="email" srOnly>
-              Email address
+            <Form.Label htmlFor="username" srOnly>
+              Username
             </Form.Label>
             <InputGroup className="mb-2 mr-sm-2">
               <InputGroup.Prepend>
                 <InputGroup.Text>@</InputGroup.Text>
               </InputGroup.Prepend>
               <FormControl
-                id="email"
-                placeholder="Email address"
-                onChange={(e) => setEmail(e.target.value)}
+                id="username"
+                placeholder="Username"
+                onChange={(e) => setUsername(e.target.value)}
               />
             </InputGroup>
             <Form.Label htmlFor="password" srOnly>
