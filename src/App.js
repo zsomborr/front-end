@@ -12,7 +12,7 @@ function App() {
         <Route
           key="registration"
           path="/registration"
-          render={() => <Registration />}
+          render={() => <Registration studentService={studentService} />}
         ></Route>
         <Route
           key="login"

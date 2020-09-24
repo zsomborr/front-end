@@ -11,10 +11,10 @@ import {
 } from "react-bootstrap";
 
 const Registration = (props) => {
-  const authService = props.authService;
+  const studentService = props.studentService;
   const history = useHistory();
   const [passwordType, setPasswordType] = useState("password");
-  const [nickname, setNicknameState] = useState("");
+  const [username, setUsernameState] = useState("");
   const [email, setEmailState] = useState("");
   const [password, setPasswordState] = useState("");
   const [firstName, setFirstNameState] = useState("");
@@ -35,8 +35,8 @@ const Registration = (props) => {
     setLastNameState(value);
   };
 
-  const setNickname = (value) => {
-    setNicknameState(value);
+  const setUsername = (value) => {
+    setUsernameState(value);
   };
 
   const setEmail = (value) => {
@@ -49,21 +49,25 @@ const Registration = (props) => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    validData(firstName, lastName, nickname, email, password)
-      ? console.log("registered")
+    validData(firstName, lastName, username, email, password)
+      ? await studentService.registration(
+          firstName,
+          lastName,
+          username,
+          email,
+          password
+        )
       : console.log("failed to register");
-
-    //await authService.Registration(nickname, email, password);
   };
 
-  const validData = (firstName, lastName, nickname, email, password) => {
+  const validData = (firstName, lastName, username, email, password) => {
     if (
-      nickname === undefined ||
+      username === undefined ||
       email === undefined ||
       password === undefined ||
       firstName === undefined ||
       lastName === undefined ||
-      nickname === "" ||
+      username === "" ||
       email === "" ||
       password === "" ||
       firstName === "" ||
@@ -96,14 +100,14 @@ const Registration = (props) => {
         <Col className="col-lg-4 text-center">
           <p className="h2">Registration</p>
           <Form>
-            <Form.Label htmlFor="nickname" srOnly>
-              Nickname
+            <Form.Label htmlFor="username" srOnly>
+              Username
             </Form.Label>
             <InputGroup className="mb-2 mr-sm-2">
               <Form.Control
-                id="nickname"
-                placeholder="Nickname"
-                onChange={(e) => setNickname(e.target.value)}
+                id="username"
+                placeholder="Username"
+                onChange={(e) => setUsername(e.target.value)}
                 required
               />
             </InputGroup>

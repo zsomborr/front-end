@@ -8,4 +8,14 @@ export default class StudentService extends SpringBootService {
       password: password,
     });
   }
+
+  registration(firstName, lastName, username, email, password) {
+    return axios.post(`${this.baseURL}/reg/registration`, {
+      username: username,
+      password: password,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+    });
+  }
 }
