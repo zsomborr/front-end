@@ -23,14 +23,15 @@ const AddNewQuestionModal = (props) => {
           <h4>Ask new question</h4>
         </Col>
         <Col>
-          <Button
-            style={{ float: "right" }}
+          <div
+            class="close-container"
             onClick={() => {
               setIsModalOpen(!isModalOpen);
             }}
           >
-            Close
-          </Button>
+            <div class="leftright"></div>
+            <div class="rightleft"></div>
+          </div>
         </Col>
       </Modal.Header>
       <Modal.Body>
@@ -40,6 +41,7 @@ const AddNewQuestionModal = (props) => {
           <Form.Label>Description</Form.Label>
           <br></br>
           <textarea
+            class="form-control"
             id="description"
             placeholder="Tell us your problem more detailed"
             style={{ width: "100%" }}
