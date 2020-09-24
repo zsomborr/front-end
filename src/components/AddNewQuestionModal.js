@@ -1,5 +1,13 @@
 import React from "react";
-import { Modal, Button, Row, Col } from "react-bootstrap";
+import {
+  Modal,
+  Button,
+  Row,
+  Form,
+  FormControl,
+  InputGroup,
+  Col,
+} from "react-bootstrap";
 
 const AddNewQuestionModal = (props) => {
   let title = "";
@@ -10,26 +18,33 @@ const AddNewQuestionModal = (props) => {
 
   return (
     <Modal show={isModalOpen}>
-      <Modal.Header>
-        <Row>
-          <Col>Give new question</Col>
-          <Col>
-            <Button
-              style={{ float: "right" }}
-              onClick={() => {
-                setIsModalOpen(!isModalOpen);
-              }}
-            >
-              Close
-            </Button>
-          </Col>
-        </Row>
+      <Modal.Header style={{ display: "flex", flexDirection: "row" }}>
+        <Col style={{ float: "left" }}>
+          <h4>Ask new question</h4>
+        </Col>
+        <Col>
+          <Button
+            style={{ float: "right" }}
+            onClick={() => {
+              setIsModalOpen(!isModalOpen);
+            }}
+          >
+            Close
+          </Button>
+        </Col>
       </Modal.Header>
       <Modal.Body>
-        <p>title</p>
-        <input></input>
-        <p>description</p>
-        <input></input>
+        <Form>
+          <Form.Label>Title</Form.Label>
+          <FormControl id="title" placeholder="Title" required />
+          <Form.Label>Description</Form.Label>
+          <br></br>
+          <textarea
+            id="description"
+            placeholder="Tell us your problem more detailed"
+            style={{ width: "100%" }}
+          />
+        </Form>
       </Modal.Body>
       <Modal.Footer>
         <Button
