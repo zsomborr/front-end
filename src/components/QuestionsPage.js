@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
+import QuestionPreview from "./QuestionPreview";
 import {
   Alert,
   Container,
@@ -9,10 +10,13 @@ import {
   FormControl,
   InputGroup,
   Row,
+  Modal,
 } from "react-bootstrap";
 
-const QuestionPage = (props) => {
+const QuestionsPage = (props) => {
   const [questions, setQuestions] = useState([]);
+
+  useEffect(() => {}, []);
 
   return (
     <Container>
@@ -32,22 +36,15 @@ const QuestionPage = (props) => {
       </Container>
       <Container>
         <div className="questionsBox">
-          <p>Question</p>
-          <p>Question</p>
-          <p>Question</p>
-          <p>Question</p>
-          <p>Question</p>
-          <p>Question</p>
-          <p>Question</p>
-          <p>Question</p>
-          <p>Question</p>
-          <p>Question</p>
-          <p>Question</p>
-          <p>Question</p>
+          <QuestionPreview />
+          <QuestionPreview />
+          <QuestionPreview />
+          <QuestionPreview />
+          <QuestionPreview />
         </div>
       </Container>
     </Container>
   );
 };
 
-export default QuestionPage;
+export default QuestionsPage;

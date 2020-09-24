@@ -1,9 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Login from "./components/Login";
-import QuestionPage from "./components/QuestionsPage";
+import QuestionsPage from "./components/QuestionsPage";
 import Registration from "./components/Registration";
 import StudentService from "./services/StudentService";
+import SingleQuestionPage from "./components/SingleQuestionPage";
 
 function App() {
   const studentService = new StudentService();
@@ -23,7 +24,12 @@ function App() {
         <Route
           key="questionsPage"
           path="/questions"
-          render={() => <QuestionPage />}
+          render={() => <QuestionsPage />}
+        />
+        <Route
+          key="singleQuestion"
+          path="/question/:id"
+          render={() => <SingleQuestionPage />}
         />
       </Router>
     </div>
