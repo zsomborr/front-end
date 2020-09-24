@@ -35,9 +35,13 @@ const QuestionsPage = (props) => {
         <Row>
           <Col>
             <h3 className="commonText">Filter</h3>
+            <Container>
+              <h2 className="commonText">Filters here</h2>
+            </Container>
           </Col>
           <Col>
             <h3 className="commonText">Search bar</h3>
+            <FormControl id="search" placeholder="Search..." required />
           </Col>
           <Col>
             <Button

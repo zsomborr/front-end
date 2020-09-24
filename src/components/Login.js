@@ -31,7 +31,7 @@ const Login = (props) => {
     e.preventDefault();
     try {
       await props.studentService.login(email, password);
-      history.push("/");
+      history.push("/questions");
     } catch (e) {
       if (e.response.status === 403) {
         setErrorMessage("Invalid email or password!");

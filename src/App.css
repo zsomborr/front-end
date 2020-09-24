@@ -9,7 +9,7 @@
 
   background-size: cover;
 
-  background-color: #464646;
+  background-color: #5e98f5;
 }
 .commonText {
   font-family: "Signika", sans-serif;
@@ -20,7 +20,7 @@
   width: 100%;
   height: auto;
   border: rgba(173, 212, 231, 0.657) solid 2px;
-  background-color: rgba(183, 206, 236, 0.74);
+  background-color: rgba(255, 255, 255, 0.931);
 }
 
 .App {
