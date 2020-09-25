@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import {
   Container,
   Col,
@@ -15,37 +15,18 @@ const Registration = (props) => {
   const studentService = props.studentService;
   const history = useHistory();
   const [passwordType, setPasswordType] = useState("password");
-  const [username, setUsernameState] = useState("");
-  const [email, setEmailState] = useState("");
-  const [password, setPasswordState] = useState("");
-  const [firstName, setFirstNameState] = useState("");
-  const [lastName, setLastNameState] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+
   const togglePassword = () => {
     if (passwordType === "password") {
       setPasswordType("text");
     } else {
       setPasswordType("password");
     }
-  };
-
-  const setFirstName = (value) => {
-    setFirstNameState(value);
-  };
-
-  const setLastName = (value) => {
-    setLastNameState(value);
-  };
-
-  const setUsername = (value) => {
-    setUsernameState(value);
-  };
-
-  const setEmail = (value) => {
-    setEmailState(value);
-  };
-
-  const setPassword = (value) => {
-    setPasswordState(value);
   };
 
   const handleRegister = async (e) => {
@@ -92,8 +73,6 @@ const Registration = (props) => {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
   }
-
-  useEffect(() => {}, []);
 
   return (
     <Container className="page">
