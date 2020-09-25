@@ -12,6 +12,10 @@ function App() {
 
   return (
     <Fragment>
+      <div className="background">
+        <div></div>
+        <div></div>
+      </div>
       <Container>
         <Router>
           <Header isAuthenticated={isAuthenticated} />

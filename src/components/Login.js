@@ -40,9 +40,9 @@ const Login = (props) => {
   };
 
   return (
-    <Container>
+    <Container className="page">
       <Row>
-        <Col xs={12} lg={6}>
+        <Col xs={12} lg={6} className="content-container">
           <p className="h2">Login</p>
           {0 < errorMessage.length && (
             <Alert
@@ -60,7 +60,7 @@ const Login = (props) => {
             <InputGroup className="mb-2 mr-sm-2">
               <InputGroup.Prepend>
                 <InputGroup.Text>
-                  <i class="fas fa-user"></i>
+                  <i className="fas fa-user"></i>
                 </InputGroup.Text>
               </InputGroup.Prepend>
               <FormControl
@@ -110,7 +110,7 @@ const Login = (props) => {
             </p>
           </Form>
         </Col>
-        <Col xs={12} lg={6} className="text-center">
+        <Col xs={12} lg={6} className="content-container text-center">
           <WebsiteDescription />
         </Col>
       </Row>

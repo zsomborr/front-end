@@ -9,6 +9,7 @@ import {
   InputGroup,
   Row,
 } from "react-bootstrap";
+import WebsiteDescription from "./WebsiteDescription";
 
 const Registration = (props) => {
   const studentService = props.studentService;
@@ -95,9 +96,9 @@ const Registration = (props) => {
   useEffect(() => {}, []);
 
   return (
-    <Container>
-      <Row className="justify-content-center">
-        <Col className="col-lg-4 text-center">
+    <Container className="page">
+      <Row>
+        <Col xs={12} lg={6} className="content-container">
           <p className="h2">Registration</p>
           <Form>
             <Form.Label htmlFor="username" srOnly>
@@ -182,6 +183,9 @@ const Registration = (props) => {
               Registration
             </Button>
           </Form>
+        </Col>
+        <Col xs={12} lg={6} className="content-container text-center">
+          <WebsiteDescription />
         </Col>
       </Row>
     </Container>
