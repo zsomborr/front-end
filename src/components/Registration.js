@@ -10,24 +10,17 @@ import {
   Row,
 } from "react-bootstrap";
 import WebsiteDescription from "./WebsiteDescription";
+import Username from "./form/Username";
+import Password from "./form/Password";
 
 const Registration = (props) => {
   const studentService = props.studentService;
   const history = useHistory();
-  const [passwordType, setPasswordType] = useState("password");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-
-  const togglePassword = () => {
-    if (passwordType === "password") {
-      setPasswordType("text");
-    } else {
-      setPasswordType("password");
-    }
-  };
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -80,17 +73,7 @@ const Registration = (props) => {
         <Col xs={12} lg={6} className="content-container">
           <p className="h2">Registration</p>
           <Form>
-            <Form.Label htmlFor="username" srOnly>
-              Username
-            </Form.Label>
-            <InputGroup className="mb-2 mr-sm-2">
-              <Form.Control
-                id="username"
-                placeholder="Username"
-                onChange={(e) => setUsername(e.target.value)}
-                required
-              />
-            </InputGroup>
+            <Username setUsername={setUsername} />
 
             <Form.Label htmlFor="firstname" srOnly>
               First Name
@@ -131,27 +114,7 @@ const Registration = (props) => {
               />
             </InputGroup>
 
-            <Form.Label htmlFor="password" srOnly>
-              Password
-            </Form.Label>
-            <InputGroup className="mb-2 mr-sm-2">
-              <Form.Control
-                id="password"
-                type={passwordType}
-                placeholder="Password"
-                minLength="8"
-                required
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <InputGroup.Prepend
-                className="passwordIconHover"
-                onClick={togglePassword}
-              >
-                <InputGroup.Text>
-                  <i className="fa fa-eye password-icon" />
-                </InputGroup.Text>
-              </InputGroup.Prepend>
-            </InputGroup>
+            <Password setPassword={setPassword} />
 
             <Button
               variant="primary"

@@ -1,31 +1,15 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import {
-  Alert,
-  Container,
-  Col,
-  Button,
-  Form,
-  FormControl,
-  InputGroup,
-  Row,
-} from "react-bootstrap";
+import { Alert, Container, Col, Button, Form, Row } from "react-bootstrap";
 import WebsiteDescription from "./WebsiteDescription";
+import Username from "./form/Username";
+import Password from "./form/Password";
 
 const Login = (props) => {
-  const [passwordType, setPasswordType] = useState("password");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const history = useHistory();
-
-  const togglePassword = () => {
-    if (passwordType === "password") {
-      setPasswordType("text");
-    } else {
-      setPasswordType("password");
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,45 +38,10 @@ const Login = (props) => {
             </Alert>
           )}
           <Form>
-            <Form.Label htmlFor="username" srOnly>
-              Username
-            </Form.Label>
-            <InputGroup className="mb-2 mr-sm-2">
-              <InputGroup.Prepend>
-                <InputGroup.Text>
-                  <i className="fas fa-user"></i>
-                </InputGroup.Text>
-              </InputGroup.Prepend>
-              <FormControl
-                id="username"
-                placeholder="Username"
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            </InputGroup>
-            <Form.Label htmlFor="password" srOnly>
-              Password
-            </Form.Label>
-            <InputGroup className="mb-2 mr-sm-2">
-              <InputGroup.Prepend>
-                <InputGroup.Text>
-                  <i className="fa fa-lock" />
-                </InputGroup.Text>
-              </InputGroup.Prepend>
-              <Form.Control
-                id="password"
-                type={passwordType}
-                placeholder="Password"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <InputGroup.Prepend
-                className="passwordIconHover"
-                onClick={togglePassword}
-              >
-                <InputGroup.Text>
-                  <i className="fa fa-eye password-icon" />
-                </InputGroup.Text>
-              </InputGroup.Prepend>
-            </InputGroup>
+            <Username setUsername={setUsername} />
+
+            <Password setPassword={setPassword} />
+
             <Button
               variant="primary"
               type="submit"
@@ -104,9 +53,6 @@ const Login = (props) => {
             <p>
               Don’t have an account yet?
               <Link to={"/registration"}> Register now!</Link>
-            </p>
-            <p>
-              or <Link to={"/"}>back to home page</Link>.
             </p>
           </Form>
         </Col>
