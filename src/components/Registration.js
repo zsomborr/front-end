@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import {
+  Alert,
   Container,
   Col,
   Button,
@@ -12,23 +13,36 @@ import {
 import WebsiteDescription from "./WebsiteDescription";
 import Username from "./form/Username";
 import Password from "./form/Password";
+import ValidationService from "../services/ValidationService";
 
 const Registration = (props) => {
   const studentService = props.studentService;
+  const validator = new ValidationService();
   const history = useHistory();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [errorMessages, setErrorMessages] = useState([]);
   const form = React.createRef();
+
+  const asError = (message) => {
+    setErrorMessages((errorMessages) => [...errorMessages, message]);
+  };
 
   const handleRegister = async (e) => {
     e.preventDefault();
     if (!form.current.reportValidity()) {
       return;
     }
-    if (validData(firstName, lastName, username, email, password)) {
+
+    setErrorMessages([]);
+    if (!isFormValid()) {
+      return;
+    }
+
+    try {
       await studentService.registration(
         firstName,
         lastName,
@@ -36,33 +50,57 @@ const Registration = (props) => {
         email,
         password
       );
-    } else {
-      console.log("failed to register");
+      setErrorMessages([]);
+    } catch (e) {
+      if (e.response && e.response.status === 400) {
+        asError(e.response.data);
+      }
     }
   };
 
-  const validData = (firstName, lastName, username, email, password) => {
-    if (/\d/.test(String(firstName)) || /\d/.test(String(lastName))) {
-      return false;
+  const isFormValid = () => {
+    let isValid = true;
+    if (!validator.isValidUsername(username)) {
+      asError("Username should contain only English letters and _ character!");
+      isValid = false;
     }
 
-    if (!validateEmail(email)) {
-      return false;
+    if (!validator.isValidFirstName(firstName)) {
+      asError("First name should contain only English letters!");
+      isValid = false;
     }
 
-    return true;
+    if (!validator.isValidLastName(lastName)) {
+      asError("Last name should contain only English letters!");
+      isValid = false;
+    }
+
+    if (!validator.isValidPassword(password)) {
+      asError(
+        "Invalid password! It should contain at least one digit, one upper and lower case letter, and one of the following special characters: !@#$%&*()-+=^"
+      );
+      isValid = false;
+    }
+
+    return isValid;
   };
-
-  function validateEmail(email) {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-  }
 
   return (
     <Container className="page">
       <Row>
         <Col xs={12} lg={6} className="content-container">
           <p className="h2">Registration</p>
+
+          {errorMessages.map((message, index) => (
+            <Alert
+              key={`registrationError-${index}`}
+              variant="danger"
+              className="text-center text-lg-left"
+            >
+              {message}
+            </Alert>
+          ))}
+
           <Form ref={form}>
             <Username setUsername={setUsername} />
 
