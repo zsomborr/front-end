@@ -10,9 +10,13 @@ const Login = (props) => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const history = useHistory();
+  const form = React.createRef();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!form.current.reportValidity()) {
+      return;
+    }
     try {
       await props.studentService.login(username, password);
       history.push("/");
@@ -37,7 +41,7 @@ const Login = (props) => {
               {errorMessage}
             </Alert>
           )}
-          <Form>
+          <Form ref={form}>
             <Username setUsername={setUsername} />
 
             <Password setPassword={setPassword} />

@@ -17,6 +17,9 @@ const Username = (props) => {
           id="username"
           placeholder="Username"
           onChange={(e) => props.setUsername(e.target.value)}
+          minLength="2"
+          maxLength="20"
+          required
         />
       </InputGroup>
     </Fragment>

@@ -28,6 +28,7 @@ const Password = (props) => {
           type={passwordType}
           placeholder="Password"
           minLength="8"
+          maxLength="20"
           required
           onChange={(e) => props.setPassword(e.target.value)}
         />

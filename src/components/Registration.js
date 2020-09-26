@@ -21,36 +21,27 @@ const Registration = (props) => {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const form = React.createRef();
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    validData(firstName, lastName, username, email, password)
-      ? await studentService.registration(
-          firstName,
-          lastName,
-          username,
-          email,
-          password
-        )
-      : console.log("failed to register");
+    if (!form.current.reportValidity()) {
+      return;
+    }
+    if (validData(firstName, lastName, username, email, password)) {
+      await studentService.registration(
+        firstName,
+        lastName,
+        username,
+        email,
+        password
+      );
+    } else {
+      console.log("failed to register");
+    }
   };
 
   const validData = (firstName, lastName, username, email, password) => {
-    if (
-      username === undefined ||
-      email === undefined ||
-      password === undefined ||
-      firstName === undefined ||
-      lastName === undefined ||
-      username === "" ||
-      email === "" ||
-      password === "" ||
-      firstName === "" ||
-      lastName === ""
-    ) {
-      return false;
-    }
-
     if (/\d/.test(String(firstName)) || /\d/.test(String(lastName))) {
       return false;
     }
@@ -72,7 +63,7 @@ const Registration = (props) => {
       <Row>
         <Col xs={12} lg={6} className="content-container">
           <p className="h2">Registration</p>
-          <Form>
+          <Form ref={form}>
             <Username setUsername={setUsername} />
 
             <Form.Label htmlFor="firstname" srOnly>
@@ -83,6 +74,8 @@ const Registration = (props) => {
                 id="firstname"
                 placeholder="First Name"
                 onChange={(e) => setFirstName(e.target.value)}
+                minLength="2"
+                maxLength="20"
                 required
               />
             </InputGroup>
@@ -95,6 +88,8 @@ const Registration = (props) => {
                 id="lastname"
                 placeholder="Last Name"
                 onChange={(e) => setLastName(e.target.value)}
+                minLength="2"
+                maxLength="20"
                 required
               />
             </InputGroup>
@@ -107,9 +102,12 @@ const Registration = (props) => {
                 <InputGroup.Text>@</InputGroup.Text>
               </InputGroup.Prepend>
               <FormControl
+                type="email"
                 id="email"
                 placeholder="Email address"
                 onChange={(e) => setEmail(e.target.value)}
+                minLength="6"
+                maxLength="50"
                 required
               />
             </InputGroup>
