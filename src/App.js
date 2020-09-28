@@ -1,8 +1,8 @@
 import React, { Fragment, useState } from "react";
+import axios from "axios";
 import { Container } from "react-bootstrap";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Login from "./components/Login";
-
 import QuestionsPage from "./components/QuestionsPage";
 import Header from "./components/Header";
 import Registration from "./components/Registration";
@@ -11,6 +11,7 @@ import SingleQuestionPage from "./components/SingleQuestionPage";
 import QuestionsService from "./services/QuestionsService";
 
 function App() {
+  axios.defaults.withCredentials = true;
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const studentService = new StudentService(setIsAuthenticated);
   const questionsService = new QuestionsService();
