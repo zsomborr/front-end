@@ -26,14 +26,14 @@ const SingleQuestionPage = (props) => {
   return (
     <Container className="page">
       <Row className="content-container">
-        <Col>
+        <Col xs={9}>
           <span className="h3">{question.title}</span>
           <span className="ml-3">by: Jani</span>
         </Col>
-        <Col>
+        <Col xs={3}>
           <Image
             className="img-fluid img-thumbnail rounded-circle border"
-            src={"missing-profile-pic.jpg"}
+            src="missing-profile-pic.jpg"
             alt="Profile"
           />
         </Col>
