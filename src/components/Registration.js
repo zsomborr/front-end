@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import {
   Alert,
@@ -14,6 +14,7 @@ import WebsiteDescription from "./WebsiteDescription";
 import Username from "./form/Username";
 import Password from "./form/Password";
 import ValidationService from "../services/ValidationService";
+import UserContext from "../contexts/UserContext";
 
 const Registration = (props) => {
   const studentService = props.studentService;
@@ -26,6 +27,7 @@ const Registration = (props) => {
   const [lastName, setLastName] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);
   const form = React.createRef();
+  const user = useContext(UserContext);
 
   const asError = (message) => {
     setErrorMessages((errorMessages) => [...errorMessages, message]);
@@ -50,10 +52,13 @@ const Registration = (props) => {
         email,
         password
       );
-      await props.studentService.login(username, password);
+      await props.studentService.login(username, password, user);
       history.push("/");
     } catch (e) {
-      if (e.response && e.response.status === 400) {
+      if (
+        e.response &&
+        (e.response.status === 400 || e.response.status === 403)
+      ) {
         asError(e.response.data);
       }
     }
@@ -85,6 +90,13 @@ const Registration = (props) => {
 
     return isValid;
   };
+
+  useEffect(() => {
+    if (user.isAuthenticated === false) {
+      return;
+    }
+    history.push("/");
+  }, [history, user.isAuthenticated]);
 
   return (
     <Container className="page">
