@@ -27,6 +27,10 @@ const QuestionsPage = (props) => {
     questionsService.addNewQuestion(questionData, reloadQuestions);
   };
 
+  const sendSearch = async (value) => {
+    const result = await questionsService.search(value);
+    setQuestions(result);
+  };
   const reloadQuestions = () => {
     questionsService.getAllQuestions(setQuestions);
   };
@@ -65,8 +69,8 @@ const QuestionsPage = (props) => {
               <Col>
                 <Button
                   className="commonText"
-                  onClick={() => {
-                    setIsModalOpen(!isModalOpen);
+                  onClick={(e) => {
+                    sendSearch(e.target.value);
                   }}
                 >
                   Search
@@ -86,7 +90,7 @@ const QuestionsPage = (props) => {
           </Col>
         </Row>
       </Container>
-      <Container className="questionsBox">
+      <Container>
         <QuestionsDisplayer questions={questions} />
       </Container>
     </Container>

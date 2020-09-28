@@ -16,4 +16,10 @@ export default class QuestionsService extends SpringBootService {
     });
     callback(data);
   }
+
+  search(value) {
+    return axios.post(`${this.baseURL}/search`, value, {
+      withCredentials: true,
+    });
+  }
 }

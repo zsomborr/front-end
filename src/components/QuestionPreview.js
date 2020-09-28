@@ -10,7 +10,7 @@ const QuestionPreview = (props) => {
   const submissionTime = props.question.submissionTime;
 
   return (
-    <Container style={boxStyle}>
+    <Container className="alert alert-primary" style={boxStyle}>
       <Row>
         <Col>
           <Link to={`/question/${questionId}`}>
