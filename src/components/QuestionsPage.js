@@ -36,63 +36,55 @@ const QuestionsPage = (props) => {
   };
 
   return (
-    <Container>
-      <AddNewQuestionModal
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-        sendQuestion={addQuestion}
-      />
-      <h1 className="commonText">NAVBAR</h1>
-      <Container>
-        <Row>
-          {/*<Col>
-            <h3 className="commonText">Filter</h3>
-            <Container>
-              <h2 className="commonText">Filters here</h2>
-            </Container>
-          </Col>*/}
-          <Col>
-            <h3 className="commonText">Search bar</h3>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <FormControl
-              className="input-group mb-3 mr-3"
-              id="search"
-              placeholder="Search..."
-              required
-            />
-          </Col>
-          <Col>
-            <Row>
-              <Col>
-                <Button
-                  className="commonText"
-                  onClick={(e) => {
-                    sendSearch(e.target.value);
-                  }}
-                >
-                  Search
-                </Button>
-              </Col>
-              <Col className="text-right">
-                <Button
-                  className="commonText"
-                  onClick={() => {
-                    setIsModalOpen(!isModalOpen);
-                  }}
-                >
-                  Add new question
-                </Button>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </Container>
-      <Container>
-        <QuestionsDisplayer questions={questions} />
-      </Container>
+    <Container className="page">
+      <Row className="content-container">
+        <AddNewQuestionModal
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          sendQuestion={addQuestion}
+        />
+        <Col>
+          <Row>
+            <Col>
+              <FormControl
+                className="input-group mb-3 mr-3"
+                id="search"
+                placeholder="Search..."
+                required
+              />
+            </Col>
+            <Col>
+              <Row>
+                <Col>
+                  <Button
+                    className="commonText"
+                    onClick={(e) => {
+                      sendSearch(e.target.value);
+                    }}
+                  >
+                    Search
+                  </Button>
+                </Col>
+                <Col className="text-right">
+                  <Button
+                    className="commonText"
+                    onClick={() => {
+                      setIsModalOpen(!isModalOpen);
+                    }}
+                  >
+                    Add new question
+                  </Button>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <QuestionsDisplayer questions={questions} />
+            </Col>
+          </Row>
+        </Col>
+      </Row>
     </Container>
   );
 };

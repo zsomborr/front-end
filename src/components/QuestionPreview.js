@@ -10,7 +10,7 @@ const QuestionPreview = (props) => {
   const submissionTime = props.question.submissionTime;
 
   return (
-    <Container className="alert alert-primary" style={boxStyle}>
+    <Container className="alert alert-primary">
       <Row>
         <Col>
           <Link to={`/question/${questionId}`}>
@@ -26,11 +26,6 @@ const QuestionPreview = (props) => {
       </Row>
     </Container>
   );
-};
-
-const boxStyle = {
-  borderTop: "gray solid 1px",
-  borderBottom: "gray solid 1px",
 };
 
 export default QuestionPreview;
