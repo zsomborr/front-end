@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { Container } from "react-bootstrap";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Login from "./components/Login";
@@ -8,11 +8,13 @@ import StudentService from "./services/StudentService";
 
 function App() {
   const studentService = new StudentService();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   return (
     <Fragment>
       <Container>
         <Router>
-          <Header />
+          <Header isAuthenticated={isAuthenticated} />
           <Route
             key="registration"
             path="/registration"

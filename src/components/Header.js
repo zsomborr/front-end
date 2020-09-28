@@ -2,7 +2,7 @@ import React, { Fragment, useEffect } from "react";
 import { Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-export default function Header() {
+export default function Header(props) {
   const navBar = React.createRef();
 
   const handleScroll = () => {
@@ -45,12 +45,18 @@ export default function Header() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto"></Nav>
-            <Link to={"/login"} className="nav-link">
-              Login
-            </Link>
-            <Link to={"/registration"} className="nav-link">
-              Registration
-            </Link>
+            {!props.isAuthenticated ? (
+              <Fragment>
+                <Link to={"/login"} className="nav-link">
+                  Login
+                </Link>
+                <Link to={"/registration"} className="nav-link">
+                  Registration
+                </Link>
+              </Fragment>
+            ) : (
+              <Fragment></Fragment>
+            )}
           </Navbar.Collapse>
         </Navbar>
       </div>
