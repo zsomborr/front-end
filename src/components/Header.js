@@ -55,7 +55,11 @@ export default function Header(props) {
                 </Link>
               </Fragment>
             ) : (
-              <Fragment></Fragment>
+              <Fragment>
+                <Link to={"/questions"} className="nav-link">
+                  Questions
+                </Link>
+              </Fragment>
             )}
           </Navbar.Collapse>
         </Navbar>
