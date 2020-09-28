@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import {
+  Alert,
   Container,
   Col,
   Button,
@@ -10,108 +11,99 @@ import {
   Row,
 } from "react-bootstrap";
 import WebsiteDescription from "./WebsiteDescription";
+import Username from "./form/Username";
+import Password from "./form/Password";
+import ValidationService from "../services/ValidationService";
 
 const Registration = (props) => {
   const studentService = props.studentService;
+  const validator = new ValidationService();
   const history = useHistory();
-  const [passwordType, setPasswordType] = useState("password");
-  const [username, setUsernameState] = useState("");
-  const [email, setEmailState] = useState("");
-  const [password, setPasswordState] = useState("");
-  const [firstName, setFirstNameState] = useState("");
-  const [lastName, setLastNameState] = useState("");
-  const togglePassword = () => {
-    if (passwordType === "password") {
-      setPasswordType("text");
-    } else {
-      setPasswordType("password");
-    }
-  };
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [errorMessages, setErrorMessages] = useState([]);
+  const form = React.createRef();
 
-  const setFirstName = (value) => {
-    setFirstNameState(value);
-  };
-
-  const setLastName = (value) => {
-    setLastNameState(value);
-  };
-
-  const setUsername = (value) => {
-    setUsernameState(value);
-  };
-
-  const setEmail = (value) => {
-    setEmailState(value);
-  };
-
-  const setPassword = (value) => {
-    setPasswordState(value);
+  const asError = (message) => {
+    setErrorMessages((errorMessages) => [...errorMessages, message]);
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    validData(firstName, lastName, username, email, password)
-      ? await studentService.registration(
-          firstName,
-          lastName,
-          username,
-          email,
-          password
-        )
-      : console.log("failed to register");
+    if (!form.current.reportValidity()) {
+      return;
+    }
+
+    setErrorMessages([]);
+    if (!isFormValid()) {
+      return;
+    }
+
+    try {
+      await studentService.registration(
+        firstName,
+        lastName,
+        username,
+        email,
+        password
+      );
+      await props.studentService.login(username, password);
+      history.push("/");
+    } catch (e) {
+      if (e.response && e.response.status === 400) {
+        asError(e.response.data);
+      }
+    }
   };
 
-  const validData = (firstName, lastName, username, email, password) => {
-    if (
-      username === undefined ||
-      email === undefined ||
-      password === undefined ||
-      firstName === undefined ||
-      lastName === undefined ||
-      username === "" ||
-      email === "" ||
-      password === "" ||
-      firstName === "" ||
-      lastName === ""
-    ) {
-      return false;
+  const isFormValid = () => {
+    let isValid = true;
+    if (!validator.isValidUsername(username)) {
+      asError("Username should contain only English letters and _ character!");
+      isValid = false;
     }
 
-    if (/\d/.test(String(firstName)) || /\d/.test(String(lastName))) {
-      return false;
+    if (!validator.isValidFirstName(firstName)) {
+      asError("First name should contain only English letters!");
+      isValid = false;
     }
 
-    if (!validateEmail(email)) {
-      return false;
+    if (!validator.isValidLastName(lastName)) {
+      asError("Last name should contain only English letters!");
+      isValid = false;
     }
 
-    return true;
+    if (!validator.isValidPassword(password)) {
+      asError(
+        "Invalid password! It should contain at least one digit, one upper and lower case letter, and one of the following special characters: !@#$%&*()-+=^"
+      );
+      isValid = false;
+    }
+
+    return isValid;
   };
-
-  function validateEmail(email) {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-  }
-
-  useEffect(() => {}, []);
 
   return (
     <Container className="page">
       <Row>
         <Col xs={12} lg={6} className="content-container">
           <p className="h2">Registration</p>
-          <Form>
-            <Form.Label htmlFor="username" srOnly>
-              Username
-            </Form.Label>
-            <InputGroup className="mb-2 mr-sm-2">
-              <Form.Control
-                id="username"
-                placeholder="Username"
-                onChange={(e) => setUsername(e.target.value)}
-                required
-              />
-            </InputGroup>
+
+          {errorMessages.map((message, index) => (
+            <Alert
+              key={`registrationError-${index}`}
+              variant="danger"
+              className="text-center text-lg-left"
+            >
+              {message}
+            </Alert>
+          ))}
+
+          <Form ref={form}>
+            <Username setUsername={setUsername} />
 
             <Form.Label htmlFor="firstname" srOnly>
               First Name
@@ -121,6 +113,8 @@ const Registration = (props) => {
                 id="firstname"
                 placeholder="First Name"
                 onChange={(e) => setFirstName(e.target.value)}
+                minLength="2"
+                maxLength="20"
                 required
               />
             </InputGroup>
@@ -133,6 +127,8 @@ const Registration = (props) => {
                 id="lastname"
                 placeholder="Last Name"
                 onChange={(e) => setLastName(e.target.value)}
+                minLength="2"
+                maxLength="20"
                 required
               />
             </InputGroup>
@@ -145,34 +141,17 @@ const Registration = (props) => {
                 <InputGroup.Text>@</InputGroup.Text>
               </InputGroup.Prepend>
               <FormControl
+                type="email"
                 id="email"
                 placeholder="Email address"
                 onChange={(e) => setEmail(e.target.value)}
+                minLength="6"
+                maxLength="50"
                 required
               />
             </InputGroup>
 
-            <Form.Label htmlFor="password" srOnly>
-              Password
-            </Form.Label>
-            <InputGroup className="mb-2 mr-sm-2">
-              <Form.Control
-                id="password"
-                type={passwordType}
-                placeholder="Password"
-                minLength="8"
-                required
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <InputGroup.Prepend
-                className="passwordIconHover"
-                onClick={togglePassword}
-              >
-                <InputGroup.Text>
-                  <i className="fa fa-eye password-icon" />
-                </InputGroup.Text>
-              </InputGroup.Prepend>
-            </InputGroup>
+            <Password setPassword={setPassword} />
 
             <Button
               variant="primary"
