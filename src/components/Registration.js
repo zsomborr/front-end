@@ -50,7 +50,8 @@ const Registration = (props) => {
         email,
         password
       );
-      setErrorMessages([]);
+      await props.studentService.login(username, password);
+      history.push("/");
     } catch (e) {
       if (e.response && e.response.status === 400) {
         asError(e.response.data);

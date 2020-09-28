@@ -11,9 +11,9 @@ import SingleQuestionPage from "./components/SingleQuestionPage";
 import QuestionsService from "./services/QuestionsService";
 
 function App() {
-  const studentService = new StudentService();
-  const questionsService = new QuestionsService();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const studentService = new StudentService(setIsAuthenticated);
+  const questionsService = new QuestionsService();
 
   return (
     <Fragment>
