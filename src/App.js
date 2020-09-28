@@ -10,6 +10,7 @@ import StudentService from "./services/StudentService";
 import SingleQuestionPage from "./components/SingleQuestionPage";
 import QuestionsService from "./services/QuestionsService";
 import { UserContextProvider } from "./contexts/UserContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   axios.defaults.withCredentials = true;
@@ -36,14 +37,14 @@ function App() {
               path="/login"
               render={() => <Login studentService={studentService} />}
             ></Route>
-            <Route
+            <ProtectedRoute
               key="questionsPage"
               path="/questions"
               component={(props) => (
                 <QuestionsPage questionsService={questionsService} {...props} />
               )}
             />
-            <Route
+            <ProtectedRoute
               key="singleQuestion"
               path="/question/:id"
               render={() => <SingleQuestionPage />}
