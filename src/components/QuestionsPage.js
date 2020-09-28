@@ -24,7 +24,6 @@ const QuestionsPage = (props) => {
   }, []);
 
   const addQuestion = (questionData) => {
-    questionData.userId = 1; //TODO userId to add
     questionsService.addNewQuestion(questionData, reloadQuestions);
   };
 
