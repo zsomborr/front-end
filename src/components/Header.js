@@ -1,9 +1,11 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useContext, useEffect } from "react";
 import { Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import UserContext from "../contexts/UserContext";
 
-export default function Header(props) {
+export default function Header() {
   const navBar = React.createRef();
+  const user = useContext(UserContext);
 
   const handleScroll = () => {
     if (window.pageYOffset < 50) {
@@ -45,7 +47,7 @@ export default function Header(props) {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto"></Nav>
-            {!props.isAuthenticated ? (
+            {!user.isAuthenticated ? (
               <Fragment>
                 <Link to={"/login"} className="nav-link">
                   Login

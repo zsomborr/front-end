@@ -1,16 +1,20 @@
-import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { Alert, Container, Col, Button, Form, Row } from "react-bootstrap";
 import WebsiteDescription from "./WebsiteDescription";
 import Username from "./form/Username";
 import Password from "./form/Password";
 import ValidationService from "../services/ValidationService";
+import UserContext from "../contexts/UserContext";
 
 const Login = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);
+  const user = useContext(UserContext);
   const history = useHistory();
+  const location = useLocation();
+
   const form = React.createRef();
   const validator = new ValidationService();
 
@@ -47,14 +51,21 @@ const Login = (props) => {
     }
 
     try {
-      await props.studentService.login(username, password);
-      history.push("/");
+      await props.studentService.login(username, password, user);
     } catch (e) {
       if (e.response && e.response.status === 403) {
         asError(e.response.data);
       }
     }
   };
+
+  useEffect(() => {
+    if (user.isAuthenticated === false) {
+      return;
+    }
+    const referrer = location.state ? location.state.from : "/";
+    history.push(referrer);
+  }, [history, location.state, user.isAuthenticated]);
 
   return (
     <Container className="page">
