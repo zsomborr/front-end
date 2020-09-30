@@ -93,6 +93,11 @@ function App() {
               path="/mentors"
               component={() => <SearchMentorPage />}
             />
+            <ProtectedRoute
+              key="searchMentors"
+              path="/mentors"
+              render={() => <SearchMentorPage />}
+            />
           </UserContextProvider>
         </Router>
       </Container>
