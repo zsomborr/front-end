@@ -27,7 +27,7 @@ const Registration = (props) => {
   const [lastName, setLastName] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);
   const form = React.createRef();
-  const user = useContext(UserContext);
+  const [isAuthenticated, setIsAuthenticated] = useContext(UserContext);
 
   const asError = (message) => {
     setErrorMessages((errorMessages) => [...errorMessages, message]);
@@ -52,7 +52,7 @@ const Registration = (props) => {
         email,
         password
       );
-      await props.studentService.login(username, password, user);
+      await props.studentService.login(username, password, setIsAuthenticated);
       history.push("/");
     } catch (e) {
       if (
@@ -92,11 +92,11 @@ const Registration = (props) => {
   };
 
   useEffect(() => {
-    if (user.isAuthenticated === false) {
+    if (isAuthenticated === false) {
       return;
     }
     history.push("/");
-  }, [history, user.isAuthenticated]);
+  }, [history, isAuthenticated]);
 
   return (
     <Container className="page">
