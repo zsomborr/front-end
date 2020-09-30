@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Image, Badge } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
+import MultiSelect from "react-multi-select-component";
 
 const SearchMentorPage = () => {
   const [users, setUsers] = useState([]);
+  const [technologies, setTechnologies] = useState([]);
+  const [selectedTech, setSelectedTech] = useState([]);
+  const [selectedProject, setSelectedProject] = useState([]);
 
   const sampleUsers = [
     {
@@ -11,7 +15,6 @@ const SearchMentorPage = () => {
       userId: "1",
       firstName: "Zöld",
       lastName: "Zoli",
-      username: "zöld",
       technologies: ["React"],
     },
     {
@@ -19,7 +22,6 @@ const SearchMentorPage = () => {
       userId: "2",
       firstName: "Narancs",
       lastName: "Nándi",
-      username: "nari",
       technologies: ["React", "C#", "Javascript"],
     },
     {
@@ -27,7 +29,6 @@ const SearchMentorPage = () => {
       userId: "3",
       firstName: "Fekete",
       lastName: "Feri",
-      username: "feka",
       technologies: ["Java", "Spring"],
     },
     {
@@ -35,53 +36,106 @@ const SearchMentorPage = () => {
       userId: "4",
       firstName: "Sárga",
       lastName: "Sára",
-      username: "sari",
       technologies: ["C#", "ASP.Net"],
     },
   ];
 
+  const sampleTechs = [
+    { label: "C#", value: "csharp" },
+    { label: "Java", value: "java" },
+    { label: "React", value: "react" },
+    { label: "Spring", value: "spring" },
+    { label: "Javascript", value: "javascript" },
+    { label: "ASP.NET", value: "aspdotnet" },
+    { label: "Bootstrap", value: "bootstrap" },
+    { label: "PSQL", value: "psql" },
+  ];
+
+  const sampleProjects = [
+    { label: "Ask Mate", value: "askmate" },
+    { label: "Proman", value: "proman" },
+    { label: "Web Blackjack", value: "blackjack" },
+    { label: "Pong", value: "pong" },
+    { label: "File Manager", value: "filemanager" },
+    { label: "Codecool Quest", value: "quest" },
+  ];
+
   useEffect(() => {
     setUsers(sampleUsers);
+    setTechnologies(sampleTechs);
   }, []);
 
   return (
     <Container className="page">
       <Row className="content-container">
         <Col>
-          {users.map((user) => {
-            return (
-              <Row>
-                <Col sm={2} className="text-center">
-                  <Image
-                    className="img-fluid img-thumbnail rounded-circle border"
-                    src={user.profilePicture}
-                    alt="Profile"
-                  />
-                </Col>
-                <Col className="content-container" sm={10}>
+          <Row className="mb-2">
+            <Col>
+              <MultiSelect
+                className="mb-2"
+                options={sampleTechs}
+                value={selectedTech}
+                onChange={setSelectedTech}
+                labelledBy={"Select a technology"}
+                hasSelectAll={false}
+                shouldToggleOnHover={true}
+                overrideStrings={{
+                  selectSomeItems: "Select a technology to filter",
+                }}
+              />
+            </Col>
+            <Col>
+              <MultiSelect
+                options={sampleProjects}
+                value={selectedProject}
+                onChange={setSelectedProject}
+                labelledBy={"Select a Project"}
+                hasSelectAll={false}
+                shouldToggleOnHover={true}
+                overrideStrings={{
+                  selectSomeItems: "Select a project to filter",
+                }}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              {users.map((user) => {
+                return (
                   <Row>
-                    <Col>
-                      <Link to={`/user/${user.userId}`} className="h5">
-                        {user.firstName} {user.lastName}
-                      </Link>
+                    <Col sm={2} className="text-center">
+                      <Image
+                        className="img-fluid img-thumbnail rounded-circle border"
+                        src={user.profilePicture}
+                        alt="Profile"
+                      />
                     </Col>
-                    <Col sm={4} className="mt-1">
-                      {user.technologies.map((tech) => {
-                        return (
-                          <Badge
-                            variant="primary"
-                            className="badge-pill float-right ml-1"
-                          >
-                            {tech}
-                          </Badge>
-                        );
-                      })}
+                    <Col className="content-container" sm={10}>
+                      <Row>
+                        <Col>
+                          <Link to={`/user/${user.userId}`} className="h5">
+                            {user.firstName} {user.lastName}
+                          </Link>
+                        </Col>
+                        <Col sm={4} className="mt-1">
+                          {user.technologies.map((tech) => {
+                            return (
+                              <Badge
+                                variant="primary"
+                                className="badge-pill float-right ml-1"
+                              >
+                                {tech}
+                              </Badge>
+                            );
+                          })}
+                        </Col>
+                      </Row>
                     </Col>
                   </Row>
-                </Col>
-              </Row>
-            );
-          })}
+                );
+              })}
+            </Col>
+          </Row>
         </Col>
       </Row>
     </Container>
