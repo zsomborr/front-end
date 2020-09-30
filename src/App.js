@@ -88,7 +88,7 @@ function App() {
                 />
               )}
             />
-            <ProtectedRoute
+            <Route
               key="searchMentors"
               path="/mentors"
               component={() => <SearchMentorPage />}
