@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Image, Badge } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Image,
+  Badge,
+  Button,
+  Form,
+} from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import MultiSelect from "react-multi-select-component";
 
@@ -60,6 +68,13 @@ const SearchMentorPage = () => {
     { label: "Codecool Quest", value: "quest" },
   ];
 
+  const search = () => {
+    console.log("search");
+    console.log("selectedTech", selectedTech);
+    console.log("selectedProject", selectedProject);
+    //ide jön majd a szerver hivás
+  };
+
   useEffect(() => {
     setUsers(sampleUsers);
     setTechnologies(sampleTechs);
@@ -70,7 +85,7 @@ const SearchMentorPage = () => {
       <Row className="content-container">
         <Col>
           <Row className="mb-2">
-            <Col>
+            <Col sm={5}>
               <MultiSelect
                 className="mb-2"
                 options={sampleTechs}
@@ -84,7 +99,7 @@ const SearchMentorPage = () => {
                 }}
               />
             </Col>
-            <Col>
+            <Col sm={5}>
               <MultiSelect
                 options={sampleProjects}
                 value={selectedProject}
@@ -96,6 +111,9 @@ const SearchMentorPage = () => {
                   selectSomeItems: "Select a project to filter",
                 }}
               />
+            </Col>
+            <Col className="text-right">
+              <Button onClick={search}>Search</Button>
             </Col>
           </Row>
           <Row>
