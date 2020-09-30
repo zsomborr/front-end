@@ -12,6 +12,7 @@ import QuestionsService from "./services/QuestionsService";
 import AnswerService from "./services/AnswerService";
 import { UserContext } from "./contexts/UserContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import SearchMentorPage from "./components/SearchMentorPage";
 
 function App() {
   axios.defaults.withCredentials = true;
@@ -87,7 +88,12 @@ function App() {
                 />
               )}
             />
-          </UserContext.Provider>
+            <ProtectedRoute
+              key="searchMentors"
+              path="/mentors"
+              component={() => <SearchMentorPage />}
+            />
+          </UserContextProvider>
         </Router>
       </Container>
     </Fragment>
