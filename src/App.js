@@ -50,7 +50,7 @@ function App() {
               path="/question/:id"
               render={() => <SingleQuestionPage />}
             />
-            <ProtectedRoute
+            <Route
               key="searchMentors"
               path="/mentors"
               component={() => <SearchMentorPage />}
