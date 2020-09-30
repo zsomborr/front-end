@@ -11,6 +11,7 @@ import SingleQuestionPage from "./components/SingleQuestionPage";
 import QuestionsService from "./services/QuestionsService";
 import { UserContextProvider } from "./contexts/UserContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import SearchMentorPage from "./components/SearchMentorPage";
 
 function App() {
   axios.defaults.withCredentials = true;
@@ -48,6 +49,11 @@ function App() {
               key="singleQuestion"
               path="/question/:id"
               render={() => <SingleQuestionPage />}
+            />
+            <ProtectedRoute
+              key="searchMentors"
+              path="/mentors"
+              component={() => <SearchMentorPage />}
             />
           </UserContextProvider>
         </Router>
