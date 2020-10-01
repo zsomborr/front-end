@@ -9,6 +9,7 @@ import Registration from "./components/Registration";
 import StudentService from "./services/StudentService";
 import SingleQuestionPage from "./components/SingleQuestionPage";
 import QuestionsService from "./services/QuestionsService";
+import AnswerService from "./services/AnswerService";
 import { UserContextProvider } from "./contexts/UserContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -16,6 +17,7 @@ function App() {
   axios.defaults.withCredentials = true;
   const studentService = new StudentService();
   const questionsService = new QuestionsService();
+  const answerService = new AnswerService();
 
   return (
     <Fragment>
@@ -50,6 +52,7 @@ function App() {
               component={(props) => (
                 <SingleQuestionPage
                   questionsService={questionsService}
+                  answerService={answerService}
                   {...props}
                 />
               )}

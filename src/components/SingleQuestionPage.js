@@ -1,26 +1,50 @@
-import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Image } from "react-bootstrap";
+import React, { useCallback, useEffect, useState } from "react";
+import { Button, Container, Row, Col, Image } from "react-bootstrap";
+import NewAnswer from "./modals/NewAnswer";
 
 const SingleQuestionPage = (props) => {
   const [question, setQuestionDetails] = useState([]);
   const [answers, setAnswers] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const questionId = props.match.params.id;
 
-  useEffect(() => {
-    const getData = async () => {
-      const response = await props.questionsService.getQuestionDetails(
-        questionId
-      );
+  const getData = useCallback(async () => {
+    const response = await props.questionsService.getQuestionDetails(
+      questionId
+    );
 
-      setQuestionDetails(response.data.question);
-      setAnswers(response.data.answers);
-    };
-    getData();
+    setQuestionDetails(response.data.question);
+    setAnswers(response.data.answers);
   }, [props.questionsService, questionId]);
+
+  useEffect(() => {
+    getData();
+  }, [getData, props.questionsService, questionId]);
+
+  useEffect(() => {
+    const isLastEmpty = (answers) => {
+      const lastAnswer = answers[answers.length - 1];
+      return Object.keys(lastAnswer).length === 0;
+    };
+
+    if (answers.length === 0 || !isLastEmpty(answers)) {
+      return;
+    }
+
+    getData();
+  }, [answers, getData]);
 
   return (
     <Container className="page">
       <Row className="content-container">
+        <NewAnswer
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          answerService={props.answerService}
+          questionId={questionId}
+          setAnswers={setAnswers}
+          answers={answers}
+        />
         <Col>
           <Row>
             <Col xs={9} lg={10} className="order-2 order-lg-1">
@@ -52,6 +76,13 @@ const SingleQuestionPage = (props) => {
             </Col>
           </Row>
           <hr></hr>
+          <Button
+            className="mb-1"
+            onClick={(e) => setIsModalOpen(!isModalOpen)}
+          >
+            Add new answer
+          </Button>
+          <br></br>
           <span className="h4">Answers</span>
           {answers.map((answer) => {
             return (
