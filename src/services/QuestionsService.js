@@ -16,4 +16,8 @@ export default class QuestionsService extends SpringBootService {
   search(value) {
     return axios.post(`${this.baseURL}/search`, value);
   }
+
+  getQuestionDetails(questionId) {
+    return axios.get(`${this.baseURL}/question/${questionId}`);
+  }
 }

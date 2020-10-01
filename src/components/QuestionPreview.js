@@ -6,7 +6,7 @@ import { Container, Row, Col } from "react-bootstrap";
 const QuestionPreview = (props) => {
   const title = props.question.title;
   const description = props.question.description;
-  const questionId = props.question.userId;
+  const questionId = props.question.id;
   const submissionTime = props.question.submissionTime;
 
   return (
