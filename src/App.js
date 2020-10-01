@@ -47,7 +47,12 @@ function App() {
             <ProtectedRoute
               key="singleQuestion"
               path="/question/:id"
-              render={() => <SingleQuestionPage />}
+              component={(props) => (
+                <SingleQuestionPage
+                  questionsService={questionsService}
+                  {...props}
+                />
+              )}
             />
           </UserContextProvider>
         </Router>
