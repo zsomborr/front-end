@@ -3,7 +3,6 @@ import SpringBootService from "./SpringBootService";
 
 export default class QuestionsService extends SpringBootService {
   async addNewQuestion(questionsData, callback) {
-    console.log("questionsData", questionsData);
     await axios.post(`${this.baseURL}/question`, questionsData);
     callback();
   }
@@ -14,7 +13,7 @@ export default class QuestionsService extends SpringBootService {
   }
 
   search(value) {
-    return axios.post(`${this.baseURL}/search`, value);
+    return axios.post(`${this.baseURL}/search`, { data: value });
   }
 
   getQuestionDetails(questionId) {
