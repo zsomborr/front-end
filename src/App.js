@@ -14,6 +14,7 @@ import AnswerService from "./services/AnswerService";
 import { UserContext } from "./contexts/UserContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import UserPrivatePage from "./components/UserPrivatePage";
+import PublicUserPage from "./components/PublicUserPage";
 
 function App() {
   axios.defaults.withCredentials = true;
@@ -42,7 +43,7 @@ function App() {
         </div>
         <div>
           <img
-            class="spinning-image"
+            className="spinning-image"
             src="https://journey.code.cool/static/assets/favicon/apple-touch-icon-180x180.png?version=v1.1.0-local-AJA3231O"
             alt="Loading indicator"
           />
@@ -99,6 +100,13 @@ function App() {
               path="/me"
               component={() => (
                 <UserPrivatePage studentService={studentService} />
+              )}
+            />
+            <ProtectedRoute
+              key="publicUserPage"
+              path="/user/:id"
+              component={(props) => (
+                <PublicUserPage studentService={studentService} {...props} />
               )}
             />
           </UserContext.Provider>
