@@ -11,42 +11,12 @@ import {
 import { Link, useHistory } from "react-router-dom";
 import MultiSelect from "react-multi-select-component";
 
-const SearchMentorPage = () => {
+const SearchMentorPage = (props) => {
+  const studentService = props.studentService;
   const [users, setUsers] = useState([]);
   const [technologies, setTechnologies] = useState([]);
-  const [selectedTech, setSelectedTech] = useState([]);
-  const [selectedProject, setSelectedProject] = useState([]);
-
-  const sampleUsers = [
-    {
-      profilePicture: "/ződ.png",
-      userId: "1",
-      firstName: "Zöld",
-      lastName: "Zoli",
-      technologies: ["React"],
-    },
-    {
-      profilePicture: "/nari.png",
-      userId: "2",
-      firstName: "Narancs",
-      lastName: "Nándi",
-      technologies: ["React", "C#", "Javascript"],
-    },
-    {
-      profilePicture: "/feka.png",
-      userId: "3",
-      firstName: "Fekete",
-      lastName: "Feri",
-      technologies: ["Java", "Spring"],
-    },
-    {
-      profilePicture: "/sari.png",
-      userId: "4",
-      firstName: "Sárga",
-      lastName: "Sára",
-      technologies: ["C#", "ASP.Net"],
-    },
-  ];
+  const [selectedTechs, setSelectedTechs] = useState([]);
+  const [selectedProjects, setSelectedProjects] = useState([]);
 
   const sampleTechs = [
     { label: "C#", value: "csharp" },
@@ -70,14 +40,19 @@ const SearchMentorPage = () => {
 
   const search = () => {
     console.log("search");
-    console.log("selectedTech", selectedTech);
-    console.log("selectedProject", selectedProject);
-    //ide jön majd a szerver hivás
+    console.log("selectedTech", selectedTechs);
+    console.log("selectedProject", selectedProjects);
+    studentService.getFilteredMentors(selectedTechs, selectedProjects);
   };
 
   useEffect(() => {
-    setUsers(sampleUsers);
-    setTechnologies(sampleTechs);
+    const getData = async () => {
+      const usersdata = await studentService.getAllMentors();
+      console.log("usersdata", usersdata);
+      setUsers(usersdata);
+      setTechnologies(sampleTechs);
+    };
+    getData();
   }, []);
 
   return (
@@ -89,8 +64,8 @@ const SearchMentorPage = () => {
               <MultiSelect
                 className="mb-2"
                 options={sampleTechs}
-                value={selectedTech}
-                onChange={setSelectedTech}
+                value={selectedTechs}
+                onChange={setSelectedTechs}
                 labelledBy={"Select a technology"}
                 hasSelectAll={false}
                 shouldToggleOnHover={true}
@@ -102,8 +77,8 @@ const SearchMentorPage = () => {
             <Col sm={5}>
               <MultiSelect
                 options={sampleProjects}
-                value={selectedProject}
-                onChange={setSelectedProject}
+                value={selectedProjects}
+                onChange={setSelectedProjects}
                 labelledBy={"Select a Project"}
                 hasSelectAll={false}
                 shouldToggleOnHover={true}

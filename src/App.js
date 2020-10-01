@@ -91,7 +91,9 @@ function App() {
             <Route
               key="searchMentors"
               path="/mentors"
-              component={() => <SearchMentorPage />}
+              component={(props) => (
+                <SearchMentorPage studentService={studentService} />
+              )}
             />
             <ProtectedRoute
               key="searchMentors"

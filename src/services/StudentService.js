@@ -25,6 +25,56 @@ export default class StudentService extends SpringBootService {
     return response;
   }
 
+  getAllMentors() {
+    const response = {
+      data: [
+        {
+          profilePicture: "/ződ.png",
+          userId: "1",
+          firstName: "Zöld",
+          lastName: "Zoli",
+          technologies: ["React"],
+        },
+        {
+          profilePicture: "/nari.png",
+          userId: "2",
+          firstName: "Narancs",
+          lastName: "Nándi",
+          technologies: ["React", "C#", "Javascript"],
+        },
+        {
+          profilePicture: "/feka.png",
+          userId: "3",
+          firstName: "Fekete",
+          lastName: "Feri",
+          technologies: ["Java", "Spring"],
+        },
+        {
+          profilePicture: "/sari.png",
+          userId: "4",
+          firstName: "Sárga",
+          lastName: "Sára",
+          technologies: ["C#", "ASP.Net"],
+        },
+      ],
+    };
+    //const response = axios.get(`${this.baseURL}/filter/get-mentors`);
+    console.log("response.data", response.data);
+    return response.data;
+  }
+
+  getFilteredMentors(techs, projects) {
+    const response = {
+      data: [
+        {
+          profilePicture: "/ződ.png",
+          userId: "1",
+          firstName: "Zöld",
+          lastName: "Zoli",
+          technologies: ["React"],
+        },
+      ],
+    };
   async isAuthenticated() {
     const cookies = document.cookie.split(";");
 
