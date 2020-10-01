@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import { Container } from "react-bootstrap";
 import { BrowserRouter as Router, Route } from "react-router-dom";
@@ -10,7 +10,7 @@ import StudentService from "./services/StudentService";
 import SingleQuestionPage from "./components/SingleQuestionPage";
 import QuestionsService from "./services/QuestionsService";
 import AnswerService from "./services/AnswerService";
-import { UserContextProvider } from "./contexts/UserContext";
+import { UserContext } from "./contexts/UserContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -18,6 +18,36 @@ function App() {
   const studentService = new StudentService();
   const questionsService = new QuestionsService();
   const answerService = new AnswerService();
+
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      setIsAuthenticated(await studentService.isAuthenticated());
+      setIsLoading(false);
+    };
+
+    checkAuthentication();
+  }, [isAuthenticated, studentService]);
+
+  if (isLoading) {
+    return (
+      <Fragment>
+        <div className="background">
+          <div></div>
+          <div></div>
+        </div>
+        <div>
+          <img
+            class="spinning-image"
+            src="https://journey.code.cool/static/assets/favicon/apple-touch-icon-180x180.png?version=v1.1.0-local-AJA3231O"
+            alt="Loading indicator"
+          />
+        </div>
+      </Fragment>
+    );
+  }
 
   return (
     <Fragment>
@@ -27,7 +57,7 @@ function App() {
       </div>
       <Container>
         <Router>
-          <UserContextProvider>
+          <UserContext.Provider value={[isAuthenticated, setIsAuthenticated]}>
             <Header />
             <Route
               key="registration"
@@ -57,7 +87,7 @@ function App() {
                 />
               )}
             />
-          </UserContextProvider>
+          </UserContext.Provider>
         </Router>
       </Container>
     </Fragment>

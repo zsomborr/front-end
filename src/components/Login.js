@@ -11,7 +11,7 @@ const Login = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);
-  const user = useContext(UserContext);
+  const [isAuthenticated, setIsAuthenticated] = useContext(UserContext);
   const history = useHistory();
   const location = useLocation();
 
@@ -51,7 +51,7 @@ const Login = (props) => {
     }
 
     try {
-      await props.studentService.login(username, password, user);
+      await props.studentService.login(username, password, setIsAuthenticated);
     } catch (e) {
       if (e.response && e.response.status === 403) {
         asError(e.response.data);
@@ -60,12 +60,12 @@ const Login = (props) => {
   };
 
   useEffect(() => {
-    if (user.isAuthenticated === false) {
+    if (isAuthenticated === false) {
       return;
     }
     const referrer = location.state ? location.state.from : "/";
     history.push(referrer);
-  }, [history, location.state, user.isAuthenticated]);
+  }, [history, location.state, isAuthenticated]);
 
   return (
     <Container className="page">
