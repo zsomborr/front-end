@@ -88,7 +88,7 @@ function App() {
                 />
               )}
             />
-            <Route
+            <ProtectedRoute
               key="searchMentors"
               path="/mentors"
               component={(props) => (
