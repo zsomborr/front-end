@@ -95,12 +95,7 @@ function App() {
                 <SearchMentorPage studentService={studentService} />
               )}
             />
-            <ProtectedRoute
-              key="searchMentors"
-              path="/mentors"
-              render={() => <SearchMentorPage />}
-            />
-          </UserContextProvider>
+          </UserContext.Provider>
         </Router>
       </Container>
     </Fragment>

@@ -75,6 +75,9 @@ export default class StudentService extends SpringBootService {
         },
       ],
     };
+    return response.data;
+  }
+
   async isAuthenticated() {
     const cookies = document.cookie.split(";");
 
