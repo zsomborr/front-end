@@ -64,6 +64,13 @@ export default class StudentService extends SpringBootService {
   }
 
   getFilteredMentors(techs, projects) {
+    /*
+    const response = axios.post(`${this.baseURL}/filter/get-mentors-by-tags`, {
+      technologies: [techs],
+      projects: [projects]
+    });
+    */
+
     const response = {
       data: [
         {

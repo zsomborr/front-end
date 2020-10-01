@@ -7,6 +7,7 @@ import QuestionsPage from "./components/QuestionsPage";
 import Header from "./components/Header";
 import Registration from "./components/Registration";
 import StudentService from "./services/StudentService";
+import TagService from "./services/TagService";
 import SingleQuestionPage from "./components/SingleQuestionPage";
 import QuestionsService from "./services/QuestionsService";
 import AnswerService from "./services/AnswerService";
@@ -19,6 +20,7 @@ function App() {
   const studentService = new StudentService();
   const questionsService = new QuestionsService();
   const answerService = new AnswerService();
+  const tagService = new TagService();
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -92,7 +94,10 @@ function App() {
               key="searchMentors"
               path="/mentors"
               component={(props) => (
-                <SearchMentorPage studentService={studentService} />
+                <SearchMentorPage
+                  studentService={studentService}
+                  tagService={tagService}
+                />
               )}
             />
           </UserContext.Provider>

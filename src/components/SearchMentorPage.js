@@ -13,44 +13,37 @@ import MultiSelect from "react-multi-select-component";
 
 const SearchMentorPage = (props) => {
   const studentService = props.studentService;
+  const tagService = props.tagService;
   const [users, setUsers] = useState([]);
   const [technologies, setTechnologies] = useState([]);
+  const [projects, setProjects] = useState([]);
   const [selectedTechs, setSelectedTechs] = useState([]);
   const [selectedProjects, setSelectedProjects] = useState([]);
 
-  const sampleTechs = [
-    { label: "C#", value: "csharp" },
-    { label: "Java", value: "java" },
-    { label: "React", value: "react" },
-    { label: "Spring", value: "spring" },
-    { label: "Javascript", value: "javascript" },
-    { label: "ASP.NET", value: "aspdotnet" },
-    { label: "Bootstrap", value: "bootstrap" },
-    { label: "PSQL", value: "psql" },
-  ];
-
-  const sampleProjects = [
-    { label: "Ask Mate", value: "askmate" },
-    { label: "Proman", value: "proman" },
-    { label: "Web Blackjack", value: "blackjack" },
-    { label: "Pong", value: "pong" },
-    { label: "File Manager", value: "filemanager" },
-    { label: "Codecool Quest", value: "quest" },
-  ];
-
   const search = () => {
-    console.log("search");
-    console.log("selectedTech", selectedTechs);
-    console.log("selectedProject", selectedProjects);
-    studentService.getFilteredMentors(selectedTechs, selectedProjects);
+    const techs = [];
+    const projects = [];
+    selectedTechs.map((tech) => techs.push(tech.label));
+    selectedProjects.map((project) => projects.push(project.label));
+    const students = studentService.getFilteredMentors(techs, projects);
+    setUsers(students);
   };
 
   useEffect(() => {
     const getData = async () => {
       const usersdata = await studentService.getAllMentors();
-      console.log("usersdata", usersdata);
       setUsers(usersdata);
-      setTechnologies(sampleTechs);
+      const tags = await tagService.getAllTags();
+      const techs = [];
+      const projects = [];
+      tags.technologyTags.map((tech) =>
+        techs.push({ label: tech, value: tech })
+      );
+      tags.projectTags.map((project) =>
+        projects.push({ label: project, value: project })
+      );
+      setTechnologies(techs);
+      setProjects(projects);
     };
     getData();
   }, []);
@@ -63,7 +56,7 @@ const SearchMentorPage = (props) => {
             <Col sm={5}>
               <MultiSelect
                 className="mb-2"
-                options={sampleTechs}
+                options={technologies}
                 value={selectedTechs}
                 onChange={setSelectedTechs}
                 labelledBy={"Select a technology"}
@@ -76,7 +69,7 @@ const SearchMentorPage = (props) => {
             </Col>
             <Col sm={5}>
               <MultiSelect
-                options={sampleProjects}
+                options={projects}
                 value={selectedProjects}
                 onChange={setSelectedProjects}
                 labelledBy={"Select a Project"}
