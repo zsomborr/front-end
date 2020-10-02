@@ -11,33 +11,48 @@ const Settings = (props) => {
 
   useEffect(() => {
     const requestData = async () => {
+      const unwrap = (source, columnName) => {
+        const result = [];
+        source.forEach((item) => result.push(item[columnName]));
+        return result;
+      };
       const response = await props.studentService.getSettingsDetails();
-      if (response.status !== 200) {
-        return;
-      }
-      setUserTechnologies(response.data.technologyTags);
-      setUserProjects(response.data.projectTags);
+      setUserProjects(unwrap(response.data.projectTags, "projectTag"));
+      setUserTechnologies(
+        unwrap(response.data.technologyTags, "technologyTag")
+      );
 
-      setTechnologies(response.data.allTechnologyTags);
-      setProjects(response.data.allProjectTags);
+      setProjects(unwrap(response.data.allProjectTags, "projectTag"));
+      setTechnologies(unwrap(response.data.allTechnologyTags, "technologyTag"));
     };
 
     requestData();
   }, [props.studentService]);
 
-  const [selectedProjects, setSelectedProjects] = useState(userProjects);
-  const [selectedTechnologies, setSelectedTechnologies] = useState(
-    userTechnologies
-  );
-
   const handleProjectDelete = (name) => {
-    setSelectedProjects(selectedProjects.filter((project) => project !== name));
+    setUserProjects(userProjects.filter((project) => project !== name));
   };
 
   const handleTechnologyDelete = (name) => {
-    selectedTechnologies(
-      selectedTechnologies.filter((technology) => technology !== name)
+    setUserTechnologies(
+      userTechnologies.filter((technology) => technology !== name)
     );
+  };
+
+  const handleAddProject = (name) => {
+    const sendRequest = async () => {
+      await props.studentService.addProject(name);
+      setUserProjects([...userProjects, name]);
+    };
+    sendRequest();
+  };
+
+  const handleAddTechnology = (name) => {
+    const sendRequest = async () => {
+      await props.studentService.addTechnology(name);
+      setUserTechnologies([...userTechnologies, name]);
+    };
+    sendRequest();
   };
 
   return (
@@ -53,12 +68,12 @@ const Settings = (props) => {
             <TagAutoComplete
               id="projects"
               source={projects}
-              setSelectedItems={setSelectedProjects}
-              selectedItems={selectedProjects}
+              selectedItems={userProjects}
+              onItemSelected={handleAddProject}
             />
           </InputGroup>
           <p>
-            {selectedProjects.map((project, index) => (
+            {userProjects.map((project, index) => (
               <DeletableTag
                 key={`project-${index}`}
                 name={project}
@@ -74,12 +89,12 @@ const Settings = (props) => {
             <TagAutoComplete
               id="technologies"
               source={technologies}
-              setSelectedItems={setSelectedTechnologies}
-              selectedItems={selectedTechnologies}
+              selectedItems={userTechnologies}
+              onItemSelected={handleAddTechnology}
             />
           </InputGroup>
           <p>
-            {selectedTechnologies.map((technology, index) => (
+            {userTechnologies.map((technology, index) => (
               <DeletableTag
                 key={`technology-${index}`}
                 name={technology}

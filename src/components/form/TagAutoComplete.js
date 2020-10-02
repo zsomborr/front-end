@@ -30,7 +30,7 @@ const TagAutoComplete = (props) => {
 
   const onSuggestionSelected = (event, { suggestion }) => {
     setValue("");
-    props.setSelectedItems([...props.selectedItems, suggestion]);
+    props.onItemSelected(suggestion);
   };
 
   const [value, setValue] = useState("");

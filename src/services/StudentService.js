@@ -41,4 +41,16 @@ export default class StudentService extends SpringBootService {
   getSettingsDetails() {
     return axios.get(`${this.baseURL}/user/get-user-data`);
   }
+
+  addProject(name) {
+    return axios.post(`${this.baseURL}/tags/add-project-tag`, {
+      projectTag: name,
+    });
+  }
+
+  addTechnology(name) {
+    return axios.post(`${this.baseURL}/tags/add-technology-tag`, {
+      technologyTag: name,
+    });
+  }
 }
