@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Image } from "react-bootstrap";
+import { Container, Row, Col, Image, Badge } from "react-bootstrap";
 
 const PublicUserPage = (props) => {
   const studentService = props.studentService;
@@ -50,13 +50,25 @@ const PublicUserPage = (props) => {
                   <p>City: {userData["user-data"].city}</p>
                   <p>Module: {userData["user-data"].module}</p>
                   <p>Technologies I can help with:</p>
-                  {userData.tags.technologies.map((tech) => {
-                    return <span>{tech} </span>;
-                  })}
+                  <p>
+                    {userData.tags.technologies.map((tech) => {
+                      return (
+                        <Badge variant="primary" className="badge-pill ml-1">
+                          {tech}
+                        </Badge>
+                      );
+                    })}
+                  </p>
                   <p>Projects I can help with:</p>
-                  {userData.tags.projects.map((project) => {
-                    return <span>{project} </span>;
-                  })}
+                  <p>
+                    {userData.tags.projects.map((project) => {
+                      return (
+                        <Badge variant="danger" className="badge-pill ml-1">
+                          {project}
+                        </Badge>
+                      );
+                    })}
+                  </p>
                 </Col>
               </Row>
             </Col>
@@ -67,7 +79,13 @@ const PublicUserPage = (props) => {
             <Col className="h4 text-center">Reviews</Col>
           </Row>
           <Row>
-            <Col></Col>
+            <Col className="h4 text-center">Contacts</Col>
+          </Row>
+          <Row className="discordTag mt-1 text-right">
+            <Col className="h3">Szpoti#6969</Col>
+          </Row>
+          <Row className="emailTag mt-2 text-right">
+            <Col className="h3">balage.farago@gmail.com</Col>
           </Row>
         </Col>
       </Row>
