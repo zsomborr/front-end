@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  Modal,
-  Button,
-  Row,
-  Form,
-  FormControl,
-  InputGroup,
-  Col,
-} from "react-bootstrap";
+import { Modal, Button, Form, FormControl, Col } from "react-bootstrap";
 
 const AddNewQuestionModal = (props) => {
   let title = "";
@@ -24,13 +16,13 @@ const AddNewQuestionModal = (props) => {
         </Col>
         <Col>
           <div
-            class="close-container"
+            className="close-container"
             onClick={() => {
               setIsModalOpen(!isModalOpen);
             }}
           >
-            <div class="leftright"></div>
-            <div class="rightleft"></div>
+            <div className="leftright"></div>
+            <div className="rightleft"></div>
           </div>
         </Col>
       </Modal.Header>
@@ -48,7 +40,7 @@ const AddNewQuestionModal = (props) => {
           <Form.Label>Description</Form.Label>
           <br></br>
           <textarea
-            class="form-control"
+            className="form-control"
             id="description"
             placeholder="Tell us your problem more detailed"
             style={{ width: "100%" }}
