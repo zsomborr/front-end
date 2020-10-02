@@ -1,9 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Col, Container, Form, InputGroup, Row } from "react-bootstrap";
+import {
+  Button,
+  Col,
+  Container,
+  Form,
+  Image,
+  InputGroup,
+  Row,
+} from "react-bootstrap";
 import DeletableTag from "./form/DeletableTag";
 import TagAutoComplete from "./form/TagAutoComplete";
 
 const Settings = (props) => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [country, setCountry] = useState("");
+  const [city, setCity] = useState("");
+  const [module, setModule] = useState("");
   const [userTechnologies, setUserTechnologies] = useState([]);
   const [userProjects, setUserProjects] = useState([]);
   const [technologies, setTechnologies] = useState([]);
@@ -17,13 +30,18 @@ const Settings = (props) => {
         return result;
       };
       const response = await props.studentService.getSettingsDetails();
-      setUserProjects(unwrap(response.data.projectTags, "projectTag"));
-      setUserTechnologies(
-        unwrap(response.data.technologyTags, "technologyTag")
-      );
+      const user = response.data;
+      setFirstName(user.firstName);
+      setLastName(user.lastName);
+      setCountry(user.country);
+      setCity(user.city);
+      setModule(user.module);
 
-      setProjects(unwrap(response.data.allProjectTags, "projectTag"));
-      setTechnologies(unwrap(response.data.allTechnologyTags, "technologyTag"));
+      setUserProjects(unwrap(user.projectTags, "projectTag"));
+      setUserTechnologies(unwrap(user.technologyTags, "technologyTag"));
+
+      setProjects(unwrap(user.allProjectTags, "projectTag"));
+      setTechnologies(unwrap(user.allTechnologyTags, "technologyTag"));
     };
 
     requestData();
@@ -68,6 +86,8 @@ const Settings = (props) => {
     };
     sendRequest();
   };
+
+  const modules = ["ProgBasics", "Web", "OOP", "Advanced", "JobHunt"];
 
   return (
     <Container className="page">
@@ -117,7 +137,104 @@ const Settings = (props) => {
             ))}
           </p>
         </Col>
-        <Col xs={12} lg={6} className="content-container"></Col>
+        <Col xs={12} lg={6} className="content-container">
+          <h2>Personal details</h2>
+          <Form>
+            <Form.Row>
+              <Col xs={4} className="d-md-none"></Col>
+              <Col
+                xs={4}
+                md={3}
+                className="d-flex flex-column justify-content-center"
+              >
+                <Row>
+                  <Col xs={8} md={12}>
+                    <Image
+                      className="img-fluid img-thumbnail rounded-circle border"
+                      src="missing-profile-pic.jpg"
+                      alt="Profile"
+                    />
+                  </Col>
+                </Row>
+              </Col>
+              <Col xs={12} md={9}>
+                <Form.Label htmlFor="firstname">First Name</Form.Label>
+                <InputGroup className="mb-2 mr-sm-2">
+                  <Form.Control
+                    id="firstname"
+                    placeholder="First Name"
+                    onChange={(e) => setFirstName(e.target.value)}
+                    defaultValue={firstName}
+                    minLength="2"
+                    maxLength="20"
+                    required
+                  />
+                </InputGroup>
+                <Form.Label htmlFor="lastName">Last Name</Form.Label>
+                <InputGroup className="mb-2 mr-sm-2">
+                  <Form.Control
+                    id="lastName"
+                    placeholder="Last Name"
+                    onChange={(e) => setLastName(e.target.value)}
+                    defaultValue={lastName}
+                    minLength="2"
+                    maxLength="20"
+                    required
+                  />
+                </InputGroup>
+              </Col>
+            </Form.Row>
+            <h4>Location</h4>
+            <Form.Row>
+              <Col xs={12} md={6}>
+                <Form.Label htmlFor="country">Country</Form.Label>
+                <InputGroup className="mb-2 mr-sm-2">
+                  <Form.Control
+                    id="country"
+                    placeholder="Country"
+                    onChange={(e) => setCountry(e.target.value)}
+                    defaultValue={country}
+                    minLength="2"
+                    maxLength="20"
+                    required
+                  />
+                </InputGroup>
+              </Col>
+              <Col xs={12} md={6}>
+                <Form.Label htmlFor="city">City</Form.Label>
+                <InputGroup className="mb-2 mr-sm-2">
+                  <Form.Control
+                    id="city"
+                    placeholder="City"
+                    onChange={(e) => setCity(e.target.value)}
+                    defaultValue={city}
+                    minLength="2"
+                    maxLength="20"
+                    required
+                  />
+                </InputGroup>
+              </Col>
+            </Form.Row>
+            <h4>Study</h4>
+            <Form.Group>
+              <Form.Label htmlFor="module">Current module</Form.Label>
+              <Form.Control
+                id="module"
+                as="select"
+                value={module}
+                onChange={(e) => setModule(e.target.value)}
+                custom
+              >
+                {modules.map((module) => (
+                  <option key={module} value={module.toUpperCase()}>
+                    {module}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+            <Button>Save</Button>
+          </Form>
+        </Col>
       </Row>
     </Container>
   );
