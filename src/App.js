@@ -6,6 +6,7 @@ import Login from "./components/Login";
 import QuestionsPage from "./components/QuestionsPage";
 import Header from "./components/Header";
 import Registration from "./components/Registration";
+import Settings from "./components/Settings";
 import StudentService from "./services/StudentService";
 import SingleQuestionPage from "./components/SingleQuestionPage";
 import QuestionsService from "./services/QuestionsService";
@@ -87,6 +88,11 @@ function App() {
                 />
               )}
             />
+            <ProtectedRoute
+              key="settings"
+              path="/settings"
+              component={() => <Settings />}
+            ></ProtectedRoute>
           </UserContext.Provider>
         </Router>
       </Container>
