@@ -2,7 +2,7 @@ import axios from "axios";
 import SpringBootService from "./SpringBootService";
 
 export default class TagService extends SpringBootService {
-  getAllTags() {
+  async getAllTags() {
     const sampleTechs = [
       "C#",
       "Java",
@@ -22,14 +22,16 @@ export default class TagService extends SpringBootService {
       "File Manager",
       "Codecool Quest",
     ];
-
-    //const response = axios.get(`${this.baseURL}/tags`);
-    const response = {
+    /*const response = {
       data: {
         technologyTags: sampleTechs,
         projectTags: sampleProjects,
       },
-    };
+    };*/
+
+    const response = await axios.get(`${this.baseURL}/tags`);
+
+    console.log("response.data", response.data);
     return response.data;
   }
 }
