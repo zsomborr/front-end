@@ -30,18 +30,29 @@ const Settings = (props) => {
   }, [props.studentService]);
 
   const handleProjectDelete = (name) => {
-    setUserProjects(userProjects.filter((project) => project !== name));
+    const sendRequest = async () => {
+      await props.studentService.removeProject(name);
+      setUserProjects(userProjects.filter((project) => project !== name));
+    };
+    sendRequest();
   };
 
   const handleTechnologyDelete = (name) => {
-    setUserTechnologies(
-      userTechnologies.filter((technology) => technology !== name)
-    );
+    const sendRequest = async () => {
+      await props.studentService.removeTechnology(name);
+      setUserTechnologies(
+        userTechnologies.filter((technology) => technology !== name)
+      );
+    };
+    sendRequest();
   };
 
   const handleAddProject = (name) => {
     const sendRequest = async () => {
       await props.studentService.addProject(name);
+      if (!projects.includes(name)) {
+        setProjects([...projects, name]);
+      }
       setUserProjects([...userProjects, name]);
     };
     sendRequest();
@@ -50,6 +61,9 @@ const Settings = (props) => {
   const handleAddTechnology = (name) => {
     const sendRequest = async () => {
       await props.studentService.addTechnology(name);
+      if (!technologies.includes(name)) {
+        setTechnologies([...technologies, name]);
+      }
       setUserTechnologies([...userTechnologies, name]);
     };
     sendRequest();

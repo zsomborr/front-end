@@ -48,8 +48,20 @@ export default class StudentService extends SpringBootService {
     });
   }
 
+  removeProject(name) {
+    return axios.post(`${this.baseURL}/tags/remove-project-tag`, {
+      projectTag: name,
+    });
+  }
+
   addTechnology(name) {
     return axios.post(`${this.baseURL}/tags/add-technology-tag`, {
+      technologyTag: name,
+    });
+  }
+
+  removeTechnology(name) {
+    return axios.post(`${this.baseURL}/tags/remove-technology-tag`, {
       technologyTag: name,
     });
   }
