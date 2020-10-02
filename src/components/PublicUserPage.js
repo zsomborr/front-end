@@ -28,11 +28,12 @@ const PublicUserPage = (props) => {
   return (
     <Container className="page">
       <Row className="content-container">
-        <Col sm={5}>
-          <Row>
+        <Col md={12} lg={5}>
+          <Row className="d-flex align-items-end">
             <Col>
               <Row>
-                <Col className="text-center">
+                <Col xs={3} sm={3}></Col>
+                <Col xs={6} sm={6} className="text-center">
                   <Image
                     className="img-fluid img-thumbnail rounded-circle border"
                     src="/missing-profile-pic.jpg"
@@ -43,13 +44,25 @@ const PublicUserPage = (props) => {
               <Row>
                 <Col className="content-container">
                   <p>
-                    Name: {userData["user-data"].firstName}{" "}
+                    <strong>Name: </strong>
+                    {userData["user-data"].firstName}{" "}
                     {userData["user-data"].lastName}
                   </p>
-                  <p>Country: {userData["user-data"].country}</p>
-                  <p>City: {userData["user-data"].city}</p>
-                  <p>Module: {userData["user-data"].module}</p>
-                  <p>Technologies I can help with:</p>
+                  <p>
+                    <strong>Country: </strong>
+                    {userData["user-data"].country}
+                  </p>
+                  <p>
+                    <strong>City: </strong>
+                    {userData["user-data"].city}
+                  </p>
+                  <p>
+                    <strong>Module: </strong>
+                    {userData["user-data"].module}
+                  </p>
+                  <p>
+                    <strong>Technologies</strong> I can help with:
+                  </p>
                   <p>
                     {userData.tags.technologies.map((tech) => {
                       return (
@@ -59,7 +72,9 @@ const PublicUserPage = (props) => {
                       );
                     })}
                   </p>
-                  <p>Projects I can help with:</p>
+                  <p>
+                    <strong>Projects</strong> I can help with:
+                  </p>
                   <p>
                     {userData.tags.projects.map((project) => {
                       return (
@@ -69,48 +84,61 @@ const PublicUserPage = (props) => {
                       );
                     })}
                   </p>
+                  <p>
+                    <strong>Contact</strong> me here:
+                  </p>
+                  <Col>
+                    <Row className="discordTag mt-2 text-right rounded-pill">
+                      <Col className="text-left" xs={3} sm={3}>
+                        <Image
+                          className="emailImage "
+                          src="/discord-logo.webp"
+                          alt="Gmail"
+                        ></Image>
+                      </Col>
+                      <Col
+                        xs={9}
+                        sm={9}
+                        className="text-right align-self-center font-weight-bold"
+                        style={{
+                          wordWrap: "break-word",
+                          fontSize: "100%",
+                        }}
+                      >
+                        Szpoti#0420
+                      </Col>
+                    </Row>
+                    <Row className="emailTag mt-2 text-right rounded-pill">
+                      <Col className="text-left" xs={3} sm={3}>
+                        <Image
+                          className="emailImage "
+                          src="/gmail-logo.png"
+                          alt="Gmail"
+                        ></Image>
+                      </Col>
+                      <Col
+                        xs={9}
+                        sm={9}
+                        className="text-right align-self-center font-weight-bold"
+                        style={{
+                          wordWrap: "break-word",
+                          fontSize: "100%",
+                        }}
+                      >
+                        balage.farago@gmail.com
+                      </Col>
+                    </Row>
+                  </Col>
                 </Col>
               </Row>
             </Col>
           </Row>
         </Col>
-        <Col sm={7}>
+        <Col>
           <Row>
             <Col className="h4 text-center">Reviews</Col>
           </Row>
-          <Row>
-            <Col className="h4 text-center">Contacts</Col>
-          </Row>
-          <Row className="discordTag mt-2 text-right">
-            <Col className="text-left">
-              <Image
-                className="logoImage"
-                src="/discord-logo.webp"
-                alt="Discord"
-              ></Image>
-            </Col>
-            <Col
-              className="h3 text-right"
-              style={{ fontSize: "2.5vw", marginTop: "6vw" }}
-            >
-              Szpoti#6969
-            </Col>
-          </Row>
-          <Row className="emailTag mt-2 text-right">
-            <Col className="text-left">
-              <Image
-                className="emailImage"
-                src="/gmail-logo.png"
-                alt="Gmail"
-              ></Image>
-            </Col>
-            <Col
-              className="h3 text-right"
-              style={{ fontSize: "2.2vw", marginTop: "6vw" }}
-            >
-              balage.farago@gmail.com
-            </Col>
-          </Row>
+          <Row></Row>
         </Col>
       </Row>
     </Container>
