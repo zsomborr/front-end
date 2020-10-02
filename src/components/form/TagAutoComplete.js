@@ -43,7 +43,7 @@ const TagAutoComplete = (props) => {
 
   const inputProps = {
     className: "form-control",
-    placeholder: `Type a ${props.type}`,
+    placeholder: `Type here to get suggestions`,
     value,
     onChange: onChange,
   };

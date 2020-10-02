@@ -91,7 +91,7 @@ function App() {
             <ProtectedRoute
               key="settings"
               path="/settings"
-              component={() => <Settings />}
+              component={() => <Settings studentService={studentService} />}
             ></ProtectedRoute>
           </UserContext.Provider>
         </Router>

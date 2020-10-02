@@ -37,4 +37,8 @@ export default class StudentService extends SpringBootService {
     }
     return false;
   }
+
+  getSettingsDetails() {
+    return axios.get(`${this.baseURL}/user/get-user-data`);
+  }
 }

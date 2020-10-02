@@ -1,41 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Container, Form, InputGroup, Row } from "react-bootstrap";
 import DeletableTag from "./form/DeletableTag";
 import TagAutoComplete from "./form/TagAutoComplete";
 
-const Settings = () => {
-  const user = {
-    completed_projects: ["AskMate", "Proman"],
-    technologies: ["C#"],
-  };
+const Settings = (props) => {
+  const [userTechnologies, setUserTechnologies] = useState([]);
+  const [userProjects, setUserProjects] = useState([]);
+  const [technologies, setTechnologies] = useState([]);
+  const [projects, setProjects] = useState([]);
 
-  const projects = [
-    "AskMate",
-    "JavaScript game",
-    "Proman",
-    "Five-in-a-row",
-    "Solitaire",
-    "Klondike Solitaire",
-    "Codecool Quest",
-    "Snake Game",
-    "Codecool Shop",
-  ];
+  useEffect(() => {
+    const requestData = async () => {
+      const response = await props.studentService.getSettingsDetails();
+      if (response.status !== 200) {
+        return;
+      }
+      setUserTechnologies(response.data.technologyTags);
+      setUserProjects(response.data.projectTags);
 
-  const technologies = [
-    "Python",
-    "HTML5",
-    "CSS3",
-    "JavaScript",
-    "Bootstrap",
-    "Java",
-    "C#",
-  ];
+      setTechnologies(response.data.allTechnologyTags);
+      setProjects(response.data.allProjectTags);
+    };
 
-  const [selectedProjects, setSelectedProjects] = useState(
-    user.completed_projects
-  );
+    requestData();
+  }, [props.studentService]);
+
+  const [selectedProjects, setSelectedProjects] = useState(userProjects);
   const [selectedTechnologies, setSelectedTechnologies] = useState(
-    user.technologies
+    userTechnologies
   );
 
   const handleProjectDelete = (name) => {
@@ -61,7 +53,6 @@ const Settings = () => {
             <TagAutoComplete
               id="projects"
               source={projects}
-              type="project (Codecool Shop, Five-in-a-row)"
               setSelectedItems={setSelectedProjects}
               selectedItems={selectedProjects}
             />
@@ -83,7 +74,6 @@ const Settings = () => {
             <TagAutoComplete
               id="technologies"
               source={technologies}
-              type="technology (Bootstrap/HTML5/CSS3)"
               setSelectedItems={setSelectedTechnologies}
               selectedItems={selectedTechnologies}
             />
