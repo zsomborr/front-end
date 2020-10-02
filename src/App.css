@@ -55,17 +55,22 @@
 .discordTag {
   background-image: url("/discord-tag.jpg");
   background-size: cover;
-  width: 100%;
-  height: 25%;
-  padding: 4em 0em;
-  background-position-y: -0.5em;
-  background-position-x: 0em;
   border-radius: 20px;
   box-shadow: inset 0px 0px 2px 2px #42424242;
 }
 
 .emailTag {
-  background-image: url("/gmail-logo.png");
+  background-image: url("/gmail-tag.png");
+}
+
+.logoImage {
+  width: 15vw;
+  height: 15vw;
+}
+
+.emailImage {
+  width: 15vw;
+  height: 15vw;
 }
 
 .App {

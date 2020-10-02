@@ -81,11 +81,35 @@ const PublicUserPage = (props) => {
           <Row>
             <Col className="h4 text-center">Contacts</Col>
           </Row>
-          <Row className="discordTag mt-1 text-right">
-            <Col className="h3">Szpoti#6969</Col>
+          <Row className="discordTag mt-2 text-right">
+            <Col className="text-left">
+              <Image
+                className="logoImage"
+                src="/discord-logo.webp"
+                alt="Discord"
+              ></Image>
+            </Col>
+            <Col
+              className="h3 text-right"
+              style={{ fontSize: "2.5vw", marginTop: "6vw" }}
+            >
+              Szpoti#6969
+            </Col>
           </Row>
           <Row className="emailTag mt-2 text-right">
-            <Col className="h3">balage.farago@gmail.com</Col>
+            <Col className="text-left">
+              <Image
+                className="emailImage"
+                src="/gmail-logo.png"
+                alt="Gmail"
+              ></Image>
+            </Col>
+            <Col
+              className="h3 text-right"
+              style={{ fontSize: "2.2vw", marginTop: "6vw" }}
+            >
+              balage.farago@gmail.com
+            </Col>
           </Row>
         </Col>
       </Row>
