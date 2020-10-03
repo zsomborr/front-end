@@ -9,6 +9,8 @@ import {
   Row,
 } from "react-bootstrap";
 import DeletableTag from "./form/DeletableTag";
+import FirstName from "./form/FirstName";
+import LastName from "./form/LastName";
 import TagAutoComplete from "./form/TagAutoComplete";
 
 const Settings = (props) => {
@@ -21,6 +23,7 @@ const Settings = (props) => {
   const [userProjects, setUserProjects] = useState([]);
   const [technologies, setTechnologies] = useState([]);
   const [projects, setProjects] = useState([]);
+  const form = React.createRef();
 
   useEffect(() => {
     const requestData = async () => {
@@ -87,6 +90,13 @@ const Settings = (props) => {
     sendRequest();
   };
 
+  const handleProfileUpdate = (e) => {
+    e.preventDefault();
+    if (!form.current.reportValidity()) {
+      return;
+    }
+  };
+
   const modules = ["ProgBasics", "Web", "OOP", "Advanced", "JobHunt"];
 
   return (
@@ -139,7 +149,7 @@ const Settings = (props) => {
         </Col>
         <Col xs={12} lg={6} className="content-container">
           <h2>Personal details</h2>
-          <Form>
+          <Form onSubmit={handleProfileUpdate} ref={form}>
             <Form.Row>
               <Col xs={4} className="d-md-none"></Col>
               <Col
@@ -148,7 +158,7 @@ const Settings = (props) => {
                 className="d-flex flex-column justify-content-center"
               >
                 <Row>
-                  <Col xs={8} md={12}>
+                  <Col xs={8} md={12} className="mx-auto">
                     <Image
                       className="img-fluid img-thumbnail rounded-circle border"
                       src="missing-profile-pic.jpg"
@@ -159,29 +169,16 @@ const Settings = (props) => {
               </Col>
               <Col xs={12} md={9}>
                 <Form.Label htmlFor="firstname">First Name</Form.Label>
-                <InputGroup className="mb-2 mr-sm-2">
-                  <Form.Control
-                    id="firstname"
-                    placeholder="First Name"
-                    onChange={(e) => setFirstName(e.target.value)}
-                    defaultValue={firstName}
-                    minLength="2"
-                    maxLength="20"
-                    required
-                  />
-                </InputGroup>
-                <Form.Label htmlFor="lastName">Last Name</Form.Label>
-                <InputGroup className="mb-2 mr-sm-2">
-                  <Form.Control
-                    id="lastName"
-                    placeholder="Last Name"
-                    onChange={(e) => setLastName(e.target.value)}
-                    defaultValue={lastName}
-                    minLength="2"
-                    maxLength="20"
-                    required
-                  />
-                </InputGroup>
+                <FirstName
+                  onChange={(e) => setFirstName(e.target.value)}
+                  defaultValue={firstName}
+                />
+
+                <Form.Label htmlFor="lastname">Last Name</Form.Label>
+                <LastName
+                  onChange={(e) => setLastName(e.target.value)}
+                  defaultValue={lastName}
+                />
               </Col>
             </Form.Row>
             <h4>Location</h4>
@@ -194,7 +191,7 @@ const Settings = (props) => {
                     placeholder="Country"
                     onChange={(e) => setCountry(e.target.value)}
                     defaultValue={country}
-                    minLength="2"
+                    minLength="4"
                     maxLength="20"
                     required
                   />
@@ -208,7 +205,7 @@ const Settings = (props) => {
                     placeholder="City"
                     onChange={(e) => setCity(e.target.value)}
                     defaultValue={city}
-                    minLength="2"
+                    minLength="4"
                     maxLength="20"
                     required
                   />
@@ -232,7 +229,7 @@ const Settings = (props) => {
                 ))}
               </Form.Control>
             </Form.Group>
-            <Button>Save</Button>
+            <Button onClick={handleProfileUpdate}>Save</Button>
           </Form>
         </Col>
       </Row>
