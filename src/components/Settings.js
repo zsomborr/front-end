@@ -24,6 +24,13 @@ const Settings = (props) => {
   const [technologies, setTechnologies] = useState([]);
   const [projects, setProjects] = useState([]);
   const form = React.createRef();
+  const [modules] = useState([
+    "ProgBasics",
+    "Web",
+    "OOP",
+    "Advanced",
+    "JobHunt",
+  ]);
 
   useEffect(() => {
     const requestData = async () => {
@@ -38,6 +45,9 @@ const Settings = (props) => {
       setLastName(user.lastName);
       setCountry(user.country);
       setCity(user.city);
+      if (user.module === null) {
+        user.module = modules[0];
+      }
       setModule(user.module);
 
       setUserProjects(unwrap(user.projectTags, "projectTag"));
@@ -48,7 +58,7 @@ const Settings = (props) => {
     };
 
     requestData();
-  }, [props.studentService]);
+  }, [modules, props.studentService]);
 
   const handleProjectDelete = (name) => {
     const sendRequest = async () => {
@@ -95,9 +105,17 @@ const Settings = (props) => {
     if (!form.current.reportValidity()) {
       return;
     }
+    const sendRequest = async () => {
+      await props.studentService.updateInfo(
+        firstName,
+        lastName,
+        country,
+        city,
+        module
+      );
+    };
+    sendRequest();
   };
-
-  const modules = ["ProgBasics", "Web", "OOP", "Advanced", "JobHunt"];
 
   return (
     <Container className="page">

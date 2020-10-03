@@ -65,4 +65,14 @@ export default class StudentService extends SpringBootService {
       technologyTag: name,
     });
   }
+
+  updateInfo(firstName, lastName, country, city, module) {
+    return axios.post(`${this.baseURL}/user/save-personal-data`, {
+      firstName: firstName,
+      lastName: lastName,
+      country: country,
+      city: city,
+      module: module.toUpperCase(),
+    });
+  }
 }
