@@ -13,6 +13,7 @@ import QuestionsService from "./services/QuestionsService";
 import AnswerService from "./services/AnswerService";
 import { UserContext } from "./contexts/UserContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import UserPrivatePage from "./components/UserPrivatePage";
 
 function App() {
   axios.defaults.withCredentials = true;
@@ -93,6 +94,11 @@ function App() {
               path="/settings"
               component={() => <Settings studentService={studentService} />}
             ></ProtectedRoute>
+            <ProtectedRoute
+              key="privateMe"
+              path="/me"
+              component={() => <UserPrivatePage />}
+            />
           </UserContext.Provider>
         </Router>
       </Container>
