@@ -11,66 +11,30 @@ import {
 import AccordionContext from "react-bootstrap/AccordionContext";
 import { Link } from "react-router-dom";
 
-const UserPrivatePage = () => {
-  const user = {
-    personal: {
-      name: {
-        first: "VeryLongFirstName",
-        last: "VeryLongLastName",
-      },
-      avatar: null,
-      location: {
-        country: "Hungary",
-        city: "Budapest",
-      },
-      module: "JobHunt",
-    },
-    activity: {
-      asked_questions: [
-        {
-          id: 1,
-          title:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-          description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-          submissionTime: "2020-10-05T14:43:36.785381",
-        },
-        {
-          id: 2,
-          title: "My Question #2",
-          description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-          submissionTime: "2020-10-05T14:43:36.785381",
-        },
-      ],
-      my_answers: [
-        {
-          id: 3,
-          questionId_: 1,
-          questionTitle: "Can i get some suggestion?",
-          content: "Use the S.O.L.I.D. principles.",
-          submissionTime: "2020-10-05T14:43:36.785381",
-        },
-        {
-          id: 4,
-          questionId_: 2,
-          questionTitle:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
-          content: "I would suggest to use Dependecy Injection.",
-          submissionTime: "2020-10-05T14:43:36.785381",
-        },
-        {
-          id: 4,
-          questionId_: 2,
-          questionTitle:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
-          content:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
-          submissionTime: "2020-10-05T14:43:36.785381",
-        },
-      ],
-    },
-  };
+const UserPrivatePage = (props) => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [country, setCountry] = useState("");
+  const [city, setCity] = useState("");
+  const [module, setModule] = useState("");
+  const [questions, setQuestions] = useState([]);
+  const [answers, setAnswers] = useState([]);
+
+  useEffect(() => {
+    const requestData = async () => {
+      const response = await props.studentService.getPrivateDetails();
+      const user = response.data;
+      setFirstName(user.firstName);
+      setLastName(user.lastName);
+      setCountry(user.country);
+      setCity(user.city);
+      setModule(user.module);
+      setQuestions(user.userQuestions);
+      setAnswers(user.userAnswers);
+    };
+
+    requestData();
+  }, [props.studentService]);
 
   const AnimatedToggle = ({ children, eventKey, callback }) => {
     const currentEventKey = useContext(AccordionContext);
@@ -107,7 +71,7 @@ const UserPrivatePage = () => {
               <AnimatedToggle eventKey="0">Questions I asked</AnimatedToggle>
               <Accordion.Collapse eventKey="0">
                 <Card.Body>
-                  {user.activity.asked_questions.map((question) => {
+                  {questions.map((question) => {
                     return (
                       <Row key={question.id}>
                         <Col xs={12} md={7} className="text-truncate">
@@ -136,7 +100,7 @@ const UserPrivatePage = () => {
               <AnimatedToggle eventKey="1">Questions I answered</AnimatedToggle>
               <Accordion.Collapse eventKey="1">
                 <Card.Body>
-                  {user.activity.my_answers.map((answer) => {
+                  {answers.map((answer) => {
                     return (
                       <Row key={answer.id}>
                         <Col
@@ -174,11 +138,7 @@ const UserPrivatePage = () => {
             <Col xs={12} md={4} className="text-center mb-md-3">
               <Image
                 className="img-fluid img-thumbnail rounded-circle border"
-                src={
-                  user.personal.avatar
-                    ? user.personal.avatar
-                    : "missing-profile-pic.jpg"
-                }
+                src="missing-profile-pic.jpg"
                 alt="Profile"
               />
             </Col>
@@ -188,18 +148,19 @@ const UserPrivatePage = () => {
               Name
             </Col>
             <Col md={8}>
-              {user.personal.name.first} {user.personal.name.last}
+              {firstName} {lastName}
             </Col>
             <Col md={4} className="font-weight-bold">
               Location
             </Col>
             <Col md={8}>
-              {user.personal.location.country} / {user.personal.location.city}
+              {country ? country : <i>Not set</i>} /
+              {city ? city : <i>Not set</i>}
             </Col>
             <Col md={4} className="font-weight-bold">
               Module
             </Col>
-            <Col md={8}>{user.personal.module}</Col>
+            <Col md={8}>{module ? module : <i>Not set</i>}</Col>
             <Col xs={12} className="text-right">
               <Link to="/settings">Update profile</Link>
             </Col>

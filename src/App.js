@@ -97,7 +97,9 @@ function App() {
             <ProtectedRoute
               key="privateMe"
               path="/me"
-              component={() => <UserPrivatePage />}
+              component={() => (
+                <UserPrivatePage studentService={studentService} />
+              )}
             />
           </UserContext.Provider>
         </Router>
