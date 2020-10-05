@@ -64,6 +64,12 @@ export default function Header() {
                 <Link to={"/mentors"} className="nav-link">
                   Mentors
                 </Link>
+                <Link to={"/me"} className="nav-link">
+                  My profile
+                </Link>
+                <Link to={"/settings"} className="nav-link">
+                  Settings
+                </Link>
               </Fragment>
             )}
           </Navbar.Collapse>
