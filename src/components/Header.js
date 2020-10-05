@@ -61,6 +61,9 @@ export default function Header() {
                 <Link to={"/questions"} className="nav-link">
                   Questions
                 </Link>
+                <Link to={"/settings"} className="nav-link">
+                  Settings
+                </Link>
               </Fragment>
             )}
           </Navbar.Collapse>
