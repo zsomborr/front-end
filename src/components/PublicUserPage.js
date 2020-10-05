@@ -50,15 +50,15 @@ const PublicUserPage = (props) => {
                   </p>
                   <p>
                     <strong>Country: </strong>
-                    {user.country}
+                    {user.country ? user.country : <i>Not set</i>}
                   </p>
                   <p>
                     <strong>City: </strong>
-                    {user.city}
+                    {user.city ? user.city : <i>Not set</i>}
                   </p>
                   <p>
                     <strong>Module: </strong>
-                    {user.module}
+                    {user.module ? user.module : <i>Not set</i>}
                   </p>
                   <p>
                     <strong>Technologies</strong> I can help with:
@@ -88,12 +88,12 @@ const PublicUserPage = (props) => {
                     <strong>Contact</strong> me here:
                   </p>
                   <Col>
-                    <Row className="discordTag mt-2 text-right rounded-pill">
+                    <Row className="d-none discordTag mt-2 text-right rounded-pill">
                       <Col className="text-left" xs={3} sm={3}>
                         <Image
                           className="emailImage "
                           src="/discord-logo.webp"
-                          alt="Gmail"
+                          alt="Discord"
                         ></Image>
                       </Col>
                       <Col
