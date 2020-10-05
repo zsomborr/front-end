@@ -8,18 +8,22 @@ import Header from "./components/Header";
 import Registration from "./components/Registration";
 import Settings from "./components/Settings";
 import StudentService from "./services/StudentService";
+import TagService from "./services/TagService";
 import SingleQuestionPage from "./components/SingleQuestionPage";
 import QuestionsService from "./services/QuestionsService";
 import AnswerService from "./services/AnswerService";
 import { UserContext } from "./contexts/UserContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import SearchMentorPage from "./components/SearchMentorPage";
 import UserPrivatePage from "./components/UserPrivatePage";
+
 
 function App() {
   axios.defaults.withCredentials = true;
   const studentService = new StudentService();
   const questionsService = new QuestionsService();
   const answerService = new AnswerService();
+  const tagService = new TagService();
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -89,6 +93,14 @@ function App() {
                 />
               )}
             />
+            <ProtectedRoute
+              key="searchMentors"
+              path="/mentors"
+              component={(props) => (
+                <SearchMentorPage
+                  studentService={studentService}
+                  tagService={tagService}
+                />
             <ProtectedRoute
               key="settings"
               path="/settings"
