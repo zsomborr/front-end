@@ -63,14 +63,15 @@ export default class StudentService extends SpringBootService {
     return response.data;
   }
 
-  getFilteredMentors(techs, projects) {
-    /*
-    const response = axios.post(`${this.baseURL}/filter/get-mentors-by-tags`, {
-      technologies: [techs],
-      projects: [projects]
-    });
-    */
+  async getFilteredMentors(techs, projects) {
+    const data = { technologyTags: techs, projectTags: projects };
+    console.log("data küldésre, küldés indul", data);
+    const response = await axios.post(
+      `${this.baseURL}/filter/get-mentors-by-tags`,
+      data
+    );
 
+    /*
     const response = {
       data: [
         {
@@ -82,6 +83,8 @@ export default class StudentService extends SpringBootService {
         },
       ],
     };
+    */
+    console.log("response getfilteredmentorstól", response.data);
     return response.data;
   }
 

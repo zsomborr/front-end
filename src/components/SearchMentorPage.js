@@ -20,12 +20,16 @@ const SearchMentorPage = (props) => {
   const [selectedTechs, setSelectedTechs] = useState([]);
   const [selectedProjects, setSelectedProjects] = useState([]);
 
-  const search = () => {
+  const search = async () => {
     const techs = [];
     const projects = [];
-    selectedTechs.map((tech) => techs.push(tech.label));
-    selectedProjects.map((project) => projects.push(project.label));
-    const students = studentService.getFilteredMentors(techs, projects);
+    selectedTechs.map((tech) =>
+      techs.push({ technologyTag: tech.label, id: tech.value })
+    );
+    selectedProjects.map((project) =>
+      projects.push({ projectTag: project.label, id: project.value })
+    );
+    const students = await studentService.getFilteredMentors(techs, projects);
     setUsers(students);
   };
 
@@ -37,10 +41,10 @@ const SearchMentorPage = (props) => {
       const techs = [];
       const projects = [];
       tags.technologyTags.map((tech) =>
-        techs.push({ label: tech, value: tech })
+        techs.push({ label: tech["technologyTag"], value: tech["id"] })
       );
       tags.projectTags.map((project) =>
-        projects.push({ label: project, value: project })
+        projects.push({ label: project["projectTag"], value: project["id"] })
       );
       setTechnologies(techs);
       setProjects(projects);
