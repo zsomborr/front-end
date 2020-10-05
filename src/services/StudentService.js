@@ -25,44 +25,17 @@ export default class StudentService extends SpringBootService {
     return response;
   }
 
-  async getUserDataById(id) {
-    const response = await {
-      data: {
-        "user-data": {
-          firstName: "Farago",
-          lastName: "Balazs",
-          country: "Hungary",
-          city: "Budapest",
-          module: "JobHunt",
-          discord: "Szpoti#420",
-          email: "balage.farago@gmail.com",
-        },
-        tags: {
-          technologies: ["C#", "React"],
-          projects: ["AskMate", "Proman"],
-        },
-      },
-    };
-    /*
-    const response = await axios.get(
-      `${this.baseURL}/user/get-user-data/${id}`
-    );
-    */
-    console.log("response.data", response.data);
-    return response.data;
+  getUserDataById(id) {
+    return axios.get(`${this.baseURL}/user/get-user-data/${id}`);
   }
 
   async isAuthenticated() {
-    const cookies = document.cookie.split(";");
-
-    for (let cookie of cookies) {
-      cookie = cookie.split("=");
-      if (cookie.length === 2 && cookie[0] === "authentication") {
-        const response = await axios.get(`${this.baseURL}/auth/authentication`);
-        return response.status === 200;
-      }
+    try {
+      await axios.get(`${this.baseURL}/auth/authentication`);
+      return true;
+    } catch (e) {
+      return false;
     }
-    return false;
   }
 
   getSettingsDetails() {

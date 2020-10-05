@@ -3,28 +3,29 @@ import { Container, Row, Col, Image, Badge } from "react-bootstrap";
 
 const PublicUserPage = (props) => {
   const studentService = props.studentService;
-  const [userData, setUserData] = useState();
+  const [user, setUser] = useState({
+    firstName: "",
+    lastName: "",
+    country: "",
+    city: "",
+    module: null,
+    technologyTags: [],
+    projectTags: [],
+  });
 
   useEffect(() => {
+    console.log("PublicUserPage::useEffect()");
     const getData = async () => {
-      const userdata = await studentService.getUserDataById(
+      const response = await studentService.getUserDataById(
         props.match.params.id
       );
-      setUserData(userdata);
+      setUser(response.data);
     };
     getData();
-  }, []);
+  }, [props.match.params.id, studentService]);
 
-  console.log("userData", userData);
-  if (userData === undefined) {
-    return (
-      <Container className="page">
-        <Row className="content-container">
-          <Col></Col>
-        </Row>
-      </Container>
-    );
-  }
+  console.log("PublicUserPage::render");
+
   return (
     <Container className="page">
       <Row className="content-container">
@@ -45,29 +46,28 @@ const PublicUserPage = (props) => {
                 <Col className="content-container">
                   <p>
                     <strong>Name: </strong>
-                    {userData["user-data"].firstName}{" "}
-                    {userData["user-data"].lastName}
+                    {user.firstName} {user.lastName}
                   </p>
                   <p>
                     <strong>Country: </strong>
-                    {userData["user-data"].country}
+                    {user.country}
                   </p>
                   <p>
                     <strong>City: </strong>
-                    {userData["user-data"].city}
+                    {user.city}
                   </p>
                   <p>
                     <strong>Module: </strong>
-                    {userData["user-data"].module}
+                    {user.module}
                   </p>
                   <p>
                     <strong>Technologies</strong> I can help with:
                   </p>
                   <p>
-                    {userData.tags.technologies.map((tech) => {
+                    {user.technologyTags.map((tech) => {
                       return (
                         <Badge variant="primary" className="badge-pill ml-1">
-                          {tech}
+                          {tech.technologyTag}
                         </Badge>
                       );
                     })}
@@ -76,10 +76,10 @@ const PublicUserPage = (props) => {
                     <strong>Projects</strong> I can help with:
                   </p>
                   <p>
-                    {userData.tags.projects.map((project) => {
+                    {user.projectTags.map((project) => {
                       return (
                         <Badge variant="danger" className="badge-pill ml-1">
-                          {project}
+                          {project.projectTag}
                         </Badge>
                       );
                     })}
@@ -105,7 +105,7 @@ const PublicUserPage = (props) => {
                           fontSize: "100%",
                         }}
                       >
-                        {userData["user-data"].discord}
+                        {user.discord}
                       </Col>
                     </Row>
                     <Row className="emailTag mt-2 text-right rounded-pill">
@@ -125,7 +125,7 @@ const PublicUserPage = (props) => {
                           fontSize: "100%",
                         }}
                       >
-                        {userData["user-data"].email}
+                        {user.email}
                       </Col>
                     </Row>
                   </Col>
