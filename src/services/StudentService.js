@@ -29,11 +29,13 @@ export default class StudentService extends SpringBootService {
     const response = await {
       data: {
         "user-data": {
-          firstName: "Kovacs",
-          lastName: "Bela",
+          firstName: "Farago",
+          lastName: "Balazs",
           country: "Hungary",
           city: "Budapest",
-          module: "OOP",
+          module: "JobHunt",
+          discord: "Szpoti#420",
+          email: "balage.farago@gmail.com",
         },
         tags: {
           technologies: ["C#", "React"],

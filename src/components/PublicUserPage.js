@@ -105,7 +105,7 @@ const PublicUserPage = (props) => {
                           fontSize: "100%",
                         }}
                       >
-                        Szpoti#0420
+                        {userData["user-data"].discord}
                       </Col>
                     </Row>
                     <Row className="emailTag mt-2 text-right rounded-pill">
@@ -125,7 +125,7 @@ const PublicUserPage = (props) => {
                           fontSize: "100%",
                         }}
                       >
-                        balage.farago@gmail.com
+                        {userData["user-data"].email}
                       </Col>
                     </Row>
                   </Col>
