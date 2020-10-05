@@ -17,7 +17,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import SearchMentorPage from "./components/SearchMentorPage";
 import UserPrivatePage from "./components/UserPrivatePage";
 
-
 function App() {
   axios.defaults.withCredentials = true;
   const studentService = new StudentService();
@@ -101,6 +100,8 @@ function App() {
                   studentService={studentService}
                   tagService={tagService}
                 />
+              )}
+            />
             <ProtectedRoute
               key="settings"
               path="/settings"
