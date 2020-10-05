@@ -14,7 +14,10 @@ const QuestionPreview = (props) => {
       </Row>
       <Row>
         <Col>
-          {props.question.username} | {props.question.submissionTime}
+          <Link to={`/user/${props.question.userId_}`}>
+            {props.question.username}
+          </Link>{" "}
+          | {props.question.submissionTime}
         </Col>
       </Row>
       <Row>

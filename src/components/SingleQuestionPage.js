@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Button, Container, Row, Col, Image } from "react-bootstrap";
 import NewAnswer from "./modals/NewAnswer";
 
@@ -50,7 +51,10 @@ const SingleQuestionPage = (props) => {
             <Col xs={9} lg={10} className="order-2 order-lg-1">
               <span className="h3">{question.title}</span>
               <span className="ml-3 d-none d-sm-inline-block">
-                by: {question.username}
+                by:{" "}
+                <Link to={`/user/${question.userId_}`}>
+                  {question.username}
+                </Link>
               </span>
             </Col>
             <Col
@@ -98,7 +102,7 @@ const SingleQuestionPage = (props) => {
                   {answer.content}
                 </Col>
                 <Col xs={12} lg={2} className="order-2 order-lg-3 text-center">
-                  {answer.username}
+                  <Link to={`/user/${answer.userId_}`}>{answer.username}</Link>
                 </Col>
                 <Col
                   xs={12}
