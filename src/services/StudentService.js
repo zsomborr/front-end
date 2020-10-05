@@ -75,4 +75,8 @@ export default class StudentService extends SpringBootService {
       module: module.toUpperCase(),
     });
   }
+
+  getPrivateDetails() {
+    return axios.get(`${this.baseURL}/user/get-user-private-page`);
+  }
 }
