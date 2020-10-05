@@ -52,6 +52,16 @@ const SearchMentorPage = (props) => {
     getData();
   }, []);
 
+  if (users === undefined || users.length === 0) {
+    return (
+      <Container className="page">
+        <Row className="content-container">
+          <Col>No user was found</Col>
+        </Row>
+      </Container>
+    );
+  }
+
   return (
     <Container className="page">
       <Row className="content-container">
@@ -96,25 +106,25 @@ const SearchMentorPage = (props) => {
                     <Col sm={2} className="text-center">
                       <Image
                         className="img-fluid img-thumbnail rounded-circle border"
-                        src={user.profilePicture}
+                        src="/feka.png"
                         alt="Profile"
                       />
                     </Col>
                     <Col className="content-container" sm={10}>
                       <Row>
                         <Col>
-                          <Link to={`/user/${user.userId}`} className="h5">
+                          <Link to={`/user/${user.id}`} className="h5">
                             {user.firstName} {user.lastName}
                           </Link>
                         </Col>
                         <Col sm={4} className="mt-1">
-                          {user.technologies.map((tech) => {
+                          {user.technologyTags.map((tech) => {
                             return (
                               <Badge
                                 variant="primary"
                                 className="badge-pill float-right ml-1"
                               >
-                                {tech}
+                                {tech.technologyTag}
                               </Badge>
                             );
                           })}

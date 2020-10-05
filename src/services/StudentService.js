@@ -25,7 +25,8 @@ export default class StudentService extends SpringBootService {
     return response;
   }
 
-  getAllMentors() {
+  async getAllMentors() {
+    /*
     const response = {
       data: [
         {
@@ -57,9 +58,9 @@ export default class StudentService extends SpringBootService {
           technologies: ["C#", "ASP.Net"],
         },
       ],
-    };
-    //const response = axios.get(`${this.baseURL}/filter/get-mentors`);
-    console.log("response.data", response.data);
+    }; */
+    const response = await axios.get(`${this.baseURL}/filter/get-mentors`);
+    console.log("Minden mentor", response.data);
     return response.data;
   }
 
