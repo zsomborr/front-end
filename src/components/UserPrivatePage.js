@@ -155,7 +155,7 @@ const UserPrivatePage = (props) => {
               Location
             </Col>
             <Col md={8}>
-              {country ? country : <i>Not set</i>} /
+              {country ? country : <i>Not set</i>} /{" "}
               {city ? city : <i>Not set</i>}
             </Col>
             <Col md={4} className="font-weight-bold">
