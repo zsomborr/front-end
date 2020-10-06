@@ -14,7 +14,6 @@ const PublicUserPage = (props) => {
   });
 
   useEffect(() => {
-    console.log("PublicUserPage::useEffect()");
     const getData = async () => {
       const response = await studentService.getUserDataById(
         props.match.params.id
@@ -23,8 +22,6 @@ const PublicUserPage = (props) => {
     };
     getData();
   }, [props.match.params.id, studentService]);
-
-  console.log("PublicUserPage::render");
 
   return (
     <Container className="page">
@@ -66,7 +63,11 @@ const PublicUserPage = (props) => {
                   <p>
                     {user.technologyTags.map((tech) => {
                       return (
-                        <Badge variant="primary" className="badge-pill ml-1">
+                        <Badge
+                          key={`technology-${tech.id}`}
+                          variant="primary"
+                          className="badge-pill ml-1"
+                        >
                           {tech.technologyTag}
                         </Badge>
                       );
@@ -78,7 +79,11 @@ const PublicUserPage = (props) => {
                   <p>
                     {user.projectTags.map((project) => {
                       return (
-                        <Badge variant="danger" className="badge-pill ml-1">
+                        <Badge
+                          key={`project-${project.id}`}
+                          variant="danger"
+                          className="badge-pill ml-1"
+                        >
                           {project.projectTag}
                         </Badge>
                       );
