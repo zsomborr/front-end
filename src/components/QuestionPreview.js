@@ -22,7 +22,7 @@ const QuestionPreview = (props) => {
       </Row>
       <Row>
         <Col>
-          <h6>{props.question.description}</h6>
+          <h6 className="text-truncate">{props.question.description}</h6>
         </Col>
       </Row>
     </Container>

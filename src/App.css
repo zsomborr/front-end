@@ -305,3 +305,7 @@ button.delete-button-link.disabled > span:nth-child(1) {
 .accordion > .card > .card-header {
   cursor: pointer;
 }
+
+.preserve-line {
+  white-space: pre-line;
+}

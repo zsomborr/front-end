@@ -72,7 +72,7 @@ const SingleQuestionPage = (props) => {
           </Row>
           <hr></hr>
           <Row>
-            <Col>{question.description}</Col>
+            <Col className="preserve-line">{question.description}</Col>
           </Row>
           <Row>
             <Col className="text-right text-muted">
@@ -98,7 +98,11 @@ const SingleQuestionPage = (props) => {
                     alt="Profile"
                   />
                 </Col>
-                <Col xs={12} lg={10} className="order-4 order-lg-2">
+                <Col
+                  xs={12}
+                  lg={10}
+                  className="order-4 order-lg-2 preserve-line"
+                >
                   {answer.content}
                 </Col>
                 <Col xs={12} lg={2} className="order-2 order-lg-3 text-center">
