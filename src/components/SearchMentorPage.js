@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Image, Badge, Button } from "react-bootstrap";
+import {
+  Alert,
+  Container,
+  Row,
+  Col,
+  Image,
+  Badge,
+  Button,
+} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import MultiSelect from "react-multi-select-component";
 
@@ -42,16 +50,6 @@ const SearchMentorPage = (props) => {
     };
     getData();
   }, [props.mentorService, tagService]);
-
-  if (users.length === 0) {
-    return (
-      <Container className="page">
-        <Row className="content-container">
-          <Col>No user was found</Col>
-        </Row>
-      </Container>
-    );
-  }
 
   return (
     <Container className="page">
@@ -126,6 +124,11 @@ const SearchMentorPage = (props) => {
                   </Row>
                 );
               })}
+              {users.length === 0 ? (
+                <Alert variant="info" className="mt-1">
+                  No mentors found.
+                </Alert>
+              ) : null}
             </Col>
           </Row>
         </Col>
