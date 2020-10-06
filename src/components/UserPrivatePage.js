@@ -10,6 +10,7 @@ import {
 } from "react-bootstrap";
 import AccordionContext from "react-bootstrap/AccordionContext";
 import { Link } from "react-router-dom";
+import ReactTimeAgo from "react-time-ago";
 
 const UserPrivatePage = (props) => {
   const [firstName, setFirstName] = useState("");
@@ -74,7 +75,7 @@ const UserPrivatePage = (props) => {
                   {questions.map((question) => {
                     return (
                       <Row key={question.id}>
-                        <Col xs={12} md={7} className="text-truncate">
+                        <Col xs={12} md={9} className="text-truncate">
                           <span className="font-weight-bold mr-3">
                             <Link
                               to={`/question/${question.id}`}
@@ -88,7 +89,7 @@ const UserPrivatePage = (props) => {
                           </span>
                         </Col>
                         <Col className="text-right">
-                          {question.submissionTime}
+                          <ReactTimeAgo date={question.submissionTime} />
                         </Col>
                       </Row>
                     );
@@ -116,13 +117,13 @@ const UserPrivatePage = (props) => {
                         </Col>
                         <Col
                           xs={12}
-                          md={7}
+                          md={9}
                           className="text-truncate font-italic pl-4"
                         >
                           {answer.content}
                         </Col>
                         <Col className="text-right">
-                          {answer.submissionTime}
+                          <ReactTimeAgo date={answer.submissionTime} />
                         </Col>
                       </Row>
                     );

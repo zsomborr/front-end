@@ -2,9 +2,12 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Container, Row, Col, Image } from "react-bootstrap";
 import NewAnswer from "./modals/NewAnswer";
+import ReactTimeAgo from "react-time-ago";
 
 const SingleQuestionPage = (props) => {
-  const [question, setQuestionDetails] = useState([]);
+  const [question, setQuestionDetails] = useState({
+    submissionTime: new Date().toString(),
+  });
   const [answers, setAnswers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const questionId = props.match.params.id;
@@ -25,7 +28,7 @@ const SingleQuestionPage = (props) => {
   useEffect(() => {
     const isLastEmpty = (answers) => {
       const lastAnswer = answers[answers.length - 1];
-      return Object.keys(lastAnswer).length === 0;
+      return Object.keys(lastAnswer).length === 1;
     };
 
     if (answers.length === 0 || !isLastEmpty(answers)) {
@@ -76,7 +79,7 @@ const SingleQuestionPage = (props) => {
           </Row>
           <Row>
             <Col className="text-right text-muted">
-              {question.submissionTime}
+              <ReactTimeAgo date={question.submissionTime} />
             </Col>
           </Row>
           <hr></hr>
@@ -113,7 +116,9 @@ const SingleQuestionPage = (props) => {
                   lg={10}
                   className="order-3 order-lg-4 text-center text-lg-right font-italic"
                 >
-                  {answer.submissionTime}
+                  <ReactTimeAgo
+                    date={new Date(Date.parse(answer.submissionTime))}
+                  />
                 </Col>
               </Row>
             );

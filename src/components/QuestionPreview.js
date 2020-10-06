@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
+import ReactTimeAgo from "react-time-ago";
 
 const QuestionPreview = (props) => {
   return (
@@ -17,7 +18,7 @@ const QuestionPreview = (props) => {
           <Link to={`/user/${props.question.userId_}`}>
             {props.question.username}
           </Link>{" "}
-          | {props.question.submissionTime}
+          | <ReactTimeAgo date={props.question.submissionTime} />
         </Col>
       </Row>
       <Row>
