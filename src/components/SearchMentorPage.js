@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Image,
-  Badge,
-  Button,
-  Form,
-} from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
+import { Container, Row, Col, Image, Badge, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import MultiSelect from "react-multi-select-component";
 
 const SearchMentorPage = (props) => {
@@ -28,21 +20,21 @@ const SearchMentorPage = (props) => {
     selectedProjects.map((project) =>
       projects.push({ projectTag: project.label, id: project.value })
     );
-    const students = await props.mentorService.filterBy(techs, projects);
-    setUsers(students);
+    const response = await props.mentorService.filterBy(techs, projects);
+    setUsers(response.data);
   };
 
   useEffect(() => {
     const getData = async () => {
       const response = await props.mentorService.getAll();
       setUsers(response.data);
-      const tags = await tagService.getAllTags();
+      const tagsResponse = await tagService.getAllTags();
       const techs = [];
       const projects = [];
-      tags.technologyTags.map((tech) =>
+      tagsResponse.data.technologyTags.map((tech) =>
         techs.push({ label: tech["technologyTag"], value: tech["id"] })
       );
-      tags.projectTags.map((project) =>
+      tagsResponse.data.projectTags.map((project) =>
         projects.push({ label: project["projectTag"], value: project["id"] })
       );
       setTechnologies(techs);
@@ -51,7 +43,7 @@ const SearchMentorPage = (props) => {
     getData();
   }, [props.mentorService, tagService]);
 
-  if (users === undefined || users.length === 0) {
+  if (users.length === 0) {
     return (
       <Container className="page">
         <Row className="content-container">
@@ -101,11 +93,11 @@ const SearchMentorPage = (props) => {
             <Col>
               {users.map((user) => {
                 return (
-                  <Row>
+                  <Row key={user.id}>
                     <Col sm={2} className="text-center">
                       <Image
                         className="img-fluid img-thumbnail rounded-circle border"
-                        src="/feka.png"
+                        src="/missing-profile-pic.jpg"
                         alt="Profile"
                       />
                     </Col>
@@ -120,6 +112,7 @@ const SearchMentorPage = (props) => {
                           {user.technologyTags.map((tech) => {
                             return (
                               <Badge
+                                key={`user-${user.id}-tech-${tech.id}`}
                                 variant="primary"
                                 className="badge-pill float-right ml-1"
                               >
