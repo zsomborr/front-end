@@ -54,7 +54,7 @@ const Login = (props) => {
       await props.studentService.login(username, password, setIsAuthenticated);
     } catch (e) {
       if (e.response && e.response.status === 403) {
-        asError(e.response.data);
+        asError("Invalid username or password!");
       }
     }
   };
