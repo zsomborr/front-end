@@ -7,6 +7,7 @@ import QuestionsPage from "./components/QuestionsPage";
 import Header from "./components/Header";
 import Registration from "./components/Registration";
 import Settings from "./components/Settings";
+import MentorService from "./services/MentorService";
 import StudentService from "./services/StudentService";
 import TagService from "./services/TagService";
 import SingleQuestionPage from "./components/SingleQuestionPage";
@@ -22,6 +23,7 @@ function App() {
   axios.defaults.withCredentials = true;
   const studentService = new StudentService();
   const questionsService = new QuestionsService();
+  const mentorService = new MentorService();
   const answerService = new AnswerService();
   const tagService = new TagService();
 
@@ -98,7 +100,7 @@ function App() {
               path="/mentors"
               component={(props) => (
                 <SearchMentorPage
-                  studentService={studentService}
+                  mentorService={mentorService}
                   tagService={tagService}
                 />
               )}

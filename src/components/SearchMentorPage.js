@@ -12,7 +12,6 @@ import { Link, useHistory } from "react-router-dom";
 import MultiSelect from "react-multi-select-component";
 
 const SearchMentorPage = (props) => {
-  const studentService = props.studentService;
   const tagService = props.tagService;
   const [users, setUsers] = useState([]);
   const [technologies, setTechnologies] = useState([]);
@@ -29,14 +28,14 @@ const SearchMentorPage = (props) => {
     selectedProjects.map((project) =>
       projects.push({ projectTag: project.label, id: project.value })
     );
-    const students = await studentService.getFilteredMentors(techs, projects);
+    const students = await props.mentorService.filterBy(techs, projects);
     setUsers(students);
   };
 
   useEffect(() => {
     const getData = async () => {
-      const usersdata = await studentService.getAllMentors();
-      setUsers(usersdata);
+      const response = await props.mentorService.getAll();
+      setUsers(response.data);
       const tags = await tagService.getAllTags();
       const techs = [];
       const projects = [];
@@ -50,7 +49,7 @@ const SearchMentorPage = (props) => {
       setProjects(projects);
     };
     getData();
-  }, []);
+  }, [props.mentorService, tagService]);
 
   if (users === undefined || users.length === 0) {
     return (
