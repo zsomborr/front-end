@@ -10,6 +10,7 @@ const SingleQuestionPage = (props) => {
   });
   const [answers, setAnswers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [rating, setRating] = useState(0);
   const questionId = props.match.params.id;
 
   const getData = useCallback(async () => {
@@ -20,6 +21,21 @@ const SingleQuestionPage = (props) => {
     setQuestionDetails(response.data.question);
     setAnswers(response.data.answers);
   }, [props.questionsService, questionId]);
+
+  const upvote = () => {
+    console.log("upvote");
+    const result = props.questionsService.voteOnQuestionById(questionId, 1);
+    if (result) {
+      setRating(rating + 1);
+    }
+  };
+
+  const downvote = () => {
+    const result = props.questionsService.voteOnQuestionById(questionId, -1);
+    if (result) {
+      setRating(rating - 1);
+    }
+  };
 
   useEffect(() => {
     getData();
@@ -75,6 +91,27 @@ const SingleQuestionPage = (props) => {
           </Row>
           <hr></hr>
           <Row>
+            <Col lg={1} md={1} xs={1}>
+              <Row>
+                <Col>
+                  <span onClick={upvote}>
+                    <i className="far fa-arrow-alt-circle-up"></i>
+                  </span>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="ml-1" id="rating">
+                  {rating}
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <span onClick={downvote}>
+                    <i className="far fa-arrow-alt-circle-down"></i>
+                  </span>
+                </Col>
+              </Row>
+            </Col>
             <Col className="preserve-line">{question.description}</Col>
           </Row>
           <Row>

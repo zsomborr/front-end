@@ -19,4 +19,12 @@ export default class QuestionsService extends SpringBootService {
   getQuestionDetails(questionId) {
     return axios.get(`${this.baseURL}/question/${questionId}`);
   }
+
+  voteOnQuestionById(questionId, value) {
+    //axios.post(`${this.baseURL}/vote`, {questionId: questionId, value: value});
+    //visszatérési érték alapján kell eldönteni hogy megváltozik-e a ratingje a kérdésnek
+    //AKA szavazott-e már ez a user erre a kérdésre korábban
+    console.log("voted");
+    return true;
+  }
 }
