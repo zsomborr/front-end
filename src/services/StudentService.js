@@ -79,4 +79,8 @@ export default class StudentService extends SpringBootService {
   getPrivateDetails() {
     return axios.get(`${this.baseURL}/user/get-user-private-page`);
   }
+
+  logOut() {
+    return axios.get(`${this.baseURL}/auth/logout`);
+  }
 }
