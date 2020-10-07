@@ -12,7 +12,7 @@ const NewAnswer = (props) => {
 
     try {
       await props.answerService.add(props.questionId, answer);
-      props.setAnswers([...props.answers, {}]);
+      props.setAnswers([...props.answers, { submissionTime: new Date() }]);
       props.setIsModalOpen(false);
     } catch (e) {}
   };

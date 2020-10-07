@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import { Container } from "react-bootstrap";
 import { BrowserRouter as Router, Route } from "react-router-dom";
@@ -6,18 +6,56 @@ import Login from "./components/Login";
 import QuestionsPage from "./components/QuestionsPage";
 import Header from "./components/Header";
 import Registration from "./components/Registration";
+import Settings from "./components/Settings";
+import MentorService from "./services/MentorService";
 import StudentService from "./services/StudentService";
+import TagService from "./services/TagService";
 import SingleQuestionPage from "./components/SingleQuestionPage";
 import QuestionsService from "./services/QuestionsService";
 import AnswerService from "./services/AnswerService";
-import { UserContextProvider } from "./contexts/UserContext";
+import { UserContext } from "./contexts/UserContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import SearchMentorPage from "./components/SearchMentorPage";
+import UserPrivatePage from "./components/UserPrivatePage";
+import PublicUserPage from "./components/PublicUserPage";
 
 function App() {
   axios.defaults.withCredentials = true;
   const studentService = new StudentService();
   const questionsService = new QuestionsService();
+  const mentorService = new MentorService();
   const answerService = new AnswerService();
+  const tagService = new TagService();
+
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      setIsAuthenticated(await studentService.isAuthenticated());
+      setIsLoading(false);
+    };
+
+    checkAuthentication();
+  }, [isAuthenticated, studentService]);
+
+  if (isLoading) {
+    return (
+      <Fragment>
+        <div className="background">
+          <div></div>
+          <div></div>
+        </div>
+        <div>
+          <img
+            className="spinning-image"
+            src="https://journey.code.cool/static/assets/favicon/apple-touch-icon-180x180.png?version=v1.1.0-local-AJA3231O"
+            alt="Loading indicator"
+          />
+        </div>
+      </Fragment>
+    );
+  }
 
   return (
     <Fragment>
@@ -27,7 +65,7 @@ function App() {
       </div>
       <Container>
         <Router>
-          <UserContextProvider>
+          <UserContext.Provider value={[isAuthenticated, setIsAuthenticated]}>
             <Header />
             <Route
               key="registration"
@@ -57,7 +95,36 @@ function App() {
                 />
               )}
             />
-          </UserContextProvider>
+            <ProtectedRoute
+              key="searchMentors"
+              path="/mentors"
+              component={(props) => (
+                <SearchMentorPage
+                  mentorService={mentorService}
+                  tagService={tagService}
+                />
+              )}
+            />
+            <ProtectedRoute
+              key="settings"
+              path="/settings"
+              component={() => <Settings studentService={studentService} />}
+            ></ProtectedRoute>
+            <ProtectedRoute
+              key="privateMe"
+              path="/me"
+              component={() => (
+                <UserPrivatePage studentService={studentService} />
+              )}
+            />
+            <ProtectedRoute
+              key="publicUserPage"
+              path="/user/:id"
+              component={(props) => (
+                <PublicUserPage studentService={studentService} {...props} />
+              )}
+            />
+          </UserContext.Provider>
         </Router>
       </Container>
     </Fragment>

@@ -15,6 +15,8 @@ import Username from "./form/Username";
 import Password from "./form/Password";
 import ValidationService from "../services/ValidationService";
 import UserContext from "../contexts/UserContext";
+import FirstName from "./form/FirstName";
+import LastName from "./form/LastName";
 
 const Registration = (props) => {
   const studentService = props.studentService;
@@ -27,7 +29,7 @@ const Registration = (props) => {
   const [lastName, setLastName] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);
   const form = React.createRef();
-  const user = useContext(UserContext);
+  const [isAuthenticated, setIsAuthenticated] = useContext(UserContext);
 
   const asError = (message) => {
     setErrorMessages((errorMessages) => [...errorMessages, message]);
@@ -52,7 +54,7 @@ const Registration = (props) => {
         email,
         password
       );
-      await props.studentService.login(username, password, user);
+      await props.studentService.login(username, password, setIsAuthenticated);
       history.push("/");
     } catch (e) {
       if (
@@ -92,11 +94,11 @@ const Registration = (props) => {
   };
 
   useEffect(() => {
-    if (user.isAuthenticated === false) {
+    if (isAuthenticated === false) {
       return;
     }
     history.push("/");
-  }, [history, user.isAuthenticated]);
+  }, [history, isAuthenticated]);
 
   return (
     <Container className="page">
@@ -117,33 +119,9 @@ const Registration = (props) => {
           <Form ref={form}>
             <Username setUsername={setUsername} />
 
-            <Form.Label htmlFor="firstname" srOnly>
-              First Name
-            </Form.Label>
-            <InputGroup className="mb-2 mr-sm-2">
-              <Form.Control
-                id="firstname"
-                placeholder="First Name"
-                onChange={(e) => setFirstName(e.target.value)}
-                minLength="2"
-                maxLength="20"
-                required
-              />
-            </InputGroup>
+            <FirstName onChange={(e) => setFirstName(e.target.value)} />
 
-            <Form.Label htmlFor="lastname" srOnly>
-              Last Name
-            </Form.Label>
-            <InputGroup className="mb-2 mr-sm-2">
-              <Form.Control
-                id="lastname"
-                placeholder="Last Name"
-                onChange={(e) => setLastName(e.target.value)}
-                minLength="2"
-                maxLength="20"
-                required
-              />
-            </InputGroup>
+            <LastName onChange={(e) => setLastName(e.target.value)} />
 
             <Form.Label htmlFor="email" srOnly>
               Email address

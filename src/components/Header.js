@@ -5,7 +5,7 @@ import UserContext from "../contexts/UserContext";
 
 export default function Header() {
   const navBar = React.createRef();
-  const user = useContext(UserContext);
+  const [isAuthenticated] = useContext(UserContext);
 
   const handleScroll = () => {
     if (window.pageYOffset < 50) {
@@ -47,7 +47,7 @@ export default function Header() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto"></Nav>
-            {!user.isAuthenticated ? (
+            {!isAuthenticated ? (
               <Fragment>
                 <Link to={"/login"} className="nav-link">
                   Login
@@ -60,6 +60,15 @@ export default function Header() {
               <Fragment>
                 <Link to={"/questions"} className="nav-link">
                   Questions
+                </Link>
+                <Link to={"/mentors"} className="nav-link">
+                  Mentors
+                </Link>
+                <Link to={"/me"} className="nav-link">
+                  My profile
+                </Link>
+                <Link to={"/settings"} className="nav-link">
+                  Settings
                 </Link>
               </Fragment>
             )}
