@@ -1,5 +1,5 @@
 export default class SpringBootService {
   constructor() {
-    this.baseURL = "http://localhost:8080";
+    this.baseURL = process.env.REACT_APP_API_BASE_URL;
   }
 }
