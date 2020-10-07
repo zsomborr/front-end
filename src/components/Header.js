@@ -5,7 +5,7 @@ import UserContext from "../contexts/UserContext";
 
 export default function Header() {
   const navBar = React.createRef();
-  const [isAuthenticated, setIsAuthenticated] = useContext(UserContext);
+  const [isAuthenticated] = useContext(UserContext);
 
   const handleScroll = () => {
     if (window.pageYOffset < 50) {

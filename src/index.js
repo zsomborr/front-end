@@ -7,6 +7,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "@fortawesome/fontawesome-free/css/all.css";
 import "@fortawesome/fontawesome-free/js/all.js";
+import JavascriptTimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en";
+
+JavascriptTimeAgo.addLocale(en);
 
 ReactDOM.render(
   <React.StrictMode>

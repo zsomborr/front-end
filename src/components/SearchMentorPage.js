@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Container,
   Row,
   Col,
   Image,
   Badge,
   Button,
-  Form,
 } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import MultiSelect from "react-multi-select-component";
 
 const SearchMentorPage = (props) => {
-  const studentService = props.studentService;
   const tagService = props.tagService;
   const [users, setUsers] = useState([]);
   const [technologies, setTechnologies] = useState([]);
@@ -29,38 +28,28 @@ const SearchMentorPage = (props) => {
     selectedProjects.map((project) =>
       projects.push({ projectTag: project.label, id: project.value })
     );
-    const students = await studentService.getFilteredMentors(techs, projects);
-    setUsers(students);
+    const response = await props.mentorService.filterBy(techs, projects);
+    setUsers(response.data);
   };
 
   useEffect(() => {
     const getData = async () => {
-      const usersdata = await studentService.getAllMentors();
-      setUsers(usersdata);
-      const tags = await tagService.getAllTags();
+      const response = await props.mentorService.getAll();
+      setUsers(response.data);
+      const tagsResponse = await tagService.getAllTags();
       const techs = [];
       const projects = [];
-      tags.technologyTags.map((tech) =>
+      tagsResponse.data.technologyTags.map((tech) =>
         techs.push({ label: tech["technologyTag"], value: tech["id"] })
       );
-      tags.projectTags.map((project) =>
+      tagsResponse.data.projectTags.map((project) =>
         projects.push({ label: project["projectTag"], value: project["id"] })
       );
       setTechnologies(techs);
       setProjects(projects);
     };
     getData();
-  }, []);
-
-  if (users === undefined || users.length === 0) {
-    return (
-      <Container className="page">
-        <Row className="content-container">
-          <Col>No user was found</Col>
-        </Row>
-      </Container>
-    );
-  }
+  }, [props.mentorService, tagService]);
 
   return (
     <Container className="page">
@@ -102,11 +91,11 @@ const SearchMentorPage = (props) => {
             <Col>
               {users.map((user) => {
                 return (
-                  <Row>
+                  <Row key={user.id}>
                     <Col sm={2} className="text-center">
                       <Image
                         className="img-fluid img-thumbnail rounded-circle border"
-                        src="/feka.png"
+                        src="/missing-profile-pic.jpg"
                         alt="Profile"
                       />
                     </Col>
@@ -121,6 +110,7 @@ const SearchMentorPage = (props) => {
                           {user.technologyTags.map((tech) => {
                             return (
                               <Badge
+                                key={`user-${user.id}-tech-${tech.id}`}
                                 variant="primary"
                                 className="badge-pill float-right ml-1"
                               >
@@ -134,6 +124,11 @@ const SearchMentorPage = (props) => {
                   </Row>
                 );
               })}
+              {users.length === 0 ? (
+                <Alert variant="info" className="mt-1">
+                  No mentors found.
+                </Alert>
+              ) : null}
             </Col>
           </Row>
         </Col>
