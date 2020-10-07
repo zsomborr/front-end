@@ -51,6 +51,31 @@
 .close-container:hover label {
   opacity: 1;
 }
+.emailTag,
+.discordTag {
+  background-color: #5871d6;
+  box-shadow: inset 0px 0px 2px 2px #42424242;
+}
+
+.emailTag {
+  background-image: url("/gmail-tag.png");
+}
+
+.emailLogo {
+  background-color: rgb(18, 173, 173);
+}
+
+.logoImage {
+  position: relative;
+  width: 60%;
+  height: auto;
+}
+
+.emailImage {
+  position: relative;
+  width: 80%;
+  height: auto;
+}
 
 .App {
   text-align: center;

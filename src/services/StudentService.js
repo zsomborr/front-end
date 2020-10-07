@@ -89,17 +89,17 @@ export default class StudentService extends SpringBootService {
     return response.data;
   }
 
-  async isAuthenticated() {
-    const cookies = document.cookie.split(";");
+  getUserDataById(id) {
+    return axios.get(`${this.baseURL}/user/get-user-data/${id}`);
+  }
 
-    for (let cookie of cookies) {
-      cookie = cookie.split("=");
-      if (cookie.length === 2 && cookie[0] === "authentication") {
-        const response = await axios.get(`${this.baseURL}/auth/authentication`);
-        return response.status === 200;
-      }
+  async isAuthenticated() {
+    try {
+      await axios.get(`${this.baseURL}/auth/authentication`);
+      return true;
+    } catch (e) {
+      return false;
     }
-    return false;
   }
 
   getSettingsDetails() {
