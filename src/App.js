@@ -18,6 +18,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import SearchMentorPage from "./components/SearchMentorPage";
 import UserPrivatePage from "./components/UserPrivatePage";
 import PublicUserPage from "./components/PublicUserPage";
+import Logout from "./components/Logout";
 
 function App() {
   axios.defaults.withCredentials = true;
@@ -76,6 +77,11 @@ function App() {
               key="login"
               path="/login"
               render={() => <Login studentService={studentService} />}
+            ></Route>
+            <Route
+              key="logout"
+              path="/logout"
+              render={() => <Logout studentService={studentService} />}
             ></Route>
             <ProtectedRoute
               key="questionsPage"

@@ -70,6 +70,9 @@ export default function Header() {
                 <Link to={"/settings"} className="nav-link">
                   Settings
                 </Link>
+                <Link to={"/logout"} className="nav-link">
+                  Log out
+                </Link>
               </Fragment>
             )}
           </Navbar.Collapse>
