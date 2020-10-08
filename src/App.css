@@ -77,6 +77,21 @@
   height: auto;
 }
 
+.fa-arrow-alt-circle-up,
+.fa-arrow-alt-circle-down {
+  transition: 0.3s;
+}
+
+span:hover .fa-arrow-alt-circle-up {
+  color: rgba(2, 255, 2, 0.835);
+  font-size: 1.5em;
+}
+
+span:hover .fa-arrow-alt-circle-down {
+  color: rgba(255, 2, 2, 0.835);
+  font-size: 1.5em;
+}
+
 .App {
   text-align: center;
 }
