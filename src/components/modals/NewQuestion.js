@@ -11,8 +11,14 @@ import {
 const NewQuestion = (props) => {
   let title = "";
   let description = "";
+  const form = React.createRef();
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!form.current.reportValidity()) {
+      return;
+    }
+
     const sendRequest = async () => {
       try {
         await props.questionsService.add(title, description);
@@ -38,12 +44,14 @@ const NewQuestion = (props) => {
         </Col>
       </Modal.Header>
       <Modal.Body>
-        <Form>
+        <Form ref={form}>
           <FormGroup>
             <Form.Label htmlFor="title">Title</Form.Label>
             <FormControl
               id="title"
               placeholder="Title"
+              minLength="2"
+              autoComplete="off"
               required
               onChange={(e) => (title = e.target.value)}
             />
@@ -53,6 +61,9 @@ const NewQuestion = (props) => {
             <FormControl
               as="textarea"
               id="description"
+              minLength="3"
+              autoComplete="off"
+              required
               placeholder="Tell us your problem more detailed"
               onChange={(e) => (description = e.target.value)}
             />
@@ -60,7 +71,7 @@ const NewQuestion = (props) => {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={(e) => handleSubmit()}>Send</Button>
+        <Button onClick={handleSubmit}>Send</Button>
       </Modal.Footer>
     </Modal>
   );
