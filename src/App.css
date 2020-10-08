@@ -77,7 +77,11 @@
   height: auto;
 }
 
-span:hover.fa-edit {
+.fa-edit {
+  transition: 0.3s;
+}
+
+span:hover .fa-edit {
   color: #27dbf3dc;
 }
 

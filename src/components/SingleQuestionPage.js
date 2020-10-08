@@ -1,6 +1,14 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Container, Row, Col, Image } from "react-bootstrap";
+import {
+  Button,
+  Container,
+  Row,
+  Col,
+  Image,
+  FormGroup,
+  Form,
+} from "react-bootstrap";
 import NewAnswer from "./modals/NewAnswer";
 import ReactTimeAgo from "react-time-ago";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
@@ -12,7 +20,8 @@ const SingleQuestionPage = (props) => {
   const [answers, setAnswers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const questionId = props.match.params.id;
-
+  //const [currentDescription, setCurrentDescription] = useState("");
+  const [editing, setEditing] = useState(false);
   const getData = useCallback(async () => {
     const response = await props.questionsService.getQuestionDetails(
       questionId
@@ -23,17 +32,51 @@ const SingleQuestionPage = (props) => {
   }, [props.questionsService, questionId]);
 
   const editButton = () => {
-    if (true) {
+    if (!editing) {
       return (
         <span onClick={editQuestion}>
-          <i class="far fa-edit"></i>
+          <i className="far fa-edit ml-3"></i>
         </span>
       );
     }
   };
 
-  const editQuestion = (e) => {
-    console.log("e", e);
+  const editQuestion = () => {
+    setEditing(true);
+  };
+
+  const editDescription = () => {
+    if (!editing) {
+      return (
+        <Col id="description" className="preserve-line">
+          {question.description}
+        </Col>
+      );
+    } else {
+      return (
+        <Col>
+          <FormGroup>
+            <Form.Control
+              as="textarea"
+              rows="5"
+              defaultValue={question.description}
+            ></Form.Control>
+          </FormGroup>
+        </Col>
+      );
+    }
+  };
+
+  const editTitle = () => {
+    if (!editing) {
+      return <span className="h3 mr-3">{question.title}</span>;
+    } else {
+      return (
+        <FormGroup>
+          <Form.Control as="input" defaultValue={question.title}></Form.Control>
+        </FormGroup>
+      );
+    }
   };
 
   useEffect(() => {
@@ -67,8 +110,8 @@ const SingleQuestionPage = (props) => {
         <Col>
           <Row>
             <Col xs={9} lg={10} className="order-2 order-lg-1">
-              <span className="h3">{question.title}</span>
-              <span className="ml-3 d-none d-sm-inline-block">
+              {editTitle()}
+              <span className="d-none d-sm-inline-block">
                 by:{" "}
                 <Link to={`/user/${question.userId_}`}>
                   {question.username}
@@ -90,11 +133,7 @@ const SingleQuestionPage = (props) => {
             </Col>
           </Row>
           <hr></hr>
-          <Row>
-            <Col id="description" className="preserve-line">
-              {question.description}
-            </Col>
-          </Row>
+          <Row>{editDescription()}</Row>
           <Row>
             <Col className="text-right text-muted">
               <ReactTimeAgo date={question.submissionTime} />
