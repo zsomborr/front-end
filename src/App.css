@@ -77,6 +77,10 @@
   height: auto;
 }
 
+span:hover.fa-edit {
+  color: #27dbf3dc;
+}
+
 .App {
   text-align: center;
 }

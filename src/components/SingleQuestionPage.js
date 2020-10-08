@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button, Container, Row, Col, Image } from "react-bootstrap";
 import NewAnswer from "./modals/NewAnswer";
 import ReactTimeAgo from "react-time-ago";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
 const SingleQuestionPage = (props) => {
   const [question, setQuestionDetails] = useState({
@@ -20,6 +21,20 @@ const SingleQuestionPage = (props) => {
     setQuestionDetails(response.data.question);
     setAnswers(response.data.answers);
   }, [props.questionsService, questionId]);
+
+  const editButton = () => {
+    if (true) {
+      return (
+        <span onClick={editQuestion}>
+          <i class="far fa-edit"></i>
+        </span>
+      );
+    }
+  };
+
+  const editQuestion = (e) => {
+    console.log("e", e);
+  };
 
   useEffect(() => {
     getData();
@@ -58,7 +73,8 @@ const SingleQuestionPage = (props) => {
                 <Link to={`/user/${question.userId_}`}>
                   {question.username}
                 </Link>
-              </span>
+              </span>{" "}
+              {editButton()}
             </Col>
             <Col
               xs={3}
@@ -75,7 +91,9 @@ const SingleQuestionPage = (props) => {
           </Row>
           <hr></hr>
           <Row>
-            <Col className="preserve-line">{question.description}</Col>
+            <Col id="description" className="preserve-line">
+              {question.description}
+            </Col>
           </Row>
           <Row>
             <Col className="text-right text-muted">
