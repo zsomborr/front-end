@@ -47,6 +47,7 @@ const QuestionsPage = (props) => {
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
           questionsService={props.questionsService}
+          technologiesService={props.technologiesService}
           onSuccess={getAllQuestions}
         />
         <Col>

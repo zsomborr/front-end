@@ -1,17 +1,58 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
-  Modal,
+  Alert,
   Button,
+  Col,
   Form,
   FormControl,
   FormGroup,
-  Col,
+  Modal,
 } from "react-bootstrap";
+import DeletableTag from "../form/DeletableTag";
+import TagSuggester from "../form/TagSuggester";
 
 const NewQuestion = (props) => {
-  let title = "";
-  let description = "";
   const form = React.createRef();
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [allTechnologies, setAllTechnologies] = useState([]);
+  const [technologies, setTechnologies] = useState([]);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [value, setValue] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+
+  useEffect(() => {
+    const getTechnologies = async () => {
+      const unwrap = (source, columnName) => {
+        const result = [];
+        source.forEach((item) => result.push(item[columnName]));
+        return result;
+      };
+      const response = await props.technologiesService.getAll();
+      setAllTechnologies(unwrap(response.data, "technologyTag"));
+    };
+    getTechnologies();
+  }, [props.technologiesService]);
+
+  const handleAddTechnology = (name) => {
+    if (!allTechnologies.includes(name)) {
+      setAllTechnologies([...allTechnologies, name]);
+    }
+    setTechnologies([...technologies, name]);
+  };
+
+  const handleTechnologyDelete = (name) => {
+    setTechnologies(technologies.filter((technology) => technology !== name));
+  };
+
+  useEffect(() => {
+    if (props.isModalOpen) {
+      return;
+    }
+
+    setTechnologies([]);
+    setErrorMessage(null);
+  }, [props.isModalOpen]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -19,9 +60,16 @@ const NewQuestion = (props) => {
       return;
     }
 
+    if (technologies.length === 0) {
+      setErrorMessage(
+        "Please provide at least one technology to help others find Your question more easily!"
+      );
+      return;
+    }
+
     const sendRequest = async () => {
       try {
-        await props.questionsService.add(title, description);
+        await props.questionsService.add(title, description, technologies);
         props.setIsModalOpen(false);
         props.onSuccess();
       } catch (e) {}
@@ -44,6 +92,7 @@ const NewQuestion = (props) => {
         </Col>
       </Modal.Header>
       <Modal.Body>
+        {errorMessage ? <Alert variant="danger">{errorMessage}</Alert> : null}
         <Form ref={form}>
           <FormGroup>
             <Form.Label htmlFor="title">Title</Form.Label>
@@ -53,7 +102,7 @@ const NewQuestion = (props) => {
               minLength="2"
               autoComplete="off"
               required
-              onChange={(e) => (title = e.target.value)}
+              onChange={(e) => setTitle(e.target.value)}
             />
           </FormGroup>
           <FormGroup>
@@ -65,8 +114,31 @@ const NewQuestion = (props) => {
               autoComplete="off"
               required
               placeholder="Tell us your problem more detailed"
-              onChange={(e) => (description = e.target.value)}
+              onChange={(e) => setDescription(e.target.value)}
             />
+          </FormGroup>
+          <FormGroup>
+            <Form.Label htmlFor="technologies">Technologies</Form.Label>
+            <TagSuggester
+              id="technologies"
+              source={allTechnologies}
+              selectedItems={technologies}
+              onItemSelected={handleAddTechnology}
+              value={value}
+              setValue={setValue}
+              suggestions={suggestions}
+              setSuggestions={setSuggestions}
+              shouldDisplayValueChange={false}
+            />
+            <p>
+              {technologies.map((technology, index) => (
+                <DeletableTag
+                  key={`technology-${index}`}
+                  name={technology}
+                  onDelete={handleTechnologyDelete}
+                />
+              ))}
+            </p>
           </FormGroup>
         </Form>
       </Modal.Body>
