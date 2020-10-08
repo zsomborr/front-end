@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, Button, Form, FormControl, Col } from "react-bootstrap";
 
-const AddNewQuestionModal = (props) => {
+const NewQuestion = (props) => {
   let title = "";
   let description = "";
   const setIsModalOpen = props.setIsModalOpen;
@@ -64,4 +64,4 @@ const AddNewQuestionModal = (props) => {
   );
 };
 
-export default AddNewQuestionModal;
+export default NewQuestion;

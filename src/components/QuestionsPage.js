@@ -7,7 +7,7 @@ import {
   FormControl,
   Row,
 } from "react-bootstrap";
-import AddNewQuestionModal from "./AddNewQuestionModal";
+import NewQuestionModal from "./modals/NewQuestion";
 import QuestionsDisplayer from "./QuestionsDisplayer";
 
 const QuestionsPage = (props) => {
@@ -45,7 +45,7 @@ const QuestionsPage = (props) => {
   return (
     <Container className="page">
       <Row className="content-container">
-        <AddNewQuestionModal
+        <NewQuestionModal
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
           sendQuestion={addQuestion}
