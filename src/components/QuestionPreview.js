@@ -14,6 +14,10 @@ const QuestionPreview = (props) => {
         </Col>
       </Row>
       <Row>
+        <Row lg={1} md={1} sm={1}>
+          <Col className="text-center font-italic">Votes:</Col>
+          <Col className="text-center font-italic">{"0"}</Col>
+        </Row>
         <Col>
           <Link to={`/user/${props.question.userId_}`}>
             {props.question.username}
