@@ -22,6 +22,9 @@ const SingleQuestionPage = (props) => {
   const questionId = props.match.params.id;
   //const [currentDescription, setCurrentDescription] = useState("");
   const [editing, setEditing] = useState(false);
+  const [newDescription, setNewDescription] = useState("");
+  const [newTitle, setNewTitle] = useState("");
+
   const getData = useCallback(async () => {
     const response = await props.questionsService.getQuestionDetails(
       questionId
@@ -43,6 +46,8 @@ const SingleQuestionPage = (props) => {
 
   const editQuestion = () => {
     setEditing(true);
+    setNewTitle(question.title);
+    setNewDescription(question.description);
   };
 
   const editDescription = () => {
@@ -60,6 +65,7 @@ const SingleQuestionPage = (props) => {
               as="textarea"
               rows="5"
               defaultValue={question.description}
+              onChange={(e) => setNewDescription(e.target.value)}
             ></Form.Control>
           </FormGroup>
         </Col>
@@ -73,10 +79,36 @@ const SingleQuestionPage = (props) => {
     } else {
       return (
         <FormGroup>
-          <Form.Control as="input" defaultValue={question.title}></Form.Control>
+          <Form.Control
+            as="input"
+            defaultValue={question.title}
+            onChange={(e) => setNewTitle(e.target.value)}
+          ></Form.Control>
+          <div className="mt-2">
+            <Button onClick={saveEditing} className="mr-2">
+              Save
+            </Button>
+            <Button onClick={cancelEditing} className="btn-danger">
+              Cancel
+            </Button>
+          </div>
         </FormGroup>
       );
     }
+  };
+
+  const cancelEditing = () => {
+    setEditing(false);
+  };
+
+  const saveEditing = () => {
+    setEditing(false);
+    props.questionsService.setNewDataForQuestion(
+      questionId,
+      newTitle,
+      newDescription
+    );
+    getData();
   };
 
   useEffect(() => {

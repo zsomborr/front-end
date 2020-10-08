@@ -19,4 +19,8 @@ export default class QuestionsService extends SpringBootService {
   getQuestionDetails(questionId) {
     return axios.get(`${this.baseURL}/question/${questionId}`);
   }
+
+  setNewDataForQuestion(questionId, newTitle, newDescription) {
+    //axios.post(`${this.baseURL}/question/edit/{questionId}`,{ title:newTitle, description:newDescription });
+  }
 }
