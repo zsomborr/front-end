@@ -1,25 +1,36 @@
 import React from "react";
-import { Modal, Button, Form, FormControl, Col } from "react-bootstrap";
+import {
+  Modal,
+  Button,
+  Form,
+  FormControl,
+  FormGroup,
+  Col,
+} from "react-bootstrap";
 
 const NewQuestion = (props) => {
   let title = "";
   let description = "";
-  const setIsModalOpen = props.setIsModalOpen;
-  const isModalOpen = props.isModalOpen;
-  const sendQuestion = props.sendQuestion;
+
+  const handleSubmit = () => {
+    const sendRequest = async () => {
+      try {
+        await props.questionsService.add(title, description);
+        props.setIsModalOpen(false);
+        props.onSuccess();
+      } catch (e) {}
+    };
+    sendRequest();
+  };
 
   return (
-    <Modal show={isModalOpen}>
-      <Modal.Header style={{ display: "flex", flexDirection: "row" }}>
-        <Col style={{ float: "left" }}>
-          <h4>Ask new question</h4>
-        </Col>
+    <Modal show={props.isModalOpen}>
+      <Modal.Header>
         <Col>
+          <h4>Ask new question</h4>
           <div
             className="close-container"
-            onClick={() => {
-              setIsModalOpen(!isModalOpen);
-            }}
+            onClick={() => props.setIsModalOpen(false)}
           >
             <div className="leftright"></div>
             <div className="rightleft"></div>
@@ -28,37 +39,28 @@ const NewQuestion = (props) => {
       </Modal.Header>
       <Modal.Body>
         <Form>
-          <Form.Label>Title</Form.Label>
-          <FormControl
-            id="title"
-            placeholder="Title"
-            required
-            onChange={(e) => {
-              title = e.target.value;
-            }}
-          />
-          <Form.Label>Description</Form.Label>
-          <br></br>
-          <textarea
-            className="form-control"
-            id="description"
-            placeholder="Tell us your problem more detailed"
-            style={{ width: "100%" }}
-            onChange={(e) => {
-              description = e.target.value;
-            }}
-          />
+          <FormGroup>
+            <Form.Label htmlFor="title">Title</Form.Label>
+            <FormControl
+              id="title"
+              placeholder="Title"
+              required
+              onChange={(e) => (title = e.target.value)}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Form.Label htmlFor="description">Description</Form.Label>
+            <FormControl
+              as="textarea"
+              id="description"
+              placeholder="Tell us your problem more detailed"
+              onChange={(e) => (description = e.target.value)}
+            />
+          </FormGroup>
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button
-          onClick={() => {
-            sendQuestion({ title: title, description: description });
-            setIsModalOpen(!isModalOpen);
-          }}
-        >
-          Send
-        </Button>
+        <Button onClick={(e) => handleSubmit()}>Send</Button>
       </Modal.Footer>
     </Modal>
   );

@@ -24,7 +24,6 @@ const NewAnswer = (props) => {
           <h4>Answer</h4>
           <div
             className="close-container"
-            style={{ top: "-30px" }}
             onClick={() => props.setIsModalOpen(false)}
           >
             <div className="leftright"></div>

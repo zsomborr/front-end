@@ -2,14 +2,15 @@ import axios from "axios";
 import SpringBootService from "./SpringBootService";
 
 export default class QuestionsService extends SpringBootService {
-  async addNewQuestion(questionsData, callback) {
-    await axios.post(`${this.baseURL}/question`, questionsData);
-    callback();
+  add(title, description) {
+    return axios.post(`${this.baseURL}/question`, {
+      title: title,
+      description: description,
+    });
   }
 
-  async getAllQuestions(callback) {
-    const data = await axios.get(`${this.baseURL}/question`);
-    callback(data);
+  getAll() {
+    return axios.get(`${this.baseURL}/question`);
   }
 
   search(value) {

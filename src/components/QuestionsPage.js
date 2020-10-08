@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Container,
   Col,
@@ -11,7 +11,6 @@ import NewQuestionModal from "./modals/NewQuestion";
 import QuestionsDisplayer from "./QuestionsDisplayer";
 
 const QuestionsPage = (props) => {
-  const questionsService = props.questionsService;
   const [questions, setQuestions] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -30,17 +29,16 @@ const QuestionsPage = (props) => {
     } catch (e) {}
   };
 
+  const getAllQuestions = useCallback(async () => {
+    try {
+      const response = await props.questionsService.getAll();
+      setQuestions(response);
+    } catch (e) {}
+  }, [props.questionsService]);
+
   useEffect(() => {
-    questionsService.getAllQuestions(setQuestions);
-  }, [questionsService]);
-
-  const addQuestion = (questionData) => {
-    questionsService.addNewQuestion(questionData, reloadQuestions);
-  };
-
-  const reloadQuestions = () => {
-    questionsService.getAllQuestions(setQuestions);
-  };
+    getAllQuestions();
+  }, [getAllQuestions, props.questionsService]);
 
   return (
     <Container className="page">
@@ -48,7 +46,8 @@ const QuestionsPage = (props) => {
         <NewQuestionModal
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
-          sendQuestion={addQuestion}
+          questionsService={props.questionsService}
+          onSuccess={getAllQuestions}
         />
         <Col>
           <Form onSubmit={handleSearch} ref={form}>
@@ -67,12 +66,7 @@ const QuestionsPage = (props) => {
                 <Button onClick={handleSearch}>Search</Button>
               </Col>
               <Col xs={6} lg={3} className="text-right">
-                <Button
-                  className="commonText"
-                  onClick={() => {
-                    setIsModalOpen(!isModalOpen);
-                  }}
-                >
+                <Button onClick={() => setIsModalOpen(!isModalOpen)}>
                   Add new question
                 </Button>
               </Col>
