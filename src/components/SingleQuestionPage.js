@@ -25,16 +25,12 @@ const SingleQuestionPage = (props) => {
   const upvote = () => {
     console.log("upvote");
     const result = props.questionsService.voteOnQuestionById(questionId, 1);
-    if (result) {
-      setRating(rating + 1);
-    }
+    setRating(result);
   };
 
   const downvote = () => {
     const result = props.questionsService.voteOnQuestionById(questionId, -1);
-    if (result) {
-      setRating(rating - 1);
-    }
+    setRating(result);
   };
 
   useEffect(() => {
@@ -93,19 +89,19 @@ const SingleQuestionPage = (props) => {
           <Row>
             <Col lg={1} md={1} xs={1}>
               <Row>
-                <Col>
+                <Col className="text-center">
                   <span onClick={upvote}>
                     <i className="far fa-arrow-alt-circle-up"></i>
                   </span>
                 </Col>
               </Row>
               <Row>
-                <Col className="ml-1" id="rating">
+                <Col className="text-center" id="rating">
                   {rating}
                 </Col>
               </Row>
               <Row>
-                <Col>
+                <Col className="text-center">
                   <span onClick={downvote}>
                     <i className="far fa-arrow-alt-circle-down"></i>
                   </span>
