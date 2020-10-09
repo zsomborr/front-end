@@ -13,9 +13,13 @@ const QuestionPreview = (props) => {
           </Link>
         </Col>
         <Col xs={12}>
-          <Link to={`/user/${props.question.userId_}`}>
-            {props.question.username}
-          </Link>{" "}
+          {props.question.anonym ? (
+            "Anonymous"
+          ) : (
+            <Link to={`/user/${props.question.userId_}`}>
+              {props.question.username}
+            </Link>
+          )}{" "}
           | <ReactTimeAgo date={props.question.submissionTime} />
         </Col>
         <Col xs={12}>
