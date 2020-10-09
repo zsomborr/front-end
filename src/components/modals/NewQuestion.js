@@ -73,7 +73,12 @@ const NewQuestion = (props) => {
 
     const sendRequest = async () => {
       try {
-        await props.questionsService.add(title, description, technologies);
+        await props.questionsService.add(
+          title,
+          description,
+          technologies,
+          isAnonymusMode
+        );
         props.setIsModalOpen(false);
         props.onSuccess();
       } catch (e) {}
