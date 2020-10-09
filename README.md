@@ -11,6 +11,7 @@ The frontend repository of Codecool's IRL coding challenge's Peer Mentoring appl
 - [React Autosuggest](https://github.com/moroshko/react-autosuggest) v10
 - [React Multi Select Component](https://www.npmjs.com/package/react-multi-select-component) v3
 - [React Time Ago](https://www.npmjs.com/package/react-time-ago) v6
+- [React Toggle](https://www.npmjs.com/package/react-toggle) v4
 
 ## Setup
 
