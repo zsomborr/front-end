@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Container, Row, Col, Image } from "react-bootstrap";
+import { Badge, Button, Container, Row, Col, Image } from "react-bootstrap";
 import NewAnswer from "./modals/NewAnswer";
 import ReactTimeAgo from "react-time-ago";
 
 const SingleQuestionPage = (props) => {
   const [question, setQuestionDetails] = useState({
     submissionTime: new Date().toString(),
+    technologyTags: [],
   });
   const [answers, setAnswers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -78,6 +79,19 @@ const SingleQuestionPage = (props) => {
             <Col className="preserve-line">{question.description}</Col>
           </Row>
           <Row>
+            <Col xs={12} md={9}>
+              {question.technologyTags.map((technology) => {
+                return (
+                  <Badge
+                    key={`technology-${technology.technologyTag}`}
+                    variant="primary"
+                    className="badge-pill mr-1"
+                  >
+                    {technology.technologyTag}
+                  </Badge>
+                );
+              })}
+            </Col>
             <Col className="text-right text-muted">
               <ReactTimeAgo date={question.submissionTime} />
             </Col>
