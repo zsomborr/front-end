@@ -2,11 +2,12 @@ import axios from "axios";
 import SpringBootService from "./SpringBootService";
 
 export default class QuestionsService extends SpringBootService {
-  add(title, description, technologies) {
+  add(title, description, technologies, isAnonym) {
     return axios.post(`${this.baseURL}/question`, {
       title: title,
       description: description,
       technologyTags: technologies,
+      anonym: isAnonym,
     });
   }
 
