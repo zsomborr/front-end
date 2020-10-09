@@ -21,4 +21,10 @@ export default class QuestionsService extends SpringBootService {
   getQuestionDetails(questionId) {
     return axios.get(`${this.baseURL}/question/${questionId}`);
   }
+
+  searchBy(technologies) {
+    return axios.post(`${this.baseURL}/filter/get-questions-by-tags`, {
+      technologyTags: technologies,
+    });
+  }
 }
