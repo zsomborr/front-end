@@ -8,6 +8,7 @@ import {
   InputGroup,
   Row,
 } from "react-bootstrap";
+import DiscordButton from "./form/DiscordButton";
 import DeletableTag from "./form/DeletableTag";
 import FirstName from "./form/FirstName";
 import LastName from "./form/LastName";
@@ -199,6 +200,13 @@ const Settings = (props) => {
                 />
               </Col>
             </Form.Row>
+            <h4>Social</h4>
+            <Row>
+              <Col xs={12} md={6} className="mb-2 mb-md-0">
+                <DiscordButton />
+              </Col>
+              <Col></Col>
+            </Row>
             <h4>Location</h4>
             <Form.Row>
               <Col xs={12} md={6}>

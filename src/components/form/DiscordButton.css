@@ -1,0 +1,41 @@
+button.btn-discord {
+  width: 100%;
+}
+
+button.btn-discord.connect.connect {
+  background: #7289da;
+  border: none;
+  color: white;
+  padding: 7px;
+}
+
+button.btn-discord.connect:not(:disabled):not(.disabled).active:focus,
+button.btn-discord.connect:not(:disabled):not(.disabled):active:focus,
+.show > button.btn-discord.connect.dropdown-toggle:focus {
+  box-shadow: 0px 0px 0px 3px #7289da8c;
+  background: #7289da;
+}
+
+button.btn-discord.connect:not(:disabled):not(.disabled).active,
+button.btn-discord.connect:not(:disabled):not(.disabled):active,
+.show > button.btn-discord.connect.dropdown-toggle {
+  box-shadow: 0px 0px 0px 3px #7289da8c;
+  background: #7289da;
+}
+
+button.btn-discord.connect:hover,
+button.btn-discord.connect:focus,
+button.btn-discord.connect:active,
+button.btn-discord.connect.active,
+.open > .dropdown-togglebutton.btn-discord.connect {
+  background: #546399;
+  box-shadow: 0px 0px 0px 3px #7289da8c;
+}
+
+button.btn-discord.connect:focus,
+button.btn-discord.connect:focus-visible,
+button.btn-discord.connect:focus-within,
+button.btn-discord.connect:active,
+button.btn-discord.connect.active {
+  box-shadow: 0px 0px 0px 3px #7289da8c;
+}
