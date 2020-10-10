@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./DiscordButton.css";
 
 const DiscordButton = (props) => {
-  const [isConnected] = useState(false);
+  const [isConnected, setConnected] = useState(false);
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -16,19 +16,14 @@ const DiscordButton = (props) => {
       try {
         setLoading(true);
         const response = await props.discordService.getUser();
-        alert(
-          "Discord's answer:\n" +
-            JSON.stringify(response.data)
-              .replace(/,/g, ",\n")
-              .replace("{", "{\n")
-              .replace("}", "\n}")
-        );
+        await props.studentService.connectWithDiscord(response.data);
+        setConnected(true);
       } catch (e) {}
       setLoading(false);
     };
 
     getUserDetails();
-  }, [props.discordService]);
+  }, [props.discordService, props.studentService]);
 
   if (isConnected) {
     return (

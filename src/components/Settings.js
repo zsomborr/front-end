@@ -203,7 +203,10 @@ const Settings = (props) => {
             <h4>Social</h4>
             <Row>
               <Col xs={12} md={6} className="mb-2 mb-md-0">
-                <DiscordButton discordService={props.discordService} />
+                <DiscordButton
+                  discordService={props.discordService}
+                  studentService={props.studentService}
+                />
               </Col>
               <Col></Col>
             </Row>

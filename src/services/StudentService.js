@@ -83,4 +83,8 @@ export default class StudentService extends SpringBootService {
   logOut() {
     return axios.get(`${this.baseURL}/auth/logout`);
   }
+
+  connectWithDiscord(payload) {
+    return axios.post(`${this.baseURL}/user/discord`, payload);
+  }
 }
