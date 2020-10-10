@@ -25,6 +25,16 @@ export default class StudentService extends SpringBootService {
     return response;
   }
 
+  async googleAuth(payload, setIsAuthenticated) {
+    const response = axios.post(`${this.baseURL}/auth/google`, payload);
+
+    if (response.status === 200) {
+      setIsAuthenticated(true);
+    }
+
+    return response;
+  }
+
   getUserDataById(id) {
     return axios.get(`${this.baseURL}/user/get-user-data/${id}`);
   }

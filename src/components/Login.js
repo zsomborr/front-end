@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
+import GoogleLogin from "react-google-login";
 import { Alert, Container, Col, Button, Form, Row } from "react-bootstrap";
 import WebsiteDescription from "./WebsiteDescription";
 import Username from "./form/Username";
@@ -59,6 +60,10 @@ const Login = (props) => {
     }
   };
 
+  const handleGoogleAuth = (response) => {
+    props.studentService.googleAuth(response, setIsAuthenticated);
+  };
+
   useEffect(() => {
     if (isAuthenticated === false) {
       return;
@@ -72,6 +77,17 @@ const Login = (props) => {
       <Row>
         <Col xs={12} lg={6} className="content-container">
           <p className="h2">Login</p>
+
+          <div className="d-flex justify-content-center mb-4">
+            <GoogleLogin
+              clientId="297452594902-lbd2etaj1i66sbnabbr3njqh6qqnigfi.apps.googleusercontent.com"
+              onSuccess={handleGoogleAuth}
+              onFailure={() => {}}
+              isSignedIn={true}
+              buttonText="Sign in with Google"
+              theme="dark"
+            />
+          </div>
 
           {errorMessages.map((message, index) => (
             <Alert
