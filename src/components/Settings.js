@@ -17,6 +17,7 @@ import TagAutoComplete from "./form/TagAutoComplete";
 const Settings = (props) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [discordUsername, setDiscordUsername] = useState(null);
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
   const [module, setModule] = useState("");
@@ -44,6 +45,7 @@ const Settings = (props) => {
       const user = response.data;
       setFirstName(user.firstName);
       setLastName(user.lastName);
+      setDiscordUsername(user.discordUsername);
       setCountry(user.country);
       setCity(user.city);
       if (user.module === null) {
@@ -206,6 +208,7 @@ const Settings = (props) => {
                 <DiscordButton
                   discordService={props.discordService}
                   studentService={props.studentService}
+                  username={discordUsername}
                 />
               </Col>
               <Col></Col>

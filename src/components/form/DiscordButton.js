@@ -5,6 +5,7 @@ import "./DiscordButton.css";
 
 const DiscordButton = (props) => {
   const [isConnected, setConnected] = useState(false);
+  const [username, setUsername] = useState(null);
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -17,6 +18,7 @@ const DiscordButton = (props) => {
         setLoading(true);
         const response = await props.discordService.getUser();
         await props.studentService.connectWithDiscord(response.data);
+        setUsername(response.data.username);
         setConnected(true);
       } catch (e) {}
       setLoading(false);
@@ -25,18 +27,16 @@ const DiscordButton = (props) => {
     getUserDetails();
   }, [props.discordService, props.studentService]);
 
+  useEffect(() => {
+    setUsername(props.username);
+    setConnected(props.username !== null);
+  }, [props.username]);
+
   if (isConnected) {
     return (
-      <Button
-        variant="outline-danger"
-        disabled={isLoading}
-        className="btn-discord"
-      >
-        <FontAwesomeIcon
-          icon={isLoading ? "user-slash" : "exclamation-triangle"}
-          className="mr-2"
-        />
-        {isLoading ? "Revoking access ..." : "Disconnect from Discord"}
+      <Button variant="info" disabled={true} className="btn-discord">
+        <FontAwesomeIcon icon={["fab", "discord"]} className="mr-2" /> @
+        {username}
       </Button>
     );
   }
