@@ -180,7 +180,7 @@ const Settings = (props) => {
                   <Col xs={8} md={12} className="mx-auto">
                     <Image
                       className="img-fluid img-thumbnail rounded-circle border"
-                      src="missing-profile-pic.jpg"
+                      src="/missing-profile-pic.jpg"
                       alt="Profile"
                     />
                   </Col>
@@ -203,7 +203,7 @@ const Settings = (props) => {
             <h4>Social</h4>
             <Row>
               <Col xs={12} md={6} className="mb-2 mb-md-0">
-                <DiscordButton />
+                <DiscordButton discordService={props.discordService} />
               </Col>
               <Col></Col>
             </Row>

@@ -15,6 +15,10 @@ The frontend repository of Codecool's IRL coding challenge's Peer Mentoring appl
 
 ## Setup
 
+### Discord
+
+- [Create a new](https://discord.com/developers/applications) Application
+
 ### Development
 
 - Install Node.js packages
@@ -24,6 +28,8 @@ $ npm i
 ```
 
 - Make a copy from `.env.example` with name `.env`
+- Update the `REACT_APP_DISCORD_CLIENT_ID` value to match Your newly created Discord app's ID
+- Add `http://localhost:3000/settings/discord/auth` to the Discord's app **Redirects** list
 - Start Java Spring Boot back-end
 - Start React app in development mode
 
@@ -36,6 +42,10 @@ $ npm start
 ### Heroku
 
 - Create an app
-- Go to Settings > Config vars
-- Add a new environment variable with name `REACT_APP_API_BASE_URL` pointing
-  to the server (**without trailing slash**)
+- Go to `Settings` > `Config vars`
+- Add a new environment variables
+  - `REACT_APP_API_BASE_URL`: pointing to the server (**without trailing slash**)
+  - `REACT_APP_DISCORD_CLIENT_ID`: the app's ID from https://discord.com/developers/applications
+  - `REACT_APP_DISCORD_REDIRECT_URI`: the URL where Discord will redirect after successful authentication
+  - `REACT_APP_DISCORD_SCOPES`: set to `identify email`
+- Add the `REACT_APP_DISCORD_REDIRECT_URI` + `/settings/discord/auth` value to the Discord's app **Redirects** list

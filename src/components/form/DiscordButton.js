@@ -1,24 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./DiscordButton.css";
 
-const DiscordButton = () => {
-  const [isConnected, setIsConnected] = useState(false);
+const DiscordButton = (props) => {
+  const [isConnected] = useState(false);
   const [isLoading, setLoading] = useState(false);
 
-  const toggle = async () => {
-    setLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 5_000));
-    setLoading(false);
-    setIsConnected(!isConnected);
-  };
+  useEffect(() => {
+    if (window.location.pathname !== "/settings/discord/auth") {
+      return;
+    }
+
+    const getUserDetails = async () => {
+      try {
+        setLoading(true);
+        const response = await props.discordService.getUser();
+        alert(
+          "Discord's answer:\n" +
+            JSON.stringify(response.data)
+              .replace(/,/g, ",\n")
+              .replace("{", "{\n")
+              .replace("}", "\n}")
+        );
+      } catch (e) {}
+      setLoading(false);
+    };
+
+    getUserDetails();
+  }, [props.discordService]);
 
   if (isConnected) {
     return (
       <Button
         variant="outline-danger"
-        onClick={toggle}
         disabled={isLoading}
         className="btn-discord"
       >
@@ -34,7 +49,7 @@ const DiscordButton = () => {
   return (
     <Button
       className="btn-discord connect"
-      onClick={toggle}
+      onClick={(e) => (window.location.href = props.discordService.authURL)}
       disabled={isLoading}
     >
       <FontAwesomeIcon icon={isLoading ? "sync" : "link"} className="mr-2" />
