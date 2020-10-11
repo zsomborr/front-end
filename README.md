@@ -43,9 +43,15 @@ $ npm start
 
 - Create an app
 - Go to `Settings` > `Config vars`
-- Add a new environment variables
+- Add new environment variables
   - `REACT_APP_API_BASE_URL`: pointing to the server (**without trailing slash**)
   - `REACT_APP_DISCORD_CLIENT_ID`: the app's ID from https://discord.com/developers/applications
   - `REACT_APP_DISCORD_REDIRECT_URI`: the URL where Discord will redirect after successful authentication
   - `REACT_APP_DISCORD_SCOPES`: set to `identify email`
+- Add Buildpack:
+
+```
+https://buildpack-registry.s3.amazonaws.com/buildpacks/mars/create-react-app.tgz
+```
+
 - Add the `REACT_APP_DISCORD_REDIRECT_URI` + `/settings/discord/auth` value to the Discord's app **Redirects** list
