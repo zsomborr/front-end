@@ -94,7 +94,6 @@ span:hover .fa-arrow-alt-circle-down {
 
 span:hover .fa-edit {
   color: #27dbf3dc;
-
 }
 
 .App {
@@ -328,4 +327,20 @@ button.delete-button-link.disabled > span:nth-child(1) {
 
 .preserve-line {
   white-space: pre-line;
+}
+
+.react-rater-star {
+  font-size: 300%;
+}
+
+.react-rater-star.will-be-active {
+  color: #b4922e !important;
+}
+
+.react-rater-star.is-active {
+  color: #ffc107 !important;
+}
+
+.text-shadow-small {
+  text-shadow: 0px 0px 1px black;
 }

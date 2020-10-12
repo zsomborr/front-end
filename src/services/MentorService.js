@@ -10,4 +10,16 @@ export default class StudentService extends SpringBootService {
     const data = { technologies: techs, projects: projects };
     return axios.post(`${this.baseURL}/filter/get-mentors-by-tags`, data);
   }
+
+  addReview(rating, review, userId) {
+    return axios.post(`${this.baseURL}/review`, {
+      rating: rating,
+      review: review,
+      reviewedUser: userId,
+    });
+  }
+
+  getUserReviews(id) {
+    return axios.get(`${this.baseURL}/review/id/${id}`);
+  }
 }
