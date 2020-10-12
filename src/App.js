@@ -20,9 +20,11 @@ import UserPrivatePage from "./components/UserPrivatePage";
 import PublicUserPage from "./components/PublicUserPage";
 import Logout from "./components/Logout";
 import TechnologiesService from "./services/TechnologiesService";
+import DiscordService from "./services/DiscordService";
 
 function App() {
   axios.defaults.withCredentials = true;
+  const discordService = new DiscordService();
   const studentService = new StudentService();
   const questionsService = new QuestionsService();
   const mentorService = new MentorService();
@@ -119,7 +121,12 @@ function App() {
             <ProtectedRoute
               key="settings"
               path="/settings"
-              component={() => <Settings studentService={studentService} />}
+              component={() => (
+                <Settings
+                  studentService={studentService}
+                  discordService={discordService}
+                />
+              )}
             ></ProtectedRoute>
             <ProtectedRoute
               key="privateMe"

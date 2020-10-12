@@ -93,7 +93,11 @@ const PublicUserPage = (props) => {
                     <strong>Contact</strong> me here:
                   </p>
                   <Col>
-                    <Row className="d-none discordTag mt-2 text-right rounded-pill">
+                    <Row
+                      className={`${
+                        user.discordId ? null : "d-none"
+                      } discordTag mt-2 text-right rounded-pill`}
+                    >
                       <Col className="text-left" xs={3} sm={3}>
                         <Image
                           className="emailImage "
@@ -110,7 +114,14 @@ const PublicUserPage = (props) => {
                           fontSize: "100%",
                         }}
                       >
-                        {user.discord}
+                        <a
+                          href={`https://discordapp.com/users/${user.discordId}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {user.discordUsername}#{user.discriminator}
+                        </a>
+                        <i className="fas fa-external-link-alt ml-1"></i>
                       </Col>
                     </Row>
                     <Row className="emailTag mt-2 text-right rounded-pill">
