@@ -23,7 +23,6 @@ export default class QuestionsService extends SpringBootService {
     return axios.get(`${this.baseURL}/question/${questionId}`);
   }
 
-
   voteOnQuestionById(questionId, value) {
     return axios.post(`${this.baseURL}/question/vote/${questionId}`, {
       vote: value,
@@ -37,10 +36,16 @@ export default class QuestionsService extends SpringBootService {
     });
   }
 
+  setNewContentForAnswer(answerId, content) {
+    console.log("content", content);
+    return axios.post(`${this.baseURL}/answers/edit/${answerId}`, {
+      content: content,
+    });
+  }
+
   searchBy(technologies) {
     return axios.post(`${this.baseURL}/filter/get-questions-by-tags`, {
       technologyTags: technologies,
-
     });
   }
 }

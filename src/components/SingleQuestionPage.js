@@ -24,6 +24,9 @@ const SingleQuestionPage = (props) => {
   const [editing, setEditing] = useState(false);
   const [newDescription, setNewDescription] = useState("");
   const [newTitle, setNewTitle] = useState("");
+  const [answerEditing, setAnswerEditing] = useState(false);
+  const [newAnswer, setNewAnswer] = useState("");
+  const [answerId, setAnswerId] = useState(0);
 
   const getData = useCallback(async () => {
     const response = await props.questionsService.getQuestionDetails(
@@ -119,6 +122,61 @@ const SingleQuestionPage = (props) => {
       newDescription
     );
     getData();
+  };
+
+  const cancelAnswerEditing = () => {
+    setAnswerEditing(false);
+    setAnswerId(0);
+  };
+
+  const saveAnswerEditing = async () => {
+    setAnswerEditing(false);
+    await props.questionsService.setNewContentForAnswer(answerId, newAnswer);
+    setAnswerId(0);
+    getData();
+  };
+
+  const editAnswerContent = (content, id) => {
+    if (id !== answerId) {
+      return content;
+    } else {
+      return (
+        <Container>
+          <FormGroup>
+            <Form.Control
+              as="textarea"
+              rows="3"
+              defaultValue={content}
+              onChange={(e) => setNewAnswer(e.target.value)}
+            ></Form.Control>
+          </FormGroup>
+          <div className="mt-2">
+            <Button onClick={saveAnswerEditing} className="mr-2">
+              Save
+            </Button>
+            <Button onClick={cancelAnswerEditing} className="btn-danger">
+              Cancel
+            </Button>
+          </div>
+        </Container>
+      );
+    }
+  };
+
+  const editAnswer = (id) => {
+    setAnswerId(id);
+    setAnswerEditing(true);
+    setNewAnswer(document.getElementById(`answer-${id}`).innerText);
+  };
+
+  const editAnswerButton = (id) => {
+    if (!answerEditing) {
+      return (
+        <span onClick={() => editAnswer(id)}>
+          <i className="far fa-edit ml-3"></i>
+        </span>
+      );
+    }
   };
 
   useEffect(() => {
@@ -256,18 +314,26 @@ const SingleQuestionPage = (props) => {
                 </Col>
                 <Col
                   xs={12}
-                  lg={10}
+                  lg={9}
                   className="order-4 order-lg-2 preserve-line"
+                  id={`answer-${answer.id}`}
                 >
-                  {answer.content}
+                  {editAnswerContent(answer.content, answer.id)}
                 </Col>
-                <Col xs={12} lg={2} className="order-2 order-lg-3 text-center">
+                <Col
+                  xs={12}
+                  lg={1}
+                  className="order-5 order-lg-3 preserve-line"
+                >
+                  {answer.myAnswer ? editAnswerButton(answer.id) : ""}
+                </Col>
+                <Col xs={12} lg={2} className="order-2 order-lg-4 text-center">
                   <Link to={`/user/${answer.userId_}`}>{answer.username}</Link>
                 </Col>
                 <Col
                   xs={12}
                   lg={10}
-                  className="order-3 order-lg-4 text-center text-lg-right font-italic"
+                  className="order-3 order-lg-5 text-center text-lg-right font-italic"
                 >
                   <ReactTimeAgo
                     date={new Date(Date.parse(answer.submissionTime))}
