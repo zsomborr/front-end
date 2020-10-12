@@ -101,9 +101,9 @@ const SingleQuestionPage = (props) => {
     setEditing(false);
   };
 
-  const saveEditing = () => {
+  const saveEditing = async () => {
     setEditing(false);
-    props.questionsService.setNewDataForQuestion(
+    await props.questionsService.setNewDataForQuestion(
       questionId,
       newTitle,
       newDescription
