@@ -34,6 +34,16 @@ const SingleQuestionPage = (props) => {
     setAnswers(response.data.answers);
   }, [props.questionsService, questionId]);
 
+  const upvote = async () => {
+    await props.questionsService.voteOnQuestionById(questionId, 1);
+    getData();
+  };
+
+  const downvote = async () => {
+    await props.questionsService.voteOnQuestionById(questionId, -1);
+    getData();
+  };
+
   const editButton = () => {
     if (!editing) {
       return (
@@ -173,7 +183,40 @@ const SingleQuestionPage = (props) => {
             </Col>
           </Row>
           <hr></hr>
-          <Row>{editDescription()}</Row>
+          <Row>
+            <Col lg={1} md={1} xs={1}>
+              {question.voted ? (
+                <Row>
+                  <Col className="text-center" id="rating">
+                    <Badge variant="dark">{question.vote}</Badge>
+                  </Col>
+                </Row>
+              ) : (
+                <Container>
+                  <Row>
+                    <Col className="text-center">
+                      <span onClick={upvote}>
+                        <i className="far fa-arrow-alt-circle-up"></i>
+                      </span>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col className="text-center" id="rating">
+                      {question.vote}
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col className="text-center">
+                      <span onClick={downvote}>
+                        <i className="far fa-arrow-alt-circle-down"></i>
+                      </span>
+                    </Col>
+                  </Row>
+                </Container>
+              )}
+            </Col>
+            <Col>{editDescription()}</Col>
+          </Row>
           <Row>
             <Col xs={12} md={9}>
               {question.technologyTags.map((technology) => {

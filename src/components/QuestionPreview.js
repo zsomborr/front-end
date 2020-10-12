@@ -20,7 +20,7 @@ const QuestionPreview = (props) => {
               {props.question.username}
             </Link>
           )}{" "}
-          | <ReactTimeAgo date={props.question.submissionTime} />
+          | <ReactTimeAgo date={props.question.submissionTime} /> | Votes: {props.question.votes}
         </Col>
         <Col xs={12}>
           <h6 className="text-truncate">{props.question.description}</h6>

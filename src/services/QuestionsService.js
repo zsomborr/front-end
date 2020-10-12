@@ -23,6 +23,13 @@ export default class QuestionsService extends SpringBootService {
     return axios.get(`${this.baseURL}/question/${questionId}`);
   }
 
+
+  voteOnQuestionById(questionId, value) {
+    return axios.post(`${this.baseURL}/question/vote/${questionId}`, {
+      vote: value,
+    });
+  }
+
   setNewDataForQuestion(questionId, newTitle, newDescription) {
     return axios.post(`${this.baseURL}/question/edit/${questionId}`, {
       title: newTitle,
@@ -33,6 +40,7 @@ export default class QuestionsService extends SpringBootService {
   searchBy(technologies) {
     return axios.post(`${this.baseURL}/filter/get-questions-by-tags`, {
       technologyTags: technologies,
+
     });
   }
 }
