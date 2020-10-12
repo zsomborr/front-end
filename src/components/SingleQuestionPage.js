@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Container, Row, Col, Image } from "react-bootstrap";
+import { Button, Container, Row, Col, Image, Badge } from "react-bootstrap";
 import NewAnswer from "./modals/NewAnswer";
 import ReactTimeAgo from "react-time-ago";
 
@@ -10,7 +10,6 @@ const SingleQuestionPage = (props) => {
   });
   const [answers, setAnswers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [rating, setRating] = useState(0);
   const questionId = props.match.params.id;
 
   const getData = useCallback(async () => {
@@ -22,15 +21,14 @@ const SingleQuestionPage = (props) => {
     setAnswers(response.data.answers);
   }, [props.questionsService, questionId]);
 
-  const upvote = () => {
-    console.log("upvote");
-    const result = props.questionsService.voteOnQuestionById(questionId, 1);
-    setRating(result);
+  const upvote = async () => {
+    await props.questionsService.voteOnQuestionById(questionId, 1);
+    getData();
   };
 
-  const downvote = () => {
-    const result = props.questionsService.voteOnQuestionById(questionId, -1);
-    setRating(result);
+  const downvote = async () => {
+    await props.questionsService.voteOnQuestionById(questionId, -1);
+    getData();
   };
 
   useEffect(() => {
@@ -88,25 +86,35 @@ const SingleQuestionPage = (props) => {
           <hr></hr>
           <Row>
             <Col lg={1} md={1} xs={1}>
-              <Row>
-                <Col className="text-center">
-                  <span onClick={upvote}>
-                    <i className="far fa-arrow-alt-circle-up"></i>
-                  </span>
-                </Col>
-              </Row>
-              <Row>
-                <Col className="text-center" id="rating">
-                  {rating}
-                </Col>
-              </Row>
-              <Row>
-                <Col className="text-center">
-                  <span onClick={downvote}>
-                    <i className="far fa-arrow-alt-circle-down"></i>
-                  </span>
-                </Col>
-              </Row>
+              {question.voted ? (
+                <Row>
+                  <Col className="text-center" id="rating">
+                    <Badge variant="dark">{question.vote}</Badge>
+                  </Col>
+                </Row>
+              ) : (
+                <Container>
+                  <Row>
+                    <Col className="text-center">
+                      <span onClick={upvote}>
+                        <i className="far fa-arrow-alt-circle-up"></i>
+                      </span>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col className="text-center" id="rating">
+                      {question.vote}
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col className="text-center">
+                      <span onClick={downvote}>
+                        <i className="far fa-arrow-alt-circle-down"></i>
+                      </span>
+                    </Col>
+                  </Row>
+                </Container>
+              )}
             </Col>
             <Col className="preserve-line">{question.description}</Col>
           </Row>

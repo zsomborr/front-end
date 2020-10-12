@@ -21,10 +21,8 @@ export default class QuestionsService extends SpringBootService {
   }
 
   voteOnQuestionById(questionId, value) {
-    //const value = await axios.post(`${this.baseURL}/vote`, {questionId: questionId, value: value});
-    //visszatérési érték alapján kell eldönteni hogy megváltozik-e a ratingje a kérdésnek
-    //AKA szavazott-e már ez a user erre a kérdésre korábban
-    console.log("voted");
-    return value;
+    return axios.post(`${this.baseURL}/question/vote/${questionId}`, {
+      vote: value,
+    });
   }
 }
