@@ -163,7 +163,7 @@ const SingleQuestionPage = (props) => {
                   </Link>
                 )}
               </span>
-              {editButton()}
+              {question.myQuestion ? editButton() : null}
             </Col>
             <Col
               xs={3}
