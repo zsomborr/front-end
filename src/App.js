@@ -19,6 +19,7 @@ import SearchMentorPage from "./components/SearchMentorPage";
 import UserPrivatePage from "./components/UserPrivatePage";
 import PublicUserPage from "./components/PublicUserPage";
 import Logout from "./components/Logout";
+import TechnologiesService from "./services/TechnologiesService";
 
 function App() {
   axios.defaults.withCredentials = true;
@@ -27,6 +28,7 @@ function App() {
   const mentorService = new MentorService();
   const answerService = new AnswerService();
   const tagService = new TagService();
+  const technologiesService = new TechnologiesService();
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -86,8 +88,11 @@ function App() {
             <ProtectedRoute
               key="questionsPage"
               path="/questions"
-              component={(props) => (
-                <QuestionsPage questionsService={questionsService} {...props} />
+              component={() => (
+                <QuestionsPage
+                  questionsService={questionsService}
+                  technologiesService={technologiesService}
+                />
               )}
             />
             <ProtectedRoute

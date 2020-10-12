@@ -1,8 +1,3 @@
-.commonText {
-  font-family: "Signika", sans-serif;
-  color: aliceblue;
-}
-
 .questionsBox {
   width: 100%;
   height: auto;
@@ -12,6 +7,7 @@
 
 .close-container {
   position: relative;
+  top: -30px;
   margin: auto;
   width: 10%;
   height: 10%;
@@ -90,6 +86,15 @@ span:hover .fa-arrow-alt-circle-up {
 span:hover .fa-arrow-alt-circle-down {
   color: rgba(255, 2, 2, 0.835);
   font-size: 1.5em;
+}
+
+.fa-edit {
+  transition: 0.3s;
+}
+
+span:hover .fa-edit {
+  color: #27dbf3dc;
+
 }
 
 .App {
