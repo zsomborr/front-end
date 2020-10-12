@@ -43,7 +43,7 @@ const SingleQuestionPage = (props) => {
     await props.questionsService.voteOnQuestionById(questionId, -1);
     getData();
   };
-  
+
   const editButton = () => {
     if (!editing) {
       return (
@@ -183,7 +183,6 @@ const SingleQuestionPage = (props) => {
             </Col>
           </Row>
           <hr></hr>
-          <Row>{editDescription()}</Row>
           <Row>
             <Col lg={1} md={1} xs={1}>
               {question.voted ? (
@@ -216,7 +215,7 @@ const SingleQuestionPage = (props) => {
                 </Container>
               )}
             </Col>
-            <Col className="preserve-line">{question.description}</Col>
+            <Col>{editDescription()}</Col>
           </Row>
           <Row>
             <Col xs={12} md={9}>
