@@ -145,10 +145,14 @@ const SingleQuestionPage = (props) => {
               {editTitle()}
               <span className="d-none d-sm-inline-block">
                 by:{" "}
-                <Link to={`/user/${question.userId_}`}>
-                  {question.username}
-                </Link>
-              </span>{" "}
+                {question.anonym ? (
+                  "Anonymous"
+                ) : (
+                  <Link to={`/user/${question.userId_}`}>
+                    {question.username}
+                  </Link>
+                )}
+              </span>
               {editButton()}
             </Col>
             <Col
@@ -158,7 +162,11 @@ const SingleQuestionPage = (props) => {
             >
               <Image
                 className="img-fluid img-thumbnail rounded-circle border"
-                src="/missing-profile-pic.jpg"
+                src={
+                  question.anonym
+                    ? "/anonymous-profile-pic.jpg"
+                    : "/missing-profile-pic.jpg"
+                }
                 alt="Profile"
               />
               <span className="d-sm-none">{question.username}</span>

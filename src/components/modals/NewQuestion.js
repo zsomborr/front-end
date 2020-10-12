@@ -8,6 +8,8 @@ import {
   FormGroup,
   Modal,
 } from "react-bootstrap";
+import Toggle from "react-toggle";
+import "react-toggle/style.css";
 import DeletableTag from "../form/DeletableTag";
 import TagSuggester from "../form/TagSuggester";
 
@@ -20,6 +22,7 @@ const NewQuestion = (props) => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [value, setValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [isAnonymusMode, setAnonymusMode] = useState(false);
 
   useEffect(() => {
     const getTechnologies = async () => {
@@ -52,6 +55,7 @@ const NewQuestion = (props) => {
 
     setTechnologies([]);
     setErrorMessage(null);
+    setAnonymusMode(false);
   }, [props.isModalOpen]);
 
   const handleSubmit = (e) => {
@@ -69,7 +73,12 @@ const NewQuestion = (props) => {
 
     const sendRequest = async () => {
       try {
-        await props.questionsService.add(title, description, technologies);
+        await props.questionsService.add(
+          title,
+          description,
+          technologies,
+          isAnonymusMode
+        );
         props.setIsModalOpen(false);
         props.onSuccess();
       } catch (e) {}
@@ -139,6 +148,20 @@ const NewQuestion = (props) => {
                 />
               ))}
             </p>
+          </FormGroup>
+          <FormGroup>
+            <Form.Label htmlFor="anonymus" className="d-block">
+              Anonymus mode
+            </Form.Label>
+            <Toggle
+              id="anonymus"
+              defaultChecked={isAnonymusMode}
+              onChange={(e) => setAnonymusMode(e.target.checked)}
+            />
+            <small className="align-top ml-1">
+              Question will be posted
+              {isAnonymusMode ? " anonymously" : " with Your name"}.
+            </small>
           </FormGroup>
         </Form>
       </Modal.Body>
