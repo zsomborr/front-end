@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Container, Row, Col, Image, Badge, Button } from "react-bootstrap";
 import NewReview from "./modals/NewReview";
 import ReactStars from "react-stars";
@@ -7,11 +7,7 @@ const PublicUserPage = (props) => {
   const studentService = props.studentService;
   const mentorService = props.mentorService;
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [Reviews, setReviews] = useState([
-    { id: null, rating: null, review: null, reviewer: null },
-  ]);
-  const [numOfRates, setNumOfRates] = useState(0);
-  const [ratingsSum, setRatingsSum] = useState(0);
+  const [reviews, setReviews] = useState([]);
 
   const [user, setUser] = useState({
     firstName: "",
@@ -23,29 +19,23 @@ const PublicUserPage = (props) => {
     projectTags: [],
   });
 
-  const getData = async () => {
+  const getReviews = useCallback(async () => {
     const response = await mentorService.getUserReviews(props.match.params.id);
     setReviews(response.data);
-  };
+  }, [mentorService, props.match.params.id]);
 
   useEffect(() => {
-    const getReviews = async () => {
-      const response = await mentorService.getUserReviews(
-        props.match.params.id
-      );
-      setReviews(response.data);
-    };
     getReviews();
-  }, []);
+  }, [getReviews]);
 
   useEffect(() => {
-    const getData = async () => {
+    const getUser = async () => {
       const response = await studentService.getUserDataById(
         props.match.params.id
       );
       setUser(response.data);
     };
-    getData();
+    getUser();
   }, [props.match.params.id, studentService]);
 
   return (
@@ -56,7 +46,7 @@ const PublicUserPage = (props) => {
           setIsModalOpen={setIsModalOpen}
           mentorService={props.mentorService}
           userId={props.match.params.id}
-          onSuccess={getData}
+          onSuccess={getReviews}
         />
         <Col md={12} lg={5}>
           <Row className="d-flex align-items-end">
@@ -183,21 +173,18 @@ const PublicUserPage = (props) => {
               </Button>
             </Col>
 
-            {Reviews.map((review, index) => {
+            {reviews.map((review, index) => {
               const even = index % 2 === 0;
               if (review.review === "") {
                 return (
                   <Col xs={12} className="text-center ">
                     {review.reviewer} rated this mentor with
-                    <div className="d-inline-block align-bottom mx-1">
-                      <ReactStars
-                        count={5}
-                        value={review.rating}
-                        size={16}
-                        color2={"#ffd700"}
-                        edit={false}
-                      />
-                    </div>
+                    <ReactStars
+                      value={review.rating}
+                      size={16}
+                      className="d-inline-block align-bottom mx-1 text-shadow-small"
+                      edit={false}
+                    />
                     stars.
                     <hr></hr>
                   </Col>
@@ -213,15 +200,16 @@ const PublicUserPage = (props) => {
                       <cite title={`${review.reviewer}`}>
                         {review.reviewer}
                       </cite>
-                      <div className={even ? "d-flex justify-content-end" : ""}>
-                        <ReactStars
-                          count={5}
-                          value={review.rating}
-                          size={20}
-                          color2={"#ffd700"}
-                          edit={false}
-                        />
-                      </div>
+                      <ReactStars
+                        value={review.rating}
+                        size={20}
+                        className={
+                          even
+                            ? "d-flex justify-content-end text-shadow-small"
+                            : "text-shadow-small"
+                        }
+                        edit={false}
+                      />
                     </footer>
                   </blockquote>
                 </Col>

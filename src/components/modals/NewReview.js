@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, Col, Form, FormGroup, Modal } from "react-bootstrap";
 import ReactStars from "react-stars";
 
 const NewReview = (props) => {
-  console.log("reload");
   let review = "";
   let stars = 0;
 
@@ -13,11 +12,6 @@ const NewReview = (props) => {
       props.setIsModalOpen(false);
       props.onSuccess();
     } catch (e) {}
-  };
-
-  const ratingChanged = (rate) => {
-    stars = rate;
-    console.log("rate", stars);
   };
 
   return (
@@ -36,12 +30,7 @@ const NewReview = (props) => {
       </Modal.Header>
       <Modal.Body>
         <Col>
-          <ReactStars
-            count={5}
-            onChange={ratingChanged}
-            size={50}
-            color2={"#ffd700"}
-          />
+          <ReactStars onChange={(rate) => (stars = rate)} size={50} />
         </Col>
 
         <Col>
