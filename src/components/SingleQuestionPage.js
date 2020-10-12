@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
+  Badge,
   Button,
   Container,
   Row,
@@ -9,10 +10,8 @@ import {
   FormGroup,
   Form,
 } from "react-bootstrap";
-import { Badge, Button, Container, Row, Col, Image } from "react-bootstrap";
 import NewAnswer from "./modals/NewAnswer";
 import ReactTimeAgo from "react-time-ago";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
 const SingleQuestionPage = (props) => {
   const [question, setQuestionDetails] = useState({
@@ -22,7 +21,6 @@ const SingleQuestionPage = (props) => {
   const [answers, setAnswers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const questionId = props.match.params.id;
-  //const [currentDescription, setCurrentDescription] = useState("");
   const [editing, setEditing] = useState(false);
   const [newDescription, setNewDescription] = useState("");
   const [newTitle, setNewTitle] = useState("");
