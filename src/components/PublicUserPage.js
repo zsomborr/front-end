@@ -1,8 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Image, Badge } from "react-bootstrap";
+import { Container, Row, Col, Image, Badge, Button } from "react-bootstrap";
+import NewReview from "./modals/NewReview";
+import ReactStars from "react-stars";
 
 const PublicUserPage = (props) => {
   const studentService = props.studentService;
+  const mentorService = props.mentorService;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [Reviews, setReviews] = useState([
+    { id: null, rating: null, review: null, reviewer: null },
+  ]);
+  const [numOfRates, setNumOfRates] = useState(0);
+  const [ratingsSum, setRatingsSum] = useState(0);
+
   const [user, setUser] = useState({
     firstName: "",
     lastName: "",
@@ -12,6 +22,21 @@ const PublicUserPage = (props) => {
     technologyTags: [],
     projectTags: [],
   });
+
+  const getData = async () => {
+    const response = await mentorService.getUserReviews(props.match.params.id);
+    setReviews(response.data);
+  };
+
+  useEffect(() => {
+    const getReviews = async () => {
+      const response = await mentorService.getUserReviews(
+        props.match.params.id
+      );
+      setReviews(response.data);
+    };
+    getReviews();
+  }, []);
 
   useEffect(() => {
     const getData = async () => {
@@ -26,6 +51,13 @@ const PublicUserPage = (props) => {
   return (
     <Container className="page">
       <Row className="content-container">
+        <NewReview
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          mentorService={props.mentorService}
+          userId={props.match.params.id}
+          onSuccess={getData}
+        />
         <Col md={12} lg={5}>
           <Row className="d-flex align-items-end">
             <Col>
@@ -141,9 +173,61 @@ const PublicUserPage = (props) => {
         </Col>
         <Col>
           <Row>
-            <Col className="h4 text-center">Reviews</Col>
+            <Col xs={12} md={8} className="h4 text-center">
+              Reviews
+            </Col>
+
+            <Col xs={12} md={4} className="text-center mb-4">
+              <Button onClick={() => setIsModalOpen(!isModalOpen)}>
+                Add review
+              </Button>
+            </Col>
+
+            {Reviews.map((review, index) => {
+              const even = index % 2 === 0;
+              if (review.review === "") {
+                return (
+                  <Col xs={12} className="text-center ">
+                    {review.reviewer} rated this mentor with
+                    <div className="d-inline-block align-bottom mx-1">
+                      <ReactStars
+                        count={5}
+                        value={review.rating}
+                        size={16}
+                        color2={"#ffd700"}
+                        edit={false}
+                      />
+                    </div>
+                    stars.
+                    <hr></hr>
+                  </Col>
+                );
+              }
+              return (
+                <Col xs={12}>
+                  <blockquote
+                    className={even ? "blockquote text-right" : "blockquote"}
+                  >
+                    <p className="mb-0">{review.review}</p>
+                    <footer className="blockquote-footer">
+                      <cite title={`${review.reviewer}`}>
+                        {review.reviewer}
+                      </cite>
+                      <div className={even ? "d-flex justify-content-end" : ""}>
+                        <ReactStars
+                          count={5}
+                          value={review.rating}
+                          size={20}
+                          color2={"#ffd700"}
+                          edit={false}
+                        />
+                      </div>
+                    </footer>
+                  </blockquote>
+                </Col>
+              );
+            })}
           </Row>
-          <Row></Row>
         </Col>
       </Row>
     </Container>

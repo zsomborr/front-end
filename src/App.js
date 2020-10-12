@@ -132,7 +132,11 @@ function App() {
               key="publicUserPage"
               path="/user/:id"
               component={(props) => (
-                <PublicUserPage studentService={studentService} {...props} />
+                <PublicUserPage
+                  studentService={studentService}
+                  mentorService={mentorService}
+                  {...props}
+                />
               )}
             />
           </UserContext.Provider>
