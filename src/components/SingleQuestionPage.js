@@ -9,6 +9,7 @@ import {
   FormGroup,
   Form,
 } from "react-bootstrap";
+import { Badge, Button, Container, Row, Col, Image } from "react-bootstrap";
 import NewAnswer from "./modals/NewAnswer";
 import ReactTimeAgo from "react-time-ago";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
@@ -16,6 +17,7 @@ import { faEdit } from "@fortawesome/free-solid-svg-icons";
 const SingleQuestionPage = (props) => {
   const [question, setQuestionDetails] = useState({
     submissionTime: new Date().toString(),
+    technologyTags: [],
   });
   const [answers, setAnswers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -167,6 +169,19 @@ const SingleQuestionPage = (props) => {
           <hr></hr>
           <Row>{editDescription()}</Row>
           <Row>
+            <Col xs={12} md={9}>
+              {question.technologyTags.map((technology) => {
+                return (
+                  <Badge
+                    key={`technology-${technology.technologyTag}`}
+                    variant="primary"
+                    className="badge-pill mr-1"
+                  >
+                    {technology.technologyTag}
+                  </Badge>
+                );
+              })}
+            </Col>
             <Col className="text-right text-muted">
               <ReactTimeAgo date={question.submissionTime} />
             </Col>
