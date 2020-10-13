@@ -10,6 +10,7 @@ import {
 } from "react-bootstrap";
 import Toggle from "react-toggle";
 import "react-toggle/style.css";
+import CloseSymbol from "./CloseSymbol";
 import DeletableTag from "../form/DeletableTag";
 import TagSuggester from "../form/TagSuggester";
 
@@ -91,13 +92,7 @@ const NewQuestion = (props) => {
       <Modal.Header>
         <Col>
           <h4>Ask new question</h4>
-          <div
-            className="close-container"
-            onClick={() => props.setIsModalOpen(false)}
-          >
-            <div className="leftright"></div>
-            <div className="rightleft"></div>
-          </div>
+          <CloseSymbol onClick={() => props.setIsModalOpen(false)} />
         </Col>
       </Modal.Header>
       <Modal.Body>

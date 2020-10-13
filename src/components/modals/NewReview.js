@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Col, Form, FormGroup, Modal } from "react-bootstrap";
 import ReactStars from "react-stars";
+import CloseSymbol from "./CloseSymbol";
 
 const NewReview = (props) => {
   let review = "";
@@ -19,13 +20,7 @@ const NewReview = (props) => {
       <Modal.Header>
         <Col>
           <h4>Rate this mentor</h4>
-          <div
-            className="close-container"
-            onClick={() => props.setIsModalOpen(false)}
-          >
-            <div className="leftright"></div>
-            <div className="rightleft"></div>
-          </div>
+          <CloseSymbol onClick={() => props.setIsModalOpen(false)} />
         </Col>
       </Modal.Header>
       <Modal.Body>
