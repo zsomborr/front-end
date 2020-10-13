@@ -12,6 +12,7 @@ import DiscordButton from "./form/DiscordButton";
 import DeletableTag from "./form/DeletableTag";
 import FirstName from "./form/FirstName";
 import LastName from "./form/LastName";
+import Noty from "noty";
 import TagAutoComplete from "./form/TagAutoComplete";
 
 const Settings = (props) => {
@@ -116,6 +117,10 @@ const Settings = (props) => {
         city,
         module
       );
+      new Noty({
+        text: "Your modification saved.",
+        type: "success",
+      }).show();
     };
     sendRequest();
   };

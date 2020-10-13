@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Col, Form, FormGroup, Modal } from "react-bootstrap";
 import CloseSymbol from "./CloseSymbol";
+import Noty from "noty";
 
 const NewAnswer = (props) => {
   const form = React.createRef();
@@ -15,6 +16,10 @@ const NewAnswer = (props) => {
       await props.answerService.add(props.questionId, answer);
       props.setAnswers([...props.answers, { submissionTime: new Date() }]);
       props.setIsModalOpen(false);
+      new Noty({
+        text: "Your answer added.",
+        type: "success",
+      }).show();
     } catch (e) {}
   };
 

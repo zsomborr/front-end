@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Col, Form, FormGroup, Modal } from "react-bootstrap";
 import ReactStars from "react-stars";
 import CloseSymbol from "./CloseSymbol";
+import Noty from "noty";
 
 const NewReview = (props) => {
   let review = "";
@@ -12,6 +13,10 @@ const NewReview = (props) => {
       await props.mentorService.addReview(stars, review, props.userId);
       props.setIsModalOpen(false);
       props.onSuccess();
+      new Noty({
+        text: "Your review sent to the mentor.",
+        type: "success",
+      }).show();
     } catch (e) {}
   };
 

@@ -9,8 +9,17 @@ import "@fortawesome/fontawesome-free/css/all.css";
 import "@fortawesome/fontawesome-free/js/all.js";
 import JavascriptTimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
+import Noty from "noty";
+import "noty/lib/noty.css";
+import "noty/lib/themes/relax.css";
+import "noty/lib/noty.min.js";
 
 JavascriptTimeAgo.addLocale(en);
+
+Noty.overrideDefaults({
+  theme: "relax",
+  timeout: 3500,
+});
 
 ReactDOM.render(
   <React.StrictMode>

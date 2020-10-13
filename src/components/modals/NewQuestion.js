@@ -12,6 +12,7 @@ import Toggle from "react-toggle";
 import "react-toggle/style.css";
 import CloseSymbol from "./CloseSymbol";
 import DeletableTag from "../form/DeletableTag";
+import Noty from "noty";
 import TagSuggester from "../form/TagSuggester";
 
 const NewQuestion = (props) => {
@@ -82,6 +83,10 @@ const NewQuestion = (props) => {
         );
         props.setIsModalOpen(false);
         props.onSuccess();
+        new Noty({
+          text: "Your question added.",
+          type: "success",
+        }).show();
       } catch (e) {}
     };
     sendRequest();
