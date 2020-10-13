@@ -14,6 +14,7 @@
     "bootstrap": "^4.5.2",
     "bootstrap-show-password": "^1.2.1",
     "jquery": "^3.5.1",
+    "noty": "^3.2.0-beta",
     "popper.js": "^1.16.1",
     "react": "^16.13.1",
     "react-autosuggest": "^10.0.2",
