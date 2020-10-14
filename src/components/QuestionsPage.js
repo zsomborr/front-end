@@ -9,6 +9,7 @@ import {
   FormControl,
   Row,
 } from "react-bootstrap";
+import AnimatedButton from "./form/AnimatedButton";
 import MultiSelect from "react-multi-select-component";
 import { Link } from "react-router-dom";
 import NewQuestionModal from "./modals/NewQuestion";
@@ -114,7 +115,9 @@ const QuestionsPage = (props) => {
                 </Row>
               </Col>
               <Col xs={6} lg={3}>
-                <Button onClick={handleSearch}>Search</Button>
+                <AnimatedButton icon={["fas", "search"]} onClick={handleSearch}>
+                  Search
+                </AnimatedButton>
               </Col>
               <Col xs={6} lg={3} className="text-right">
                 <Button onClick={() => setIsModalOpen(!isModalOpen)}>

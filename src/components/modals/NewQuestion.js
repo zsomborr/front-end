@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import {
   Alert,
-  Button,
   Col,
   Form,
   FormControl,
   FormGroup,
   Modal,
 } from "react-bootstrap";
+import AnimatedButton from "../form/AnimatedButton";
 import Toggle from "react-toggle";
 import "react-toggle/style.css";
 import CloseSymbol from "./CloseSymbol";
@@ -166,7 +166,9 @@ const NewQuestion = (props) => {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={handleSubmit}>Send</Button>
+        <AnimatedButton icon={["far", "paper-plane"]} onClick={handleSubmit}>
+          Send
+        </AnimatedButton>
       </Modal.Footer>
     </Modal>
   );

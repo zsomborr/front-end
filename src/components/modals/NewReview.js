@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, Col, Form, FormGroup, Modal } from "react-bootstrap";
+import { Col, Form, FormGroup, Modal } from "react-bootstrap";
+import AnimatedButton from "../form/AnimatedButton";
 import ReactStars from "react-stars";
 import CloseSymbol from "./CloseSymbol";
 import Noty from "noty";
@@ -53,7 +54,9 @@ Avoid sarcasm and be careful with jokes — tone is hard to decipher online. Pre
         </Col>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={handleSubmit}>Send</Button>
+        <AnimatedButton icon={["far", "paper-plane"]} onClick={handleSubmit}>
+          Send
+        </AnimatedButton>
       </Modal.Footer>
     </Modal>
   );

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
-import { Alert, Container, Col, Button, Form, Row } from "react-bootstrap";
+import { Alert, Container, Col, Form, Row } from "react-bootstrap";
+import AnimatedButton from "./form/AnimatedButton";
 import WebsiteDescription from "./WebsiteDescription";
 import Username from "./form/Username";
 import Password from "./form/Password";
@@ -88,14 +89,13 @@ const Login = (props) => {
 
             <Password setPassword={setPassword} />
 
-            <Button
-              variant="primary"
-              type="submit"
+            <AnimatedButton
               className="mb-2 mr-sm-2"
+              icon={["fas", "sign-in-alt"]}
               onClick={handleSubmit}
             >
               Login
-            </Button>
+            </AnimatedButton>
             <p>
               Don’t have an account yet?
               <Link to={"/registration"}> Register now!</Link>

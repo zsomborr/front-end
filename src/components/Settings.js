@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Col,
-  Container,
-  Form,
-  Image,
-  InputGroup,
-  Row,
-} from "react-bootstrap";
+import { Col, Container, Form, Image, InputGroup, Row } from "react-bootstrap";
+import AnimatedButton from "./form/AnimatedButton";
 import DiscordButton from "./form/DiscordButton";
 import DeletableTag from "./form/DeletableTag";
 import FirstName from "./form/FirstName";
@@ -266,7 +259,12 @@ const Settings = (props) => {
                 ))}
               </Form.Control>
             </Form.Group>
-            <Button onClick={handleProfileUpdate}>Save</Button>
+            <AnimatedButton
+              icon={["far", "save"]}
+              onClick={handleProfileUpdate}
+            >
+              Save
+            </AnimatedButton>
           </Form>
         </Col>
       </Row>

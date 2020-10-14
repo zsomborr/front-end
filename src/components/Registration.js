@@ -4,12 +4,12 @@ import {
   Alert,
   Container,
   Col,
-  Button,
   Form,
   FormControl,
   InputGroup,
   Row,
 } from "react-bootstrap";
+import AnimatedButton from "./form/AnimatedButton";
 import WebsiteDescription from "./WebsiteDescription";
 import Username from "./form/Username";
 import Password from "./form/Password";
@@ -143,14 +143,13 @@ const Registration = (props) => {
 
             <Password setPassword={setPassword} />
 
-            <Button
-              variant="primary"
-              type="submit"
+            <AnimatedButton
               className="mb-2 mr-sm-2"
+              icon={["fas", "user-plus"]}
               onClick={handleRegister}
             >
               Registration
-            </Button>
+            </AnimatedButton>
           </Form>
         </Col>
         <Col xs={12} lg={6} className="content-container text-center">

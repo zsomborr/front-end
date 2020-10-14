@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  Alert,
-  Container,
-  Row,
-  Col,
-  Image,
-  Badge,
-  Button,
-} from "react-bootstrap";
+import { Alert, Badge, Col, Container, Image, Row } from "react-bootstrap";
+import AnimatedButton from "./form/AnimatedButton";
 import { Link } from "react-router-dom";
 import MultiSelect from "react-multi-select-component";
 
@@ -84,7 +77,9 @@ const SearchMentorPage = (props) => {
               />
             </Col>
             <Col className="text-right">
-              <Button onClick={search}>Search</Button>
+              <AnimatedButton icon={["fas", "search"]} onClick={search}>
+                Search
+              </AnimatedButton>
             </Col>
           </Row>
           <Row>
