@@ -1,6 +1,6 @@
 export default class ValidationService {
   isValidUsername(input) {
-    return /^[a-zA-Z0-9_]*$/.test(String(input));
+    return /^[a-zA-Z0-9_]*$/.test(this._normalize(input));
   }
 
   isValidLastName(input) {
@@ -18,6 +18,10 @@ export default class ValidationService {
   }
 
   _isOnlyLetters(input) {
-    return /^[a-zA-Z]+$/.test(String(input));
+    return /^[a-zA-Z]+$/.test(this._normalize(input));
+  }
+
+  _normalize(input) {
+    return input.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
 }
