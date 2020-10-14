@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Col, Form, FormGroup, Modal } from "react-bootstrap";
 import AnimatedButton from "../form/AnimatedButton";
 import ReactStars from "react-stars";
@@ -8,8 +8,10 @@ import Noty from "noty";
 const NewReview = (props) => {
   let review = "";
   let stars = 0;
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async () => {
+    setIsLoading(true);
     try {
       await props.mentorService.addReview(stars, review, props.userId);
       props.setIsModalOpen(false);
@@ -19,6 +21,7 @@ const NewReview = (props) => {
         type: "success",
       }).show();
     } catch (e) {}
+    setIsLoading(false);
   };
 
   return (
@@ -54,7 +57,11 @@ Avoid sarcasm and be careful with jokes — tone is hard to decipher online. Pre
         </Col>
       </Modal.Body>
       <Modal.Footer>
-        <AnimatedButton icon={["far", "paper-plane"]} onClick={handleSubmit}>
+        <AnimatedButton
+          icon={["far", "paper-plane"]}
+          isLoading={isLoading}
+          onClick={handleSubmit}
+        >
           Send
         </AnimatedButton>
       </Modal.Footer>

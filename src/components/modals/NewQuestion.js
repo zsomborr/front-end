@@ -25,6 +25,7 @@ const NewQuestion = (props) => {
   const [value, setValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [isAnonymusMode, setAnonymusMode] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const getTechnologies = async () => {
@@ -74,6 +75,7 @@ const NewQuestion = (props) => {
     }
 
     const sendRequest = async () => {
+      setIsLoading(true);
       try {
         await props.questionsService.add(
           title,
@@ -88,6 +90,7 @@ const NewQuestion = (props) => {
           type: "success",
         }).show();
       } catch (e) {}
+      setIsLoading(false);
     };
     sendRequest();
   };
@@ -166,7 +169,11 @@ const NewQuestion = (props) => {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <AnimatedButton icon={["far", "paper-plane"]} onClick={handleSubmit}>
+        <AnimatedButton
+          icon={["far", "paper-plane"]}
+          isLoading={isLoading}
+          onClick={handleSubmit}
+        >
           Send
         </AnimatedButton>
       </Modal.Footer>

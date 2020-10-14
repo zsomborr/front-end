@@ -22,6 +22,7 @@ const QuestionsPage = (props) => {
   const form = React.createRef();
   const [allTechnologies, setAllTechnologies] = useState([]);
   const [selectedTechnologies, setSelectedTechnologies] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -31,6 +32,7 @@ const QuestionsPage = (props) => {
     }
 
     try {
+      setIsLoading(true);
       if (selectedTechnologies.length !== 0) {
         const convert = (technologies) => {
           const r = [];
@@ -48,6 +50,7 @@ const QuestionsPage = (props) => {
         setQuestions(response.data);
       }
     } catch (e) {}
+    setIsLoading(false);
   };
 
   const getAllQuestions = useCallback(async () => {
@@ -115,7 +118,11 @@ const QuestionsPage = (props) => {
                 </Row>
               </Col>
               <Col xs={6} lg={3}>
-                <AnimatedButton icon={["fas", "search"]} onClick={handleSearch}>
+                <AnimatedButton
+                  icon={["fas", "search"]}
+                  isLoading={isLoading}
+                  onClick={handleSearch}
+                >
                   Search
                 </AnimatedButton>
               </Col>

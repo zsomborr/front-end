@@ -27,6 +27,7 @@ const Settings = (props) => {
     "Advanced",
     "JobHunt",
   ]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const requestData = async () => {
@@ -103,17 +104,21 @@ const Settings = (props) => {
       return;
     }
     const sendRequest = async () => {
-      await props.studentService.updateInfo(
-        firstName,
-        lastName,
-        country,
-        city,
-        module
-      );
-      new Noty({
-        text: "Your modification saved.",
-        type: "success",
-      }).show();
+      setIsLoading(true);
+      try {
+        await props.studentService.updateInfo(
+          firstName,
+          lastName,
+          country,
+          city,
+          module
+        );
+        new Noty({
+          text: "Your modification saved.",
+          type: "success",
+        }).show();
+      } catch (e) {}
+      setIsLoading(false);
     };
     sendRequest();
   };
@@ -261,6 +266,7 @@ const Settings = (props) => {
             </Form.Group>
             <AnimatedButton
               icon={["far", "save"]}
+              isLoading={isLoading}
               onClick={handleProfileUpdate}
             >
               Save

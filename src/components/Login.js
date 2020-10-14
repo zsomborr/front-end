@@ -13,6 +13,7 @@ const Login = (props) => {
   const [password, setPassword] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useContext(UserContext);
+  const [isLoading, setLoading] = useState(false);
   const history = useHistory();
   const location = useLocation();
 
@@ -52,12 +53,14 @@ const Login = (props) => {
     }
 
     try {
+      setLoading(true);
       await props.studentService.login(username, password, setIsAuthenticated);
     } catch (e) {
       if (e.response && e.response.status === 403) {
         asError("Invalid username or password!");
       }
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -91,6 +94,7 @@ const Login = (props) => {
 
             <AnimatedButton
               className="mb-2 mr-sm-2"
+              isLoading={isLoading}
               icon={["fas", "sign-in-alt"]}
               onClick={handleSubmit}
             >
