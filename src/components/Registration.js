@@ -69,23 +69,25 @@ const Registration = (props) => {
   const isFormValid = () => {
     let isValid = true;
     if (!validator.isValidUsername(username)) {
-      asError("Username should contain only English letters and _ character!");
+      asError(
+        "Please use only letters and numbers as your username (and do not use any special character except the _ symbol)."
+      );
       isValid = false;
     }
 
     if (!validator.isValidFirstName(firstName)) {
-      asError("First name should contain only English letters!");
+      asError("Please use only letters as your first name.");
       isValid = false;
     }
 
     if (!validator.isValidLastName(lastName)) {
-      asError("Last name should contain only English letters!");
+      asError("Please use only letters as your last name.");
       isValid = false;
     }
 
     if (!validator.isValidPassword(password)) {
       asError(
-        "Invalid password! It should contain at least one digit, one upper and lower case letter, and one of the following special characters: !@#$%&*()-+=^"
+        "Please double check your password because it should contain at least one digit, one upper and lower case letter, and one of the following special character: !@#$%&*()-+=^"
       );
       isValid = false;
     }
