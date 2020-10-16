@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
-import { Alert, Container, Col, Button, Form, Row } from "react-bootstrap";
+import { Alert, Container, Col, Form, Row } from "react-bootstrap";
+import AnimatedButton from "./form/AnimatedButton";
 import WebsiteDescription from "./WebsiteDescription";
 import Username from "./form/Username";
 import Password from "./form/Password";
@@ -12,6 +13,7 @@ const Login = (props) => {
   const [password, setPassword] = useState("");
   const [errorMessages, setErrorMessages] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useContext(UserContext);
+  const [isLoading, setLoading] = useState(false);
   const history = useHistory();
   const location = useLocation();
 
@@ -25,13 +27,15 @@ const Login = (props) => {
   const isFormValid = () => {
     let isValid = true;
     if (!validator.isValidUsername(username)) {
-      asError("Username should contain only English letters and _ character!");
+      asError(
+        "Please use only letters and numbers as your username (and do not use any special character except the _ symbol)."
+      );
       isValid = false;
     }
 
     if (!validator.isValidPassword(password)) {
       asError(
-        "Invalid password! It should contain at least one digit, one upper and lower case letter, and one of the following special characters: !@#$%&*()-+=^"
+        "Please double check your password because it should contain at least one digit, one upper and lower case letter, and one of the following special character: !@#$%&*()-+=^"
       );
       isValid = false;
     }
@@ -51,12 +55,14 @@ const Login = (props) => {
     }
 
     try {
+      setLoading(true);
       await props.studentService.login(username, password, setIsAuthenticated);
     } catch (e) {
       if (e.response && e.response.status === 403) {
         asError("Invalid username or password!");
       }
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -88,14 +94,14 @@ const Login = (props) => {
 
             <Password setPassword={setPassword} />
 
-            <Button
-              variant="primary"
-              type="submit"
+            <AnimatedButton
               className="mb-2 mr-sm-2"
+              isLoading={isLoading}
+              icon={["fas", "sign-in-alt"]}
               onClick={handleSubmit}
             >
               Login
-            </Button>
+            </AnimatedButton>
             <p>
               Don’t have an account yet?
               <Link to={"/registration"}> Register now!</Link>

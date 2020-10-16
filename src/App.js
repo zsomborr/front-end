@@ -18,14 +18,34 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import SearchMentorPage from "./components/SearchMentorPage";
 import UserPrivatePage from "./components/UserPrivatePage";
 import PublicUserPage from "./components/PublicUserPage";
+import Logout from "./components/Logout";
+import TechnologiesService from "./services/TechnologiesService";
+import DiscordService from "./services/DiscordService";
+import Noty from "noty";
 
 function App() {
   axios.defaults.withCredentials = true;
+  axios.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      if (500 <= error.response.status && error.response.status < 600) {
+        new Noty({
+          timeout: 20_000,
+          text:
+            "We couldn't process your request because an error occured on our side! Our developers are notified about this issue and we fix it as soon as possible. We kindly ask you to repeat it in an another time. Thank You!",
+          type: "error",
+        }).show();
+      }
+      return Promise.reject(error);
+    }
+  );
+  const discordService = new DiscordService();
   const studentService = new StudentService();
   const questionsService = new QuestionsService();
   const mentorService = new MentorService();
   const answerService = new AnswerService();
   const tagService = new TagService();
+  const technologiesService = new TechnologiesService();
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -77,11 +97,19 @@ function App() {
               path="/login"
               render={() => <Login studentService={studentService} />}
             ></Route>
+            <Route
+              key="logout"
+              path="/logout"
+              render={() => <Logout studentService={studentService} />}
+            ></Route>
             <ProtectedRoute
               key="questionsPage"
               path="/questions"
-              component={(props) => (
-                <QuestionsPage questionsService={questionsService} {...props} />
+              component={() => (
+                <QuestionsPage
+                  questionsService={questionsService}
+                  technologiesService={technologiesService}
+                />
               )}
             />
             <ProtectedRoute
@@ -108,7 +136,12 @@ function App() {
             <ProtectedRoute
               key="settings"
               path="/settings"
-              component={() => <Settings studentService={studentService} />}
+              component={() => (
+                <Settings
+                  studentService={studentService}
+                  discordService={discordService}
+                />
+              )}
             ></ProtectedRoute>
             <ProtectedRoute
               key="privateMe"
@@ -121,7 +154,11 @@ function App() {
               key="publicUserPage"
               path="/user/:id"
               component={(props) => (
-                <PublicUserPage studentService={studentService} {...props} />
+                <PublicUserPage
+                  studentService={studentService}
+                  mentorService={mentorService}
+                  {...props}
+                />
               )}
             />
           </UserContext.Provider>

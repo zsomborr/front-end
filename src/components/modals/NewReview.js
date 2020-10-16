@@ -1,26 +1,23 @@
 import React, { useState } from "react";
 import { Col, Form, FormGroup, Modal } from "react-bootstrap";
 import AnimatedButton from "../form/AnimatedButton";
+import ReactStars from "react-stars";
 import CloseSymbol from "./CloseSymbol";
 import Noty from "noty";
 
-const NewAnswer = (props) => {
-  const form = React.createRef();
-  let answer = "";
+const NewReview = (props) => {
+  let review = "";
+  let stars = 0;
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async () => {
-    if (!form.current.reportValidity()) {
-      return;
-    }
-
     setIsLoading(true);
     try {
-      await props.answerService.add(props.questionId, answer);
-      props.setAnswers([...props.answers, { submissionTime: new Date() }]);
+      await props.mentorService.addReview(stars, review, props.userId);
       props.setIsModalOpen(false);
+      props.onSuccess();
       new Noty({
-        text: "Your answer added.",
+        text: "Your review sent to the mentor.",
         type: "success",
       }).show();
     } catch (e) {}
@@ -31,25 +28,33 @@ const NewAnswer = (props) => {
     <Modal show={props.isModalOpen}>
       <Modal.Header>
         <Col>
-          <h4>Answer</h4>
+          <h4>Rate this mentor</h4>
           <CloseSymbol onClick={() => props.setIsModalOpen(false)} />
         </Col>
       </Modal.Header>
       <Modal.Body>
-        <Form ref={form}>
-          <FormGroup>
-            <Form.Control
-              as="textarea"
-              id="answer"
-              placeholder="Be inclusive and respectful.
+        <Col>
+          <ReactStars onChange={(rate) => (stars = rate)} size={50} />
+        </Col>
+
+        <Col>
+          <h4 className="mt-3">Add your review</h4>
+
+          <Form>
+            <FormGroup>
+              <Form.Control
+                className=""
+                as="textarea"
+                id="review"
+                placeholder="Be inclusive and respectful.
 Avoid sarcasm and be careful with jokes — tone is hard to decipher online. Prefer gender-neutral language when uncertain. If a situation makes it hard to be friendly, stop participating and move on."
-              minLength="2"
-              rows="5"
-              required
-              onChange={(e) => (answer = e.target.value)}
-            />
-          </FormGroup>
-        </Form>
+                rows="5"
+                required
+                onChange={(e) => (review = e.target.value)}
+              />
+            </FormGroup>
+          </Form>
+        </Col>
       </Modal.Body>
       <Modal.Footer>
         <AnimatedButton
@@ -64,4 +69,4 @@ Avoid sarcasm and be careful with jokes — tone is hard to decipher online. Pre
   );
 };
 
-export default NewAnswer;
+export default NewReview;

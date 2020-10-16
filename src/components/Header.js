@@ -62,13 +62,16 @@ export default function Header() {
                   Questions
                 </Link>
                 <Link to={"/mentors"} className="nav-link">
-                  Mentors
+                  Peer Mentors
                 </Link>
                 <Link to={"/me"} className="nav-link">
                   My profile
                 </Link>
                 <Link to={"/settings"} className="nav-link">
                   Settings
+                </Link>
+                <Link to={"/logout"} className="nav-link">
+                  Log out
                 </Link>
               </Fragment>
             )}

@@ -14,6 +14,7 @@
     "bootstrap": "^4.5.2",
     "bootstrap-show-password": "^1.2.1",
     "jquery": "^3.5.1",
+    "noty": "^3.2.0-beta",
     "popper.js": "^1.16.1",
     "react": "^16.13.1",
     "react-autosuggest": "^10.0.2",
@@ -22,7 +23,9 @@
     "react-multi-select-component": "^3.0.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
-    "react-time-ago": "^6.0.1"
+    "react-stars": "^2.2.5",
+    "react-time-ago": "^6.0.1",
+    "react-toggle": "^4.1.1"
   },
   "scripts": {
     "start": "react-scripts start",

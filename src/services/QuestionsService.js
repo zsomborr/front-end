@@ -2,14 +2,17 @@ import axios from "axios";
 import SpringBootService from "./SpringBootService";
 
 export default class QuestionsService extends SpringBootService {
-  async addNewQuestion(questionsData, callback) {
-    await axios.post(`${this.baseURL}/question`, questionsData);
-    callback();
+  add(title, description, technologies, isAnonym) {
+    return axios.post(`${this.baseURL}/question`, {
+      title: title,
+      description: description,
+      technologyTags: technologies,
+      anonym: isAnonym,
+    });
   }
 
-  async getAllQuestions(callback) {
-    const data = await axios.get(`${this.baseURL}/question`);
-    callback(data);
+  getAll() {
+    return axios.get(`${this.baseURL}/question`);
   }
 
   search(value) {
@@ -18,5 +21,31 @@ export default class QuestionsService extends SpringBootService {
 
   getQuestionDetails(questionId) {
     return axios.get(`${this.baseURL}/question/${questionId}`);
+  }
+
+  voteOnQuestionById(questionId, value) {
+    return axios.post(`${this.baseURL}/question/vote/${questionId}`, {
+      vote: value,
+    });
+  }
+
+  setNewDataForQuestion(questionId, newTitle, newDescription) {
+    return axios.post(`${this.baseURL}/question/edit/${questionId}`, {
+      title: newTitle,
+      description: newDescription,
+    });
+  }
+
+  setNewContentForAnswer(answerId, content) {
+    console.log("content", content);
+    return axios.post(`${this.baseURL}/answers/edit/${answerId}`, {
+      content: content,
+    });
+  }
+
+  searchBy(technologies) {
+    return axios.post(`${this.baseURL}/filter/get-questions-by-tags`, {
+      technologyTags: technologies,
+    });
   }
 }

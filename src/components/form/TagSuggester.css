@@ -1,5 +1,7 @@
 .react-autosuggest__container {
   width: 100%;
+  position: relative;
+  top: 0;
 }
 
 .react-autosuggest__input {

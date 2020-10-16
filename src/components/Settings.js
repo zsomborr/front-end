@@ -1,21 +1,17 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Col,
-  Container,
-  Form,
-  Image,
-  InputGroup,
-  Row,
-} from "react-bootstrap";
+import { Col, Container, Form, Image, InputGroup, Row } from "react-bootstrap";
+import AnimatedButton from "./form/AnimatedButton";
+import DiscordButton from "./form/DiscordButton";
 import DeletableTag from "./form/DeletableTag";
 import FirstName from "./form/FirstName";
 import LastName from "./form/LastName";
+import Noty from "noty";
 import TagAutoComplete from "./form/TagAutoComplete";
 
 const Settings = (props) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [discordUsername, setDiscordUsername] = useState(null);
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
   const [module, setModule] = useState("");
@@ -31,6 +27,7 @@ const Settings = (props) => {
     "Advanced",
     "JobHunt",
   ]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const requestData = async () => {
@@ -43,6 +40,7 @@ const Settings = (props) => {
       const user = response.data;
       setFirstName(user.firstName);
       setLastName(user.lastName);
+      setDiscordUsername(user.discordUsername);
       setCountry(user.country);
       setCity(user.city);
       if (user.module === null) {
@@ -106,13 +104,21 @@ const Settings = (props) => {
       return;
     }
     const sendRequest = async () => {
-      await props.studentService.updateInfo(
-        firstName,
-        lastName,
-        country,
-        city,
-        module
-      );
+      setIsLoading(true);
+      try {
+        await props.studentService.updateInfo(
+          firstName,
+          lastName,
+          country,
+          city,
+          module
+        );
+        new Noty({
+          text: "Your modification saved.",
+          type: "success",
+        }).show();
+      } catch (e) {}
+      setIsLoading(false);
     };
     sendRequest();
   };
@@ -179,7 +185,7 @@ const Settings = (props) => {
                   <Col xs={8} md={12} className="mx-auto">
                     <Image
                       className="img-fluid img-thumbnail rounded-circle border"
-                      src="missing-profile-pic.jpg"
+                      src="/missing-profile-pic.jpg"
                       alt="Profile"
                     />
                   </Col>
@@ -199,6 +205,17 @@ const Settings = (props) => {
                 />
               </Col>
             </Form.Row>
+            <h4>Social</h4>
+            <Row>
+              <Col xs={12} md={6} className="mb-2 mb-md-0">
+                <DiscordButton
+                  discordService={props.discordService}
+                  studentService={props.studentService}
+                  username={discordUsername}
+                />
+              </Col>
+              <Col></Col>
+            </Row>
             <h4>Location</h4>
             <Form.Row>
               <Col xs={12} md={6}>
@@ -247,7 +264,13 @@ const Settings = (props) => {
                 ))}
               </Form.Control>
             </Form.Group>
-            <Button onClick={handleProfileUpdate}>Save</Button>
+            <AnimatedButton
+              icon={["far", "save"]}
+              isLoading={isLoading}
+              onClick={handleProfileUpdate}
+            >
+              Save
+            </AnimatedButton>
           </Form>
         </Col>
       </Row>

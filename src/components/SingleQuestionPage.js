@@ -1,16 +1,32 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Container, Row, Col, Image } from "react-bootstrap";
+import {
+  Badge,
+  Button,
+  Container,
+  Row,
+  Col,
+  Image,
+  FormGroup,
+  Form,
+} from "react-bootstrap";
 import NewAnswer from "./modals/NewAnswer";
 import ReactTimeAgo from "react-time-ago";
 
 const SingleQuestionPage = (props) => {
   const [question, setQuestionDetails] = useState({
     submissionTime: new Date().toString(),
+    technologyTags: [],
   });
   const [answers, setAnswers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const questionId = props.match.params.id;
+  const [editing, setEditing] = useState(false);
+  const [newDescription, setNewDescription] = useState("");
+  const [newTitle, setNewTitle] = useState("");
+  const [answerEditing, setAnswerEditing] = useState(false);
+  const [newAnswer, setNewAnswer] = useState("");
+  const [answerId, setAnswerId] = useState(0);
 
   const getData = useCallback(async () => {
     const response = await props.questionsService.getQuestionDetails(
@@ -20,6 +36,148 @@ const SingleQuestionPage = (props) => {
     setQuestionDetails(response.data.question);
     setAnswers(response.data.answers);
   }, [props.questionsService, questionId]);
+
+  const upvote = async () => {
+    await props.questionsService.voteOnQuestionById(questionId, 1);
+    getData();
+  };
+
+  const downvote = async () => {
+    await props.questionsService.voteOnQuestionById(questionId, -1);
+    getData();
+  };
+
+  const editButton = () => {
+    if (!editing) {
+      return (
+        <span onClick={editQuestion}>
+          <i className="far fa-edit ml-3"></i>
+        </span>
+      );
+    }
+  };
+
+  const editQuestion = () => {
+    setEditing(true);
+    setNewTitle(question.title);
+    setNewDescription(question.description);
+  };
+
+  const editDescription = () => {
+    if (!editing) {
+      return (
+        <Col id="description" className="preserve-line">
+          {question.description}
+        </Col>
+      );
+    } else {
+      return (
+        <Col>
+          <FormGroup>
+            <Form.Control
+              as="textarea"
+              rows="5"
+              defaultValue={question.description}
+              onChange={(e) => setNewDescription(e.target.value)}
+            ></Form.Control>
+          </FormGroup>
+        </Col>
+      );
+    }
+  };
+
+  const editTitle = () => {
+    if (!editing) {
+      return <span className="h3 mr-3">{question.title}</span>;
+    } else {
+      return (
+        <FormGroup>
+          <Form.Control
+            as="input"
+            defaultValue={question.title}
+            onChange={(e) => setNewTitle(e.target.value)}
+          ></Form.Control>
+          <div className="mt-2">
+            <Button onClick={saveEditing} className="mr-2">
+              Save
+            </Button>
+            <Button onClick={cancelEditing} className="btn-danger">
+              Cancel
+            </Button>
+          </div>
+        </FormGroup>
+      );
+    }
+  };
+
+  const cancelEditing = () => {
+    setEditing(false);
+  };
+
+  const saveEditing = async () => {
+    setEditing(false);
+    await props.questionsService.setNewDataForQuestion(
+      questionId,
+      newTitle,
+      newDescription
+    );
+    getData();
+  };
+
+  const cancelAnswerEditing = () => {
+    setAnswerEditing(false);
+    setAnswerId(0);
+  };
+
+  const saveAnswerEditing = async () => {
+    setAnswerEditing(false);
+    await props.questionsService.setNewContentForAnswer(answerId, newAnswer);
+    setAnswerId(0);
+    getData();
+  };
+
+  const editAnswerContent = (content, id) => {
+    if (id !== answerId) {
+      return content;
+    } else {
+      return (
+        <Container>
+          <FormGroup>
+            <Form.Control
+              as="textarea"
+              rows="3"
+              defaultValue={content}
+              onChange={(e) => setNewAnswer(e.target.value)}
+            ></Form.Control>
+          </FormGroup>
+          <div className="mt-2">
+            <Button onClick={saveAnswerEditing} className="mr-2">
+              Save
+            </Button>
+            <Button onClick={cancelAnswerEditing} className="btn-danger">
+              Cancel
+            </Button>
+          </div>
+        </Container>
+      );
+    }
+  };
+
+  const editAnswer = (id) => {
+    setAnswerId(id);
+    setAnswerEditing(true);
+    setNewAnswer(document.getElementById(`answer-${id}`).innerText);
+  };
+
+  const editAnswerButton = (id) => {
+    if (!answerEditing) {
+      return (
+        <span onClick={() => editAnswer(id)}>
+          <i className="far fa-edit ml-3"></i>
+        </span>
+      );
+    }
+  };
 
   useEffect(() => {
     getData();
@@ -52,13 +210,18 @@ const SingleQuestionPage = (props) => {
         <Col>
           <Row>
             <Col xs={9} lg={10} className="order-2 order-lg-1">
-              <span className="h3">{question.title}</span>
-              <span className="ml-3 d-none d-sm-inline-block">
+              {editTitle()}
+              <span className="d-none d-sm-inline-block">
                 by:{" "}
-                <Link to={`/user/${question.userId_}`}>
-                  {question.username}
-                </Link>
+                {question.anonym ? (
+                  "Anonymous"
+                ) : (
+                  <Link to={`/user/${question.userId_}`}>
+                    {question.username}
+                  </Link>
+                )}
               </span>
+              {question.myQuestion ? editButton() : null}
             </Col>
             <Col
               xs={3}
@@ -67,7 +230,11 @@ const SingleQuestionPage = (props) => {
             >
               <Image
                 className="img-fluid img-thumbnail rounded-circle border"
-                src="/missing-profile-pic.jpg"
+                src={
+                  question.anonym
+                    ? "/anonymous-profile-pic.jpg"
+                    : "/missing-profile-pic.jpg"
+                }
                 alt="Profile"
               />
               <span className="d-sm-none">{question.username}</span>
@@ -75,9 +242,53 @@ const SingleQuestionPage = (props) => {
           </Row>
           <hr></hr>
           <Row>
-            <Col className="preserve-line">{question.description}</Col>
+            <Col lg={1} md={1} xs={1}>
+              {question.voted ? (
+                <Row>
+                  <Col className="text-center" id="rating">
+                    <Badge variant="dark">{question.vote}</Badge>
+                  </Col>
+                </Row>
+              ) : (
+                <Container>
+                  <Row>
+                    <Col className="text-center">
+                      <span onClick={upvote}>
+                        <i className="far fa-arrow-alt-circle-up"></i>
+                      </span>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col className="text-center" id="rating">
+                      {question.vote}
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col className="text-center">
+                      <span onClick={downvote}>
+                        <i className="far fa-arrow-alt-circle-down"></i>
+                      </span>
+                    </Col>
+                  </Row>
+                </Container>
+              )}
+            </Col>
+            <Col>{editDescription()}</Col>
           </Row>
           <Row>
+            <Col xs={12} md={9}>
+              {question.technologyTags.map((technology) => {
+                return (
+                  <Badge
+                    key={`technology-${technology.technologyTag}`}
+                    variant="primary"
+                    className="badge-pill mr-1"
+                  >
+                    {technology.technologyTag}
+                  </Badge>
+                );
+              })}
+            </Col>
             <Col className="text-right text-muted">
               <ReactTimeAgo date={question.submissionTime} />
             </Col>
@@ -103,18 +314,26 @@ const SingleQuestionPage = (props) => {
                 </Col>
                 <Col
                   xs={12}
-                  lg={10}
+                  lg={9}
                   className="order-4 order-lg-2 preserve-line"
+                  id={`answer-${answer.id}`}
                 >
-                  {answer.content}
+                  {editAnswerContent(answer.content, answer.id)}
                 </Col>
-                <Col xs={12} lg={2} className="order-2 order-lg-3 text-center">
+                <Col
+                  xs={12}
+                  lg={1}
+                  className="order-5 order-lg-3 preserve-line"
+                >
+                  {answer.myAnswer ? editAnswerButton(answer.id) : ""}
+                </Col>
+                <Col xs={12} lg={2} className="order-2 order-lg-4 text-center">
                   <Link to={`/user/${answer.userId_}`}>{answer.username}</Link>
                 </Col>
                 <Col
                   xs={12}
                   lg={10}
-                  className="order-3 order-lg-4 text-center text-lg-right font-italic"
+                  className="order-3 order-lg-5 text-center text-lg-right font-italic"
                 >
                   <ReactTimeAgo
                     date={new Date(Date.parse(answer.submissionTime))}

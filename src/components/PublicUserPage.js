@@ -1,8 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Image, Badge } from "react-bootstrap";
+import React, { useCallback, useEffect, useState } from "react";
+import { Container, Row, Col, Image, Badge, Button } from "react-bootstrap";
+import NewReview from "./modals/NewReview";
+import ReactStars from "react-stars";
 
 const PublicUserPage = (props) => {
   const studentService = props.studentService;
+  const mentorService = props.mentorService;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [reviews, setReviews] = useState([]);
+
   const [user, setUser] = useState({
     firstName: "",
     lastName: "",
@@ -13,19 +19,35 @@ const PublicUserPage = (props) => {
     projectTags: [],
   });
 
+  const getReviews = useCallback(async () => {
+    const response = await mentorService.getUserReviews(props.match.params.id);
+    setReviews(response.data);
+  }, [mentorService, props.match.params.id]);
+
   useEffect(() => {
-    const getData = async () => {
+    getReviews();
+  }, [getReviews]);
+
+  useEffect(() => {
+    const getUser = async () => {
       const response = await studentService.getUserDataById(
         props.match.params.id
       );
       setUser(response.data);
     };
-    getData();
+    getUser();
   }, [props.match.params.id, studentService]);
 
   return (
     <Container className="page">
       <Row className="content-container">
+        <NewReview
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          mentorService={props.mentorService}
+          userId={props.match.params.id}
+          onSuccess={getReviews}
+        />
         <Col md={12} lg={5}>
           <Row className="d-flex align-items-end">
             <Col>
@@ -93,7 +115,11 @@ const PublicUserPage = (props) => {
                     <strong>Contact</strong> me here:
                   </p>
                   <Col>
-                    <Row className="d-none discordTag mt-2 text-right rounded-pill">
+                    <Row
+                      className={`${
+                        user.discordId ? null : "d-none"
+                      } discordTag mt-2 text-right rounded-pill`}
+                    >
                       <Col className="text-left" xs={3} sm={3}>
                         <Image
                           className="emailImage "
@@ -110,7 +136,14 @@ const PublicUserPage = (props) => {
                           fontSize: "100%",
                         }}
                       >
-                        {user.discord}
+                        <a
+                          href={`https://discordapp.com/users/${user.discordId}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {user.discordUsername}#{user.discriminator}
+                        </a>
+                        <i className="fas fa-external-link-alt ml-1"></i>
                       </Col>
                     </Row>
                     <Row className="emailTag mt-2 text-right rounded-pill">
@@ -141,9 +174,59 @@ const PublicUserPage = (props) => {
         </Col>
         <Col>
           <Row>
-            <Col className="h4 text-center">Reviews</Col>
+            <Col xs={12} md={8} className="h4 text-center">
+              Reviews
+            </Col>
+
+            <Col xs={12} md={4} className="text-center mb-4">
+              <Button onClick={() => setIsModalOpen(!isModalOpen)}>
+                Add review
+              </Button>
+            </Col>
+
+            {reviews.map((review, index) => {
+              const even = index % 2 === 0;
+              if (review.review === "") {
+                return (
+                  <Col xs={12} className="text-center ">
+                    {review.reviewer} rated this mentor with
+                    <ReactStars
+                      value={review.rating}
+                      size={16}
+                      className="d-inline-block align-bottom mx-1 text-shadow-small"
+                      edit={false}
+                    />
+                    stars.
+                    <hr></hr>
+                  </Col>
+                );
+              }
+              return (
+                <Col xs={12}>
+                  <blockquote
+                    className={even ? "blockquote text-right" : "blockquote"}
+                  >
+                    <p className="mb-0">{review.review}</p>
+                    <footer className="blockquote-footer">
+                      <cite title={`${review.reviewer}`}>
+                        {review.reviewer}
+                      </cite>
+                      <ReactStars
+                        value={review.rating}
+                        size={20}
+                        className={
+                          even
+                            ? "d-flex justify-content-end text-shadow-small"
+                            : "text-shadow-small"
+                        }
+                        edit={false}
+                      />
+                    </footer>
+                  </blockquote>
+                </Col>
+              );
+            })}
           </Row>
-          <Row></Row>
         </Col>
       </Row>
     </Container>
