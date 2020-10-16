@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import {
   Alert,
-  Button,
   Col,
   Form,
   FormControl,
   FormGroup,
   Modal,
 } from "react-bootstrap";
+import AnimatedButton from "../form/AnimatedButton";
 import Toggle from "react-toggle";
 import "react-toggle/style.css";
+import CloseSymbol from "./CloseSymbol";
 import DeletableTag from "../form/DeletableTag";
+import Noty from "noty";
 import TagSuggester from "../form/TagSuggester";
 
 const NewQuestion = (props) => {
@@ -23,6 +25,7 @@ const NewQuestion = (props) => {
   const [value, setValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [isAnonymusMode, setAnonymusMode] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const getTechnologies = async () => {
@@ -72,6 +75,7 @@ const NewQuestion = (props) => {
     }
 
     const sendRequest = async () => {
+      setIsLoading(true);
       try {
         await props.questionsService.add(
           title,
@@ -81,7 +85,12 @@ const NewQuestion = (props) => {
         );
         props.setIsModalOpen(false);
         props.onSuccess();
+        new Noty({
+          text: "Your question added.",
+          type: "success",
+        }).show();
       } catch (e) {}
+      setIsLoading(false);
     };
     sendRequest();
   };
@@ -91,13 +100,7 @@ const NewQuestion = (props) => {
       <Modal.Header>
         <Col>
           <h4>Ask new question</h4>
-          <div
-            className="close-container"
-            onClick={() => props.setIsModalOpen(false)}
-          >
-            <div className="leftright"></div>
-            <div className="rightleft"></div>
-          </div>
+          <CloseSymbol onClick={() => props.setIsModalOpen(false)} />
         </Col>
       </Modal.Header>
       <Modal.Body>
@@ -166,7 +169,13 @@ const NewQuestion = (props) => {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={handleSubmit}>Send</Button>
+        <AnimatedButton
+          icon={["far", "paper-plane"]}
+          isLoading={isLoading}
+          onClick={handleSubmit}
+        >
+          Send
+        </AnimatedButton>
       </Modal.Footer>
     </Modal>
   );

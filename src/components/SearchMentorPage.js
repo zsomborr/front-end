@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  Alert,
-  Container,
-  Row,
-  Col,
-  Image,
-  Badge,
-  Button,
-} from "react-bootstrap";
+import { Alert, Badge, Col, Container, Image, Row } from "react-bootstrap";
+import AnimatedButton from "./form/AnimatedButton";
 import { Link } from "react-router-dom";
 import MultiSelect from "react-multi-select-component";
 
@@ -18,18 +11,23 @@ const SearchMentorPage = (props) => {
   const [projects, setProjects] = useState([]);
   const [selectedTechs, setSelectedTechs] = useState([]);
   const [selectedProjects, setSelectedProjects] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const search = async () => {
-    const techs = [];
-    const projects = [];
-    selectedTechs.map((tech) =>
-      techs.push({ technologyTag: tech.label, id: tech.value })
-    );
-    selectedProjects.map((project) =>
-      projects.push({ projectTag: project.label, id: project.value })
-    );
-    const response = await props.mentorService.filterBy(techs, projects);
-    setUsers(response.data);
+    setIsLoading(true);
+    try {
+      const techs = [];
+      const projects = [];
+      selectedTechs.map((tech) =>
+        techs.push({ technologyTag: tech.label, id: tech.value })
+      );
+      selectedProjects.map((project) =>
+        projects.push({ projectTag: project.label, id: project.value })
+      );
+      const response = await props.mentorService.filterBy(techs, projects);
+      setUsers(response.data);
+    } catch (e) {}
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -84,7 +82,13 @@ const SearchMentorPage = (props) => {
               />
             </Col>
             <Col className="text-right">
-              <Button onClick={search}>Search</Button>
+              <AnimatedButton
+                icon={["fas", "search"]}
+                isLoading={isLoading}
+                onClick={search}
+              >
+                Search
+              </AnimatedButton>
             </Col>
           </Row>
           <Row>

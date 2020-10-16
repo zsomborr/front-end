@@ -6,28 +6,27 @@
 }
 
 .close-container {
-  position: relative;
-  top: -30px;
-  margin: auto;
-  width: 10%;
-  height: 10%;
+  position: absolute;
+  top: 3px;
+  right: 0;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
 }
 
-.leftright,
-.rightleft {
+.close-container div {
   height: 3px;
   width: 25px;
   position: absolute;
-  margin-top: 15%;
-  margin-left: 518%;
+  margin-top: 9px;
+  margin-left: -2px;
   background-color: rgba(0, 0, 0, 0.63);
   border-radius: 2px;
   transform: rotate(45deg);
   transition: all 0.3s ease-in;
 }
 
-.rightleft {
+.close-container div:nth-child(2) {
   transform: rotate(-45deg);
 }
 
@@ -36,17 +35,20 @@
   position: absolute;
 }
 
-.close-container:hover .leftright {
+.close-container:hover div:nth-child(1) {
   transform: rotate(-45deg);
   background-color: red;
 }
-.close-container:hover .rightleft {
+
+.close-container:hover div:nth-child(2) {
   transform: rotate(45deg);
   background-color: red;
 }
+
 .close-container:hover label {
   opacity: 1;
 }
+
 .emailTag,
 .discordTag {
   background-color: #5871d6;

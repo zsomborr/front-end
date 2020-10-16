@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Col,
-  Container,
-  Form,
-  Image,
-  InputGroup,
-  Row,
-} from "react-bootstrap";
+import { Col, Container, Form, Image, InputGroup, Row } from "react-bootstrap";
+import AnimatedButton from "./form/AnimatedButton";
 import DiscordButton from "./form/DiscordButton";
 import DeletableTag from "./form/DeletableTag";
 import FirstName from "./form/FirstName";
 import LastName from "./form/LastName";
+import Noty from "noty";
 import TagAutoComplete from "./form/TagAutoComplete";
 
 const Settings = (props) => {
@@ -33,6 +27,7 @@ const Settings = (props) => {
     "Advanced",
     "JobHunt",
   ]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const requestData = async () => {
@@ -109,13 +104,21 @@ const Settings = (props) => {
       return;
     }
     const sendRequest = async () => {
-      await props.studentService.updateInfo(
-        firstName,
-        lastName,
-        country,
-        city,
-        module
-      );
+      setIsLoading(true);
+      try {
+        await props.studentService.updateInfo(
+          firstName,
+          lastName,
+          country,
+          city,
+          module
+        );
+        new Noty({
+          text: "Your modification saved.",
+          type: "success",
+        }).show();
+      } catch (e) {}
+      setIsLoading(false);
     };
     sendRequest();
   };
@@ -261,7 +264,13 @@ const Settings = (props) => {
                 ))}
               </Form.Control>
             </Form.Group>
-            <Button onClick={handleProfileUpdate}>Save</Button>
+            <AnimatedButton
+              icon={["far", "save"]}
+              isLoading={isLoading}
+              onClick={handleProfileUpdate}
+            >
+              Save
+            </AnimatedButton>
           </Form>
         </Col>
       </Row>

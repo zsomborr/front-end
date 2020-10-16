@@ -1,20 +1,30 @@
-import React from "react";
-import { Button, Col, Form, FormGroup, Modal } from "react-bootstrap";
+import React, { useState } from "react";
+import { Col, Form, FormGroup, Modal } from "react-bootstrap";
+import AnimatedButton from "../form/AnimatedButton";
+import CloseSymbol from "./CloseSymbol";
+import Noty from "noty";
 
 const NewAnswer = (props) => {
   const form = React.createRef();
   let answer = "";
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async () => {
     if (!form.current.reportValidity()) {
       return;
     }
 
+    setIsLoading(true);
     try {
       await props.answerService.add(props.questionId, answer);
       props.setAnswers([...props.answers, { submissionTime: new Date() }]);
       props.setIsModalOpen(false);
+      new Noty({
+        text: "Your answer added.",
+        type: "success",
+      }).show();
     } catch (e) {}
+    setIsLoading(false);
   };
 
   return (
@@ -22,13 +32,7 @@ const NewAnswer = (props) => {
       <Modal.Header>
         <Col>
           <h4>Answer</h4>
-          <div
-            className="close-container"
-            onClick={() => props.setIsModalOpen(false)}
-          >
-            <div className="leftright"></div>
-            <div className="rightleft"></div>
-          </div>
+          <CloseSymbol onClick={() => props.setIsModalOpen(false)} />
         </Col>
       </Modal.Header>
       <Modal.Body>
@@ -48,7 +52,13 @@ Avoid sarcasm and be careful with jokes — tone is hard to decipher online. Pre
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={handleSubmit}>Send</Button>
+        <AnimatedButton
+          icon={["far", "paper-plane"]}
+          isLoading={isLoading}
+          onClick={handleSubmit}
+        >
+          Send
+        </AnimatedButton>
       </Modal.Footer>
     </Modal>
   );
