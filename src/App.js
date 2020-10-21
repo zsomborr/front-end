@@ -60,7 +60,7 @@ function App() {
     };
 
     checkAuthentication();
-  }, [isAuthenticated, studentService]);
+  }, [studentService]);
 
   if (isLoading) {
     return (
