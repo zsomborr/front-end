@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Container, Row, Col, Image, Badge, Button } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import NewReview from "./modals/NewReview";
+import Noty from "noty";
 import ReactStars from "react-stars";
 
 const PublicUserPage = (props) => {
@@ -37,6 +39,16 @@ const PublicUserPage = (props) => {
     };
     getUser();
   }, [props.match.params.id, studentService]);
+
+  const handleCopyEmail = async () => {
+    await navigator.clipboard.writeText(user.email);
+    new Noty({
+      layout: "bottomLeft",
+      timeout: 500,
+      text: `Copied: ${user.email}`,
+      type: "info",
+    }).show();
+  };
 
   return (
     <Container className="page">
@@ -156,12 +168,17 @@ const PublicUserPage = (props) => {
                       <Col
                         xs={9}
                         sm={9}
-                        className="text-right align-self-center font-weight-bold"
+                        className="text-right align-self-center font-weight-bold pl-0"
                       >
                         <a href={`mailto:${user.email}`} className="text-light">
                           <u>{user.email}</u>
                         </a>
-                        <i className="fas fa-external-link-alt ml-1 text-light"></i>
+                        <FontAwesomeIcon
+                          icon={["far", "copy"]}
+                          className="ml-1 text-light"
+                          onClick={handleCopyEmail}
+                          title="Copy email address to clipboard"
+                        ></FontAwesomeIcon>
                       </Col>
                     </Row>
                   </Col>
