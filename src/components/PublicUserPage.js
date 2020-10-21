@@ -139,7 +139,7 @@ const PublicUserPage = (props) => {
                           className="text-light"
                         >
                           <u>
-                          {user.discordUsername}#{user.discriminator}
+                            {user.discordUsername}#{user.discriminator}
                           </u>
                         </a>
                         <i className="fas fa-external-link-alt ml-1 text-light"></i>
@@ -157,12 +157,11 @@ const PublicUserPage = (props) => {
                         xs={9}
                         sm={9}
                         className="text-right align-self-center font-weight-bold"
-                        style={{
-                          wordWrap: "break-word",
-                          fontSize: "100%",
-                        }}
                       >
-                        {user.email}
+                        <a href={`mailto:${user.email}`} className="text-light">
+                          <u>{user.email}</u>
+                        </a>
+                        <i className="fas fa-external-link-alt ml-1 text-light"></i>
                       </Col>
                     </Row>
                   </Col>
