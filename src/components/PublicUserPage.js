@@ -131,19 +131,18 @@ const PublicUserPage = (props) => {
                         xs={9}
                         sm={9}
                         className="text-right align-self-center font-weight-bold"
-                        style={{
-                          wordWrap: "break-word",
-                          fontSize: "100%",
-                        }}
                       >
                         <a
                           href={`https://discordapp.com/users/${user.discordId}`}
                           target="_blank"
                           rel="noopener noreferrer"
+                          className="text-light"
                         >
+                          <u>
                           {user.discordUsername}#{user.discriminator}
+                          </u>
                         </a>
-                        <i className="fas fa-external-link-alt ml-1"></i>
+                        <i className="fas fa-external-link-alt ml-1 text-light"></i>
                       </Col>
                     </Row>
                     <Row className="emailTag mt-2 text-right rounded-pill">
