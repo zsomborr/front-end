@@ -25,20 +25,23 @@ import Noty from "noty";
 
 function App() {
   axios.defaults.withCredentials = true;
-  axios.interceptors.response.use(
-    (response) => response,
-    (error) => {
-      if (500 <= error.response.status && error.response.status < 600) {
-        new Noty({
-          timeout: 20_000,
-          text:
-            "We couldn't process your request because an error occured on our side! Our developers are notified about this issue and we fix it as soon as possible. We kindly ask you to repeat it in an another time. Thank You!",
-          type: "error",
-        }).show();
+  useEffect(() => {
+    axios.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (500 <= error.response.status && error.response.status < 600) {
+          new Noty({
+            timeout: 20_000,
+            text:
+              "We couldn't process your request because an error occured on our side! Our developers are notified about this issue and we fix it as soon as possible. We kindly ask you to repeat it in an another time. Thank You!",
+            type: "error",
+          }).show();
+        }
+        return Promise.reject(error);
       }
-      return Promise.reject(error);
-    }
-  );
+    );
+  }, []);
+
   const discordService = new DiscordService();
   const [studentService] = useState(new StudentService());
   const questionsService = new QuestionsService();
