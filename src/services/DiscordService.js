@@ -12,8 +12,7 @@ export default class DiscordService {
       "&prompt=none";
   }
 
-  getUser() {
-    const fragment = new URLSearchParams(window.location.hash.slice(1));
+  getUser(fragment) {
     const tokenType = fragment.get("token_type");
     const accessToken = fragment.get("access_token");
 

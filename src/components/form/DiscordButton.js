@@ -16,7 +16,9 @@ const DiscordButton = (props) => {
     const getUserDetails = async () => {
       try {
         setLoading(true);
-        const response = await props.discordService.getUser();
+        const fragment = new URLSearchParams(window.location.hash.slice(1));
+        window.history.pushState("", "", "/settings");
+        const response = await props.discordService.getUser(fragment);
         await props.studentService.connectWithDiscord(response.data);
         setUsername(response.data.username);
         setConnected(true);
