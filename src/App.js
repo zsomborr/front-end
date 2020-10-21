@@ -40,7 +40,7 @@ function App() {
     }
   );
   const discordService = new DiscordService();
-  const studentService = new StudentService();
+  const [studentService] = useState(new StudentService());
   const questionsService = new QuestionsService();
   const mentorService = new MentorService();
   const answerService = new AnswerService();
