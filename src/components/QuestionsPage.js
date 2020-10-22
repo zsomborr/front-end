@@ -97,6 +97,7 @@ const QuestionsPage = (props) => {
                       id="search"
                       placeholder="Search..."
                       minLength="2"
+                      autocomplete="off"
                       required
                       onChange={(e) => setQuery(e.target.value)}
                     />
