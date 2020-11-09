@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { Alert, Container, Col, Form, Row } from "react-bootstrap";
 import AnimatedButton from "./form/AnimatedButton";
 import WebsiteDescription from "./WebsiteDescription";
@@ -102,10 +102,6 @@ const Login = (props) => {
             >
               Login
             </AnimatedButton>
-            <p>
-              Don’t have an account yet?
-              <Link to={"/registration"}> Register now!</Link>
-            </p>
           </Form>
         </Col>
         <Col xs={12} lg={6} className="content-container text-center">
