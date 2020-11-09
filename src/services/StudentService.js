@@ -2,14 +2,16 @@ import axios from "axios";
 import SpringBootService from "./SpringBootService";
 
 export default class StudentService extends SpringBootService {
-  async login(username, password, setIsAuthenticated) {
-    const response = await axios.post(`${this.baseURL}/auth/login`, {
-      username: username,
-      password: password,
+  async login(token, setIsAuthenticated) {
+    const response = await axios.post(`${this.baseURL}/auth/google`, {
+      token: token,
     });
 
     if (response.status === 200) {
       setIsAuthenticated(true);
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${response.data.token}`;
     }
 
     return response;
