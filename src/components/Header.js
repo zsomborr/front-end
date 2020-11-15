@@ -52,9 +52,6 @@ export default function Header() {
                 <Link to={"/login"} className="nav-link">
                   Login
                 </Link>
-                <Link to={"/registration"} className="nav-link">
-                  Registration
-                </Link>
               </Fragment>
             ) : (
               <Fragment>

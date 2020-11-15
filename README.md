@@ -10,6 +10,7 @@ The frontend repository of Codecool's IRL coding challenge's Peer Mentoring appl
 - React v16
   - [React Bootstrap](https://www.npmjs.com/package/react-bootstrap) v1
   - [React Autosuggest](https://github.com/moroshko/react-autosuggest) v10
+  - [React Google Login](https://www.npmjs.com/package/react-google-login) v5
   - [React Multi Select Component](https://www.npmjs.com/package/react-multi-select-component) v3
   - [React Time Ago](https://www.npmjs.com/package/react-time-ago) v6
   - [React Toggle](https://www.npmjs.com/package/react-toggle) v4
@@ -32,6 +33,9 @@ $ npm i
 - Make a copy from `.env.example` with name `.env`
 - Update the `REACT_APP_DISCORD_CLIENT_ID` value to match Your newly created Discord app's ID
 - Add `http://localhost:3000/settings/discord/auth` to the Discord's app **Redirects** list
+- Update the `REACT_APP_GOOGLE_CLIENT_ID` value to match Your newly created Google OAuth client's ID
+- Add `http://localhost:3000/login/google/auth` to the Google's OAuth2.0 Client **Authorised redirect URIs** list
+- Add `http://localhost:3000` to the Google's OAuth2.0 Client **Authorised JavaScript origins** list
 - Start Java Spring Boot back-end
 - Start React app in development mode
 
@@ -50,6 +54,7 @@ $ npm start
   - `REACT_APP_DISCORD_CLIENT_ID`: the app's ID from https://discord.com/developers/applications
   - `REACT_APP_DISCORD_REDIRECT_URI`: the URL where Discord will redirect after successful authentication
   - `REACT_APP_DISCORD_SCOPES`: set to `identify email`
+  - `REACT_APP_GOOGLE_CLIENT_ID`: the app's ID from <https://console.developers.google.com/>
 - Add Buildpack:
 
 ```

@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Login from "./components/Login";
 import QuestionsPage from "./components/QuestionsPage";
 import Header from "./components/Header";
-import Registration from "./components/Registration";
 import Settings from "./components/Settings";
 import MentorService from "./services/MentorService";
 import StudentService from "./services/StudentService";
@@ -90,11 +89,6 @@ function App() {
         <Router>
           <UserContext.Provider value={[isAuthenticated, setIsAuthenticated]}>
             <Header />
-            <Route
-              key="registration"
-              path="/registration"
-              render={() => <Registration studentService={studentService} />}
-            ></Route>
             <Route
               key="login"
               path="/login"
