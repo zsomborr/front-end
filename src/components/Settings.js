@@ -78,6 +78,7 @@ const Settings = (props) => {
 
   const handleAddProject = (name) => {
     const sendRequest = async () => {
+      await props.projectsService.create(name);
       await props.studentService.addProject(name);
       if (!projects.includes(name)) {
         setProjects([...projects, name]);
@@ -89,6 +90,7 @@ const Settings = (props) => {
 
   const handleAddTechnology = (name) => {
     const sendRequest = async () => {
+      await props.technologiesService.create(name);
       await props.studentService.addTechnology(name);
       if (!technologies.includes(name)) {
         setTechnologies([...technologies, name]);

@@ -18,6 +18,7 @@ import SearchMentorPage from "./components/SearchMentorPage";
 import UserPrivatePage from "./components/UserPrivatePage";
 import PublicUserPage from "./components/PublicUserPage";
 import Logout from "./components/Logout";
+import ProjectsService from "./services/ProjectsService";
 import TechnologiesService from "./services/TechnologiesService";
 import DiscordService from "./services/DiscordService";
 import Noty from "noty";
@@ -47,6 +48,7 @@ function App() {
   const mentorService = new MentorService();
   const answerService = new AnswerService();
   const tagService = new TagService();
+  const projectsService = new ProjectsService();
   const technologiesService = new TechnologiesService();
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -135,7 +137,9 @@ function App() {
               path="/settings"
               component={() => (
                 <Settings
+                  projectsService={projectsService}
                   studentService={studentService}
+                  technologiesService={technologiesService}
                   discordService={discordService}
                 />
               )}
