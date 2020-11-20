@@ -34,13 +34,14 @@ const SearchMentorPage = (props) => {
     const getData = async () => {
       const response = await props.mentorService.getAll();
       setUsers(response.data);
-      const tagsResponse = await tagService.getAllTags();
+      const projectsResponse = await tagService.projects();
+      const technologiesResponse = await tagService.technologies();
       const techs = [];
       const projects = [];
-      tagsResponse.data.technologyTags.map((tech) =>
+      technologiesResponse.data.map((tech) =>
         techs.push({ label: tech["technologyTag"], value: tech["id"] })
       );
-      tagsResponse.data.projectTags.map((project) =>
+      projectsResponse.data.map((project) =>
         projects.push({ label: project["projectTag"], value: project["id"] })
       );
       setTechnologies(techs);
