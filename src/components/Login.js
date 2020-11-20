@@ -31,7 +31,6 @@ const Login = (props) => {
             clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
             onSuccess={handleGoogleAuth}
             onFailure={() => {}}
-            isSignedIn={true}
             buttonText="Sign in with Google"
             theme="dark"
           />
