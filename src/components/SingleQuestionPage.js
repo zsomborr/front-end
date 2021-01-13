@@ -47,16 +47,6 @@ const SingleQuestionPage = (props) => {
     getData();
   };
 
-  const editButton = () => {
-    if (!editing) {
-      return (
-        <span onClick={editQuestion}>
-          <i className="far fa-edit ml-3"></i>
-        </span>
-      );
-    }
-  };
-
   const editQuestion = () => {
     setEditing(true);
     setNewTitle(question.title);
@@ -66,9 +56,9 @@ const SingleQuestionPage = (props) => {
   const editDescription = () => {
     if (!editing) {
       return (
-        <Col id="description" className="preserve-line">
+        <span id="description" className="preserve-line">
           {question.description}
-        </Col>
+        </span>
       );
     } else {
       return (
@@ -82,30 +72,6 @@ const SingleQuestionPage = (props) => {
             ></Form.Control>
           </FormGroup>
         </Col>
-      );
-    }
-  };
-
-  const editTitle = () => {
-    if (!editing) {
-      return <span className="h3 mr-3">{question.title}</span>;
-    } else {
-      return (
-        <FormGroup>
-          <Form.Control
-            as="input"
-            defaultValue={question.title}
-            onChange={(e) => setNewTitle(e.target.value)}
-          ></Form.Control>
-          <div className="mt-2">
-            <Button onClick={saveEditing} className="mr-2">
-              Save
-            </Button>
-            <Button onClick={cancelEditing} className="btn-danger">
-              Cancel
-            </Button>
-          </div>
-        </FormGroup>
       );
     }
   };
@@ -134,6 +100,38 @@ const SingleQuestionPage = (props) => {
     await props.questionsService.setNewContentForAnswer(answerId, newAnswer);
     setAnswerId(0);
     getData();
+  };
+
+  const upvoteDownvote = () => {
+    return question.voted ? (
+      <Row>
+        <Col className="text-center" id="rating">
+          <Badge variant="dark">{question.vote}</Badge>
+        </Col>
+      </Row>
+    ) : (
+      <Container>
+        <Row>
+          <Col className="text-center">
+            <span onClick={upvote}>
+              <i className="far fa-arrow-alt-circle-up"></i>
+            </span>
+          </Col>
+        </Row>
+        <Row>
+          <Col className="text-center" id="rating">
+            {question.vote}
+          </Col>
+        </Row>
+        <Row>
+          <Col className="text-center">
+            <span onClick={downvote}>
+              <i className="far fa-arrow-alt-circle-down"></i>
+            </span>
+          </Col>
+        </Row>
+      </Container>
+    );
   };
 
   const editAnswerContent = (content, id) => {
@@ -210,18 +208,51 @@ const SingleQuestionPage = (props) => {
         <Col>
           <Row>
             <Col xs={9} lg={10} className="order-2 order-lg-1">
-              {editTitle()}
-              <span className="d-none d-sm-inline-block">
-                by:{" "}
-                {question.anonym ? (
-                  "Anonymous"
+              <Row>
+                {editing ? (
+                  <FormGroup>
+                    <Form.Control
+                      as="input"
+                      defaultValue={question.title}
+                      onChange={(e) => setNewTitle(e.target.value)}
+                    ></Form.Control>
+                    <div className="mt-2">
+                      <Button onClick={saveEditing} className="mr-2">
+                        Save
+                      </Button>
+                      <Button onClick={cancelEditing} className="btn-danger">
+                        Cancel
+                      </Button>
+                    </div>
+                  </FormGroup>
                 ) : (
-                  <Link to={`/user/${question.userId_}`}>
-                    {question.username}
-                  </Link>
+                  <Col xs={12} className="mb-3">
+                    <span className="h3">{question.title}</span>
+                    {question.myQuestion ? (
+                      <span onClick={editQuestion}>
+                        <i className="far fa-edit ml-3"></i>
+                      </span>
+                    ) : null}
+                  </Col>
                 )}
-              </span>
-              {question.myQuestion ? editButton() : null}
+                <Col lg={1} md={1} xs={1} className="d-none d-lg-block">
+                  {upvoteDownvote()}
+                </Col>
+                <Col className="pl-lg-0">{editDescription()}</Col>
+                <Col xs={12} className="mt-3">
+                  {question.technologyTags.map((technology) => {
+                    return (
+                      <Badge
+                        key={`technology-${technology.technologyTag}`}
+                        variant="primary"
+                        className="badge-pill mr-1"
+                      >
+                        {technology.technologyTag}
+                      </Badge>
+                    );
+                  })}
+                </Col>
+              </Row>
             </Col>
             <Col
               xs={3}
@@ -237,60 +268,19 @@ const SingleQuestionPage = (props) => {
                 }
                 alt="Profile"
               />
-              <span className="d-sm-none">{question.username}</span>
-            </Col>
-          </Row>
-          <hr></hr>
-          <Row>
-            <Col lg={1} md={1} xs={1}>
-              {question.voted ? (
-                <Row>
-                  <Col className="text-center" id="rating">
-                    <Badge variant="dark">{question.vote}</Badge>
-                  </Col>
-                </Row>
-              ) : (
-                <Container>
-                  <Row>
-                    <Col className="text-center">
-                      <span onClick={upvote}>
-                        <i className="far fa-arrow-alt-circle-up"></i>
-                      </span>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col className="text-center" id="rating">
-                      {question.vote}
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col className="text-center">
-                      <span onClick={downvote}>
-                        <i className="far fa-arrow-alt-circle-down"></i>
-                      </span>
-                    </Col>
-                  </Row>
-                </Container>
-              )}
-            </Col>
-            <Col>{editDescription()}</Col>
-          </Row>
-          <Row>
-            <Col xs={12} md={9}>
-              {question.technologyTags.map((technology) => {
-                return (
-                  <Badge
-                    key={`technology-${technology.technologyTag}`}
-                    variant="primary"
-                    className="badge-pill mr-1"
-                  >
-                    {technology.technologyTag}
-                  </Badge>
-                );
-              })}
-            </Col>
-            <Col className="text-right text-muted">
-              <ReactTimeAgo date={question.submissionTime} />
+              <div>
+                {question.anonym ? (
+                  "Anonymous"
+                ) : (
+                  <Link to={`/user/${question.userId_}`}>
+                    {question.username}
+                  </Link>
+                )}
+              </div>
+              <span className="ml-2 text-muted d-block">
+                <ReactTimeAgo date={question.submissionTime} />
+              </span>
+              <div className="d-lg-none mt-3">{upvoteDownvote()}</div>
             </Col>
           </Row>
           <hr></hr>
