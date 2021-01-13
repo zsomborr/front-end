@@ -12,6 +12,7 @@ import {
 } from "react-bootstrap";
 import NewAnswer from "./modals/NewAnswer";
 import ReactTimeAgo from "react-time-ago";
+import { Fragment } from "react";
 
 const SingleQuestionPage = (props) => {
   const [question, setQuestionDetails] = useState({
@@ -51,29 +52,6 @@ const SingleQuestionPage = (props) => {
     setEditing(true);
     setNewTitle(question.title);
     setNewDescription(question.description);
-  };
-
-  const editDescription = () => {
-    if (!editing) {
-      return (
-        <span id="description" className="preserve-line">
-          {question.description}
-        </span>
-      );
-    } else {
-      return (
-        <Col>
-          <FormGroup>
-            <Form.Control
-              as="textarea"
-              rows="5"
-              defaultValue={question.description}
-              onChange={(e) => setNewDescription(e.target.value)}
-            ></Form.Control>
-          </FormGroup>
-        </Col>
-      );
-    }
   };
 
   const cancelEditing = () => {
@@ -210,21 +188,15 @@ const SingleQuestionPage = (props) => {
             <Col xs={9} lg={10} className="order-2 order-lg-1">
               <Row>
                 {editing ? (
-                  <FormGroup>
-                    <Form.Control
-                      as="input"
-                      defaultValue={question.title}
-                      onChange={(e) => setNewTitle(e.target.value)}
-                    ></Form.Control>
-                    <div className="mt-2">
-                      <Button onClick={saveEditing} className="mr-2">
-                        Save
-                      </Button>
-                      <Button onClick={cancelEditing} className="btn-danger">
-                        Cancel
-                      </Button>
-                    </div>
-                  </FormGroup>
+                  <Col xs={12}>
+                    <FormGroup>
+                      <Form.Control
+                        as="input"
+                        defaultValue={question.title}
+                        onChange={(e) => setNewTitle(e.target.value)}
+                      />
+                    </FormGroup>
+                  </Col>
                 ) : (
                   <Col xs={12} className="mb-3">
                     <span className="h3">{question.title}</span>
@@ -238,7 +210,34 @@ const SingleQuestionPage = (props) => {
                 <Col lg={1} md={1} xs={1} className="d-none d-lg-block">
                   {upvoteDownvote()}
                 </Col>
-                <Col className="pl-lg-0">{editDescription()}</Col>
+                <Col className="pl-lg-0">
+                  {editing ? (
+                    <FormGroup>
+                      <Form.Control
+                        as="textarea"
+                        rows="5"
+                        defaultValue={question.description}
+                        onChange={(e) => setNewDescription(e.target.value)}
+                      ></Form.Control>
+                    </FormGroup>
+                  ) : (
+                    <span id="description" className="preserve-line">
+                      {question.description}
+                    </span>
+                  )}
+                </Col>
+                <Col xs={12}>
+                  {editing ? (
+                    <Fragment>
+                      <Button onClick={saveEditing} className="mr-2">
+                        Save
+                      </Button>
+                      <Button onClick={cancelEditing} className="btn-danger">
+                        Cancel
+                      </Button>
+                    </Fragment>
+                  ) : null}
+                </Col>
                 <Col xs={12} className="mt-3">
                   {question.technologyTags.map((technology) => {
                     return (
