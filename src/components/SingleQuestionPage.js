@@ -13,6 +13,7 @@ import {
 import NewAnswer from "./modals/NewAnswer";
 import ReactTimeAgo from "react-time-ago";
 import { Fragment } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const SingleQuestionPage = (props) => {
   const [question, setQuestionDetails] = useState({
@@ -39,11 +40,19 @@ const SingleQuestionPage = (props) => {
   }, [props.questionsService, questionId]);
 
   const upvote = async () => {
+    if (question.myQuestion) {
+      return;
+    }
+
     await props.questionsService.voteOnQuestionById(questionId, 1);
     getData();
   };
 
   const downvote = async () => {
+    if (question.myQuestion) {
+      return;
+    }
+
     await props.questionsService.voteOnQuestionById(questionId, -1);
     getData();
   };
@@ -81,31 +90,40 @@ const SingleQuestionPage = (props) => {
   };
 
   const upvoteDownvote = () => {
-    return question.voted ? (
-      <Row>
-        <Col className="text-center" id="rating">
-          <Badge variant="dark">{question.vote}</Badge>
-        </Col>
-      </Row>
-    ) : (
-      <Container>
-        <Row>
-          <Col className="text-center">
-            <span onClick={upvote}>
-              <i className="far fa-arrow-alt-circle-up"></i>
-            </span>
-          </Col>
-        </Row>
+    if (question.voted) {
+      return (
         <Row>
           <Col className="text-center" id="rating">
-            {question.vote}
+            <Badge variant="dark">{question.vote}</Badge>
           </Col>
         </Row>
-        <Row>
-          <Col className="text-center">
-            <span onClick={downvote}>
-              <i className="far fa-arrow-alt-circle-down"></i>
-            </span>
+      );
+    }
+
+    let voteBtnClass = "enabled";
+    if (question.myQuestion) {
+      voteBtnClass = "text-muted";
+    }
+
+    return (
+      <Container>
+        <Row className="text-center">
+          <Col xs={12}>
+            <FontAwesomeIcon
+              className={voteBtnClass}
+              icon={["far", "arrow-alt-circle-up"]}
+              onClick={upvote}
+            />
+          </Col>
+          <Col xs={12} id="rating">
+            {question.vote}
+          </Col>
+          <Col xs={12}>
+            <FontAwesomeIcon
+              className={voteBtnClass}
+              icon={["far", "arrow-alt-circle-down"]}
+              onClick={downvote}
+            />
           </Col>
         </Row>
       </Container>

@@ -80,12 +80,12 @@
   transition: 0.3s;
 }
 
-span:hover .fa-arrow-alt-circle-up {
+.fa-arrow-alt-circle-up.enabled:hover {
   color: rgba(2, 255, 2, 0.835);
   font-size: 1.5em;
 }
 
-span:hover .fa-arrow-alt-circle-down {
+.fa-arrow-alt-circle-down.enabled:hover {
   color: rgba(255, 2, 2, 0.835);
   font-size: 1.5em;
 }
