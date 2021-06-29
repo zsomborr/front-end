@@ -32,34 +32,23 @@ const SingleQuestionPage = (props) => {
     const response = await props.answerService.getAnswersByQuestionId(
       questionId
     );
-    return response.data;
+    setAnswers(response.data);
   }, [props.answerService, questionId]);
 
   const getQuestion = useCallback(async () => {
     const response = await props.questionsService.getQuestionDetails(
       questionId
     );
-    return response.data;
-  });
+    setQuestion(response.data);
+  }, [props.questionsService, questionId]);
 
   useEffect(() => {
-    const question = getQuestion();
-    setQuestion(question);
+    getQuestion();
   }, [getQuestion]);
 
   useEffect(() => {
-    const answers = getAnswers();
-    setAnswers(answers);
+    getAnswers();
   }, [getAnswers]);
-
-  // const getData = useCallback(async () => {
-  //   const response = await props.questionsService.getQuestionDetails(
-  //     questionId
-  //   );
-
-  //   setQuestion(response.data.question);
-  //   setAnswers(response.data.answers);
-  // }, [props.questionsService, questionId]);
 
   const upvote = async () => {
     await props.questionsService.voteOnQuestionById(questionId, 1);
@@ -157,7 +146,7 @@ const SingleQuestionPage = (props) => {
     setAnswerEditing(false);
     await props.answerService.setNewContentForAnswer(answerId, newAnswer);
     setAnswerId(0);
-    getQuestion();
+    getAnswers();
   };
 
   const editAnswerContent = (content, id) => {
@@ -203,23 +192,6 @@ const SingleQuestionPage = (props) => {
     }
   };
 
-  // useEffect(() => {
-  //   getData();
-  // }, [getData, props.questionsService, questionId]);
-
-  // useEffect(() => {
-  //   const isLastEmpty = (answers) => {
-  //     const lastAnswer = answers[answers.length - 1];
-  //     return Object.keys(lastAnswer).length === 1;
-  //   };
-
-  //   if (answers.length === 0 || !isLastEmpty(answers)) {
-  //     return;
-  //   }
-
-  //   getData();
-  // }, [answers]);
-
   return (
     <Container className="page">
       <Row className="content-container">
@@ -230,6 +202,7 @@ const SingleQuestionPage = (props) => {
           questionId={questionId}
           setAnswers={setAnswers}
           answers={answers}
+          getAnswers={getAnswers}
         />
         <Col>
           <Row>
@@ -326,46 +299,53 @@ const SingleQuestionPage = (props) => {
           </Button>
           <br></br>
           <span className="h4">Answers</span>
-          {answers.map((answer) => {
-            return (
-              <Row key={`answer-${answer.id}`} className="mb-5">
-                <Col xs={12} lg={2} className="text-center">
-                  <Image
-                    className="img-fluid img-thumbnail rounded-circle border"
-                    src="/missing-profile-pic.jpg"
-                    alt="Profile"
-                  />
-                </Col>
-                <Col
-                  xs={12}
-                  lg={9}
-                  className="order-4 order-lg-2 preserve-line"
-                  id={`answer-${answer.id}`}
-                >
-                  {editAnswerContent(answer.content, answer.id)}
-                </Col>
-                <Col
-                  xs={12}
-                  lg={1}
-                  className="order-5 order-lg-3 preserve-line"
-                >
-                  {answer.myAnswer ? editAnswerButton(answer.id) : ""}
-                </Col>
-                <Col xs={12} lg={2} className="order-2 order-lg-4 text-center">
-                  <Link to={`/user/${answer.userId_}`}>{answer.username}</Link>
-                </Col>
-                <Col
-                  xs={12}
-                  lg={10}
-                  className="order-3 order-lg-5 text-center text-lg-right font-italic"
-                >
-                  <ReactTimeAgo
-                    date={new Date(Date.parse(answer.submissionTime))}
-                  />
-                </Col>
-              </Row>
-            );
-          })}
+          {answers.length > 0 &&
+            answers.map((answer) => {
+              return (
+                <Row key={`answer-${answer.id}`} className="mb-5">
+                  <Col xs={12} lg={2} className="text-center">
+                    <Image
+                      className="img-fluid img-thumbnail rounded-circle border"
+                      src="/missing-profile-pic.jpg"
+                      alt="Profile"
+                    />
+                  </Col>
+                  <Col
+                    xs={12}
+                    lg={9}
+                    className="order-4 order-lg-2 preserve-line"
+                    id={`answer-${answer.id}`}
+                  >
+                    {editAnswerContent(answer.content, answer.id)}
+                  </Col>
+                  <Col
+                    xs={12}
+                    lg={1}
+                    className="order-5 order-lg-3 preserve-line"
+                  >
+                    {answer.myAnswer ? editAnswerButton(answer.id) : ""}
+                  </Col>
+                  <Col
+                    xs={12}
+                    lg={2}
+                    className="order-2 order-lg-4 text-center"
+                  >
+                    <Link to={`/user/${answer.userId_}`}>
+                      {answer.username}
+                    </Link>
+                  </Col>
+                  <Col
+                    xs={12}
+                    lg={10}
+                    className="order-3 order-lg-5 text-center text-lg-right font-italic"
+                  >
+                    <ReactTimeAgo
+                      date={new Date(Date.parse(answer.submissionTime))}
+                    />
+                  </Col>
+                </Row>
+              );
+            })}
         </Col>
       </Row>
     </Container>
