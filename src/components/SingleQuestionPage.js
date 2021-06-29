@@ -14,7 +14,7 @@ import NewAnswer from "./modals/NewAnswer";
 import ReactTimeAgo from "react-time-ago";
 
 const SingleQuestionPage = (props) => {
-  const [question, setQuestionDetails] = useState({
+  const [question, setQuestion] = useState({
     submissionTime: new Date().toString(),
     technologyTags: [],
   });
@@ -28,23 +28,47 @@ const SingleQuestionPage = (props) => {
   const [newAnswer, setNewAnswer] = useState("");
   const [answerId, setAnswerId] = useState(0);
 
-  const getData = useCallback(async () => {
+  const getAnswers = useCallback(async () => {
+    const response = await props.answerService.getAnswersByQuestionId(
+      questionId
+    );
+    return response.data;
+  }, [props.answerService, questionId]);
+
+  const getQuestion = useCallback(async () => {
     const response = await props.questionsService.getQuestionDetails(
       questionId
     );
+    return response.data;
+  });
 
-    setQuestionDetails(response.data.question);
-    setAnswers(response.data.answers);
-  }, [props.questionsService, questionId]);
+  useEffect(() => {
+    const question = getQuestion();
+    setQuestion(question);
+  }, [getQuestion]);
+
+  useEffect(() => {
+    const answers = getAnswers();
+    setAnswers(answers);
+  }, [getAnswers]);
+
+  // const getData = useCallback(async () => {
+  //   const response = await props.questionsService.getQuestionDetails(
+  //     questionId
+  //   );
+
+  //   setQuestion(response.data.question);
+  //   setAnswers(response.data.answers);
+  // }, [props.questionsService, questionId]);
 
   const upvote = async () => {
     await props.questionsService.voteOnQuestionById(questionId, 1);
-    getData();
+    getQuestion();
   };
 
   const downvote = async () => {
     await props.questionsService.voteOnQuestionById(questionId, -1);
-    getData();
+    getQuestion();
   };
 
   const editButton = () => {
@@ -121,7 +145,7 @@ const SingleQuestionPage = (props) => {
       newTitle,
       newDescription
     );
-    getData();
+    getQuestion();
   };
 
   const cancelAnswerEditing = () => {
@@ -133,7 +157,7 @@ const SingleQuestionPage = (props) => {
     setAnswerEditing(false);
     await props.answerService.setNewContentForAnswer(answerId, newAnswer);
     setAnswerId(0);
-    getData();
+    getQuestion();
   };
 
   const editAnswerContent = (content, id) => {
@@ -179,37 +203,22 @@ const SingleQuestionPage = (props) => {
     }
   };
 
-  const acceptAnswerButton = (answer) => {
-    return (
-      <span onClick={() => toggleAccept(answer.id)}>
-        <i className="fa fa-check ml-3">{}</i>
-        <p>{answer.accepted ? "accepted" : "accept"}</p>
-      </span>
-    );
-  };
+  // useEffect(() => {
+  //   getData();
+  // }, [getData, props.questionsService, questionId]);
 
-  const toggleAccept = (id) => {
-    console.log("accept");
-    props.answerService.accept(id);
-    getData();
-  };
+  // useEffect(() => {
+  //   const isLastEmpty = (answers) => {
+  //     const lastAnswer = answers[answers.length - 1];
+  //     return Object.keys(lastAnswer).length === 1;
+  //   };
 
-  useEffect(() => {
-    getData();
-  }, [getData, props.questionsService, questionId]);
+  //   if (answers.length === 0 || !isLastEmpty(answers)) {
+  //     return;
+  //   }
 
-  useEffect(() => {
-    const isLastEmpty = (answers) => {
-      const lastAnswer = answers[answers.length - 1];
-      return Object.keys(lastAnswer).length === 1;
-    };
-
-    if (answers.length === 0 || !isLastEmpty(answers)) {
-      return;
-    }
-
-    getData();
-  }, [answers, getData]);
+  //   getData();
+  // }, [answers]);
 
   return (
     <Container className="page">
@@ -341,7 +350,6 @@ const SingleQuestionPage = (props) => {
                   className="order-5 order-lg-3 preserve-line"
                 >
                   {answer.myAnswer ? editAnswerButton(answer.id) : ""}
-                  {question.myQuestion && acceptAnswerButton(answer)}
                 </Col>
                 <Col xs={12} lg={2} className="order-2 order-lg-4 text-center">
                   <Link to={`/user/${answer.userId_}`}>{answer.username}</Link>
