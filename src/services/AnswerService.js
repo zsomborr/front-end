@@ -10,8 +10,8 @@ export default class AnswerService extends SpringBootService {
     });
   }
 
-  async accept(answerId) {
-    return await axios.put(`${this.baseURL}/answers/${answerId}/accept`, {});
+  async getAnswersByQuestionId(questionId) {
+    return await axios.get(`${this.baseURL}/answers/${questionId}`);
   }
 
   setNewContentForAnswer(answerId, content) {
@@ -19,9 +19,5 @@ export default class AnswerService extends SpringBootService {
     return axios.post(`${this.baseURL}/answers/edit/${answerId}`, {
       content: content,
     });
-  }
-
-  async getAnswersByQuestionId(questionId) {
-    return await axios.get(`${this.baseURL}/answers/${questionId}`);
   }
 }

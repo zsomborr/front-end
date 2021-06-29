@@ -1,0 +1,227 @@
+import React, { useCallback, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { Badge, Button, Container, Row, Col, Image } from "react-bootstrap";
+import NewAnswer from "../modals/NewAnswer";
+import ReactTimeAgo from "react-time-ago";
+import AnswersComponent from "./Answers";
+import EditDescription from "./EditDescription";
+import EditTitle from "./EditTitle";
+
+const SingleQuestionPage = (props) => {
+  const [question, setQuestion] = useState({
+    submissionTime: new Date().toString(),
+    technologyTags: [],
+  });
+  const [answers, setAnswers] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const questionId = props.match.params.id;
+  const [titleEditing, setTitleEditing] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [descriptionEditing, setDescriptionEditing] = useState(false);
+  const [newDescription, setNewDescription] = useState("");
+  const [newTitle, setNewTitle] = useState("");
+
+  const getAnswers = useCallback(async () => {
+    const response = await props.answerService.getAnswersByQuestionId(
+      questionId
+    );
+    console.log(response.data);
+    setAnswers(response.data);
+  }, [props.answerService, questionId]);
+
+  const getQuestion = useCallback(async () => {
+    const response = await props.questionsService.getQuestionDetails(
+      questionId
+    );
+    setQuestion(response.data);
+  }, [props.questionsService, questionId]);
+
+  useEffect(() => {
+    getQuestion();
+  }, [getQuestion]);
+
+  useEffect(() => {
+    getAnswers();
+  }, [getAnswers]);
+
+  const upvote = async () => {
+    await props.questionsService.voteOnQuestionById(questionId, 1);
+    getQuestion();
+  };
+
+  const downvote = async () => {
+    await props.questionsService.voteOnQuestionById(questionId, -1);
+    getQuestion();
+  };
+
+  const editButton = () => {
+    if (!editing) {
+      return (
+        <span onClick={editQuestion}>
+          <i className="far fa-edit ml-3"></i>
+        </span>
+      );
+    }
+  };
+
+  const editQuestion = () => {
+    setEditing(true);
+    setNewTitle(question.title);
+    setNewDescription(question.description);
+  };
+
+  const cancelEditing = () => {
+    setEditing(false);
+  };
+
+  const saveEditing = async () => {
+    setEditing(false);
+    await props.questionsService.setNewDataForQuestion(
+      questionId,
+      newTitle,
+      newDescription
+    );
+    getQuestion();
+  };
+
+  return (
+    <Container className="page">
+      <Row className="content-container">
+        <NewAnswer
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          answerService={props.answerService}
+          questionId={questionId}
+          setAnswers={setAnswers}
+          answers={answers}
+          getAnswers={getAnswers}
+        />
+        <Col>
+          <Row>
+            <Col xs={9} lg={10} className="order-2 order-lg-1">
+              {!titleEditing ? (
+                <Col id="description" className="preserve-line">
+                  {question.description}
+                </Col>
+              ) : (
+                <EditTitle
+                  editing={editing}
+                  question={question}
+                  setNewTitle={setNewTitle}
+                  saveEditing={saveEditing}
+                  cancelEditing={cancelEditing}
+                />
+              )}
+              <span className="d-none d-sm-inline-block">
+                by:{" "}
+                {question.anonym ? (
+                  "Anonymous"
+                ) : (
+                  <Link to={`/user/${question.userId_}`}>
+                    {question.username}
+                  </Link>
+                )}
+              </span>
+              {question.myQuestion ? editButton() : null}
+            </Col>
+            <Col
+              xs={3}
+              lg={2}
+              className="order-1 order-lg-2 float-right text-center"
+            >
+              <Image
+                className="img-fluid img-thumbnail rounded-circle border"
+                src={
+                  question.anonym
+                    ? "/anonymous-profile-pic.jpg"
+                    : "/missing-profile-pic.jpg"
+                }
+                alt="Profile"
+              />
+              <span className="d-sm-none">{question.username}</span>
+            </Col>
+          </Row>
+          <hr></hr>
+          <Row>
+            <Col lg={1} md={1} xs={1}>
+              {question.voted ? (
+                <Row>
+                  <Col className="text-center" id="rating">
+                    <Badge variant="dark">{question.vote}</Badge>
+                  </Col>
+                </Row>
+              ) : (
+                <Container>
+                  <Row>
+                    <Col className="text-center">
+                      <span onClick={upvote}>
+                        <i className="far fa-arrow-alt-circle-up"></i>
+                      </span>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col className="text-center" id="rating">
+                      {question.vote}
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col className="text-center">
+                      <span onClick={downvote}>
+                        <i className="far fa-arrow-alt-circle-down"></i>
+                      </span>
+                    </Col>
+                  </Row>
+                </Container>
+              )}
+            </Col>
+            <Col>
+              {!descriptionEditing ? (
+                <Col id="description" className="preserve-line">
+                  {question.description}
+                </Col>
+              ) : (
+                <EditDescription
+                  editing={editing}
+                  question={question}
+                  setNewDescription={setNewDescription}
+                />
+              )}
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12} md={9}>
+              {question.technologyTags.map((technology) => (
+                <Badge
+                  key={`technology-${technology.technologyTag}`}
+                  variant="primary"
+                  className="badge-pill mr-1"
+                >
+                  {technology.technologyTag}
+                </Badge>
+              ))}
+            </Col>
+            <Col className="text-right text-muted">
+              <ReactTimeAgo date={question.submissionTime} />
+            </Col>
+          </Row>
+          <hr></hr>
+          <Button
+            className="mb-1"
+            onClick={(e) => setIsModalOpen(!isModalOpen)}
+          >
+            Add new answer
+          </Button>
+          <br></br>
+          <span className="h4">Answers</span>
+          <AnswersComponent
+            answers={answers}
+            getAnswers={getAnswers}
+            answerService={props.answerService}
+          />
+        </Col>
+      </Row>
+    </Container>
+  );
+};
+
+export default SingleQuestionPage;
