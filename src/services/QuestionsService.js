@@ -36,13 +36,6 @@ export default class QuestionsService extends SpringBootService {
     });
   }
 
-  setNewContentForAnswer(answerId, content) {
-    console.log("content", content);
-    return axios.post(`${this.baseURL}/answers/edit/${answerId}`, {
-      content: content,
-    });
-  }
-
   searchBy(technologies) {
     return axios.post(`${this.baseURL}/filter/get-questions-by-tags`, {
       technologyTags: technologies,
