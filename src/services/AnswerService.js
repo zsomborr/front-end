@@ -9,4 +9,19 @@ export default class AnswerService extends SpringBootService {
       content: content,
     });
   }
+
+  async accept(answerId) {
+    return await axios.put(`${this.baseURL}/answers/${answerId}/accept`, {});
+  }
+
+  setNewContentForAnswer(answerId, content) {
+    console.log("content", content);
+    return axios.post(`${this.baseURL}/answers/edit/${answerId}`, {
+      content: content,
+    });
+  }
+
+  async getAnswersByQuestionId(questionId) {
+    return await axios.get(`${this.baseURL}/answers/${questionId}`);
+  }
 }
