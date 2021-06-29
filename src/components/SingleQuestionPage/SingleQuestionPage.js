@@ -209,6 +209,7 @@ const SingleQuestionPage = (props) => {
           <span className="h4">Answers</span>
           <AnswersComponent
             answers={answers}
+            setAnswers={setAnswers}
             getAnswers={getAnswers}
             answerService={props.answerService}
           />
