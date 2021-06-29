@@ -131,7 +131,7 @@ const SingleQuestionPage = (props) => {
 
   const saveAnswerEditing = async () => {
     setAnswerEditing(false);
-    await props.questionsService.setNewContentForAnswer(answerId, newAnswer);
+    await props.answerService.setNewContentForAnswer(answerId, newAnswer);
     setAnswerId(0);
     getData();
   };
@@ -177,6 +177,21 @@ const SingleQuestionPage = (props) => {
         </span>
       );
     }
+  };
+
+  const acceptAnswerButton = (answer) => {
+    return (
+      <span onClick={() => toggleAccept(answer.id)}>
+        <i className="fa fa-check ml-3">{}</i>
+        <p>{answer.accepted ? "accepted" : "accept"}</p>
+      </span>
+    );
+  };
+
+  const toggleAccept = (id) => {
+    console.log("accept");
+    props.answerService.accept(id);
+    getData();
   };
 
   useEffect(() => {
@@ -326,6 +341,7 @@ const SingleQuestionPage = (props) => {
                   className="order-5 order-lg-3 preserve-line"
                 >
                   {answer.myAnswer ? editAnswerButton(answer.id) : ""}
+                  {question.myQuestion && acceptAnswerButton(answer)}
                 </Col>
                 <Col xs={12} lg={2} className="order-2 order-lg-4 text-center">
                   <Link to={`/user/${answer.userId_}`}>{answer.username}</Link>
