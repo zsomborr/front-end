@@ -10,8 +10,9 @@ import {
   FormGroup,
   Form,
 } from "react-bootstrap";
-import NewAnswer from "./modals/NewAnswer";
+import NewAnswer from "../modals/NewAnswer";
 import ReactTimeAgo from "react-time-ago";
+import AnswersComponent from "./Answers";
 
 const SingleQuestionPage = (props) => {
   const [question, setQuestion] = useState({
@@ -24,14 +25,12 @@ const SingleQuestionPage = (props) => {
   const [editing, setEditing] = useState(false);
   const [newDescription, setNewDescription] = useState("");
   const [newTitle, setNewTitle] = useState("");
-  const [answerEditing, setAnswerEditing] = useState(false);
-  const [newAnswer, setNewAnswer] = useState("");
-  const [answerId, setAnswerId] = useState(0);
 
   const getAnswers = useCallback(async () => {
     const response = await props.answerService.getAnswersByQuestionId(
       questionId
     );
+    console.log(response.data);
     setAnswers(response.data);
   }, [props.answerService, questionId]);
 
@@ -137,61 +136,6 @@ const SingleQuestionPage = (props) => {
     getQuestion();
   };
 
-  const cancelAnswerEditing = () => {
-    setAnswerEditing(false);
-    setAnswerId(0);
-  };
-
-  const saveAnswerEditing = async () => {
-    setAnswerEditing(false);
-    await props.answerService.setNewContentForAnswer(answerId, newAnswer);
-    setAnswerId(0);
-    getAnswers();
-  };
-
-  const editAnswerContent = (content, id) => {
-    if (id !== answerId) {
-      return content;
-    } else {
-      return (
-        <Container>
-          <FormGroup>
-            <Form.Control
-              as="textarea"
-              rows="3"
-              defaultValue={content}
-              onChange={(e) => setNewAnswer(e.target.value)}
-            ></Form.Control>
-          </FormGroup>
-          <div className="mt-2">
-            <Button onClick={saveAnswerEditing} className="mr-2">
-              Save
-            </Button>
-            <Button onClick={cancelAnswerEditing} className="btn-danger">
-              Cancel
-            </Button>
-          </div>
-        </Container>
-      );
-    }
-  };
-
-  const editAnswer = (id) => {
-    setAnswerId(id);
-    setAnswerEditing(true);
-    setNewAnswer(document.getElementById(`answer-${id}`).innerText);
-  };
-
-  const editAnswerButton = (id) => {
-    if (!answerEditing) {
-      return (
-        <span onClick={() => editAnswer(id)}>
-          <i className="far fa-edit ml-3"></i>
-        </span>
-      );
-    }
-  };
-
   return (
     <Container className="page">
       <Row className="content-container">
@@ -274,17 +218,15 @@ const SingleQuestionPage = (props) => {
           </Row>
           <Row>
             <Col xs={12} md={9}>
-              {question.technologyTags.map((technology) => {
-                return (
-                  <Badge
-                    key={`technology-${technology.technologyTag}`}
-                    variant="primary"
-                    className="badge-pill mr-1"
-                  >
-                    {technology.technologyTag}
-                  </Badge>
-                );
-              })}
+              {question.technologyTags.map((technology) => (
+                <Badge
+                  key={`technology-${technology.technologyTag}`}
+                  variant="primary"
+                  className="badge-pill mr-1"
+                >
+                  {technology.technologyTag}
+                </Badge>
+              ))}
             </Col>
             <Col className="text-right text-muted">
               <ReactTimeAgo date={question.submissionTime} />
@@ -299,53 +241,11 @@ const SingleQuestionPage = (props) => {
           </Button>
           <br></br>
           <span className="h4">Answers</span>
-          {answers.length > 0 &&
-            answers.map((answer) => {
-              return (
-                <Row key={`answer-${answer.id}`} className="mb-5">
-                  <Col xs={12} lg={2} className="text-center">
-                    <Image
-                      className="img-fluid img-thumbnail rounded-circle border"
-                      src="/missing-profile-pic.jpg"
-                      alt="Profile"
-                    />
-                  </Col>
-                  <Col
-                    xs={12}
-                    lg={9}
-                    className="order-4 order-lg-2 preserve-line"
-                    id={`answer-${answer.id}`}
-                  >
-                    {editAnswerContent(answer.content, answer.id)}
-                  </Col>
-                  <Col
-                    xs={12}
-                    lg={1}
-                    className="order-5 order-lg-3 preserve-line"
-                  >
-                    {answer.myAnswer ? editAnswerButton(answer.id) : ""}
-                  </Col>
-                  <Col
-                    xs={12}
-                    lg={2}
-                    className="order-2 order-lg-4 text-center"
-                  >
-                    <Link to={`/user/${answer.userId_}`}>
-                      {answer.username}
-                    </Link>
-                  </Col>
-                  <Col
-                    xs={12}
-                    lg={10}
-                    className="order-3 order-lg-5 text-center text-lg-right font-italic"
-                  >
-                    <ReactTimeAgo
-                      date={new Date(Date.parse(answer.submissionTime))}
-                    />
-                  </Col>
-                </Row>
-              );
-            })}
+          <AnswersComponent
+            answers={answers}
+            getAnswers={getAnswers}
+            answerService={props.answerService}
+          />
         </Col>
       </Row>
     </Container>

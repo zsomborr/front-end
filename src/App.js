@@ -10,7 +10,7 @@ import Settings from "./components/Settings";
 import MentorService from "./services/MentorService";
 import StudentService from "./services/StudentService";
 import TagService from "./services/TagService";
-import SingleQuestionPage from "./components/SingleQuestionPage";
+import SingleQuestionPage from "./components/SingleQuestionPage/SingleQuestionPage";
 import QuestionsService from "./services/QuestionsService";
 import AnswerService from "./services/AnswerService";
 import { UserContext } from "./contexts/UserContext";
@@ -32,8 +32,7 @@ function App() {
         if (500 <= error.response.status && error.response.status < 600) {
           new Noty({
             timeout: 20_000,
-            text:
-              "We couldn't process your request because an error occured on our side! Our developers are notified about this issue and we fix it as soon as possible. We kindly ask you to repeat it in an another time. Thank You!",
+            text: "We couldn't process your request because an error occured on our side! Our developers are notified about this issue and we fix it as soon as possible. We kindly ask you to repeat it in an another time. Thank You!",
             type: "error",
           }).show();
         }
