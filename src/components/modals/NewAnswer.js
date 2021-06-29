@@ -17,12 +17,12 @@ const NewAnswer = (props) => {
     setIsLoading(true);
     try {
       await props.answerService.add(props.questionId, answer);
-      props.setAnswers([...props.answers, { submissionTime: new Date() }]);
       props.setIsModalOpen(false);
       new Noty({
         text: "Your answer added.",
         type: "success",
       }).show();
+      props.getAnswers();
     } catch (e) {}
     setIsLoading(false);
   };
