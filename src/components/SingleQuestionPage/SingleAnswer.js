@@ -7,18 +7,16 @@ import EditAnswerForm from "./EditAnswerForm";
 const SingleAnswer = ({ answer, answerService, getAnswers }) => {
   const [answerEditing, setAnswerEditing] = useState(false);
   const [newAnswer, setNewAnswer] = useState("");
-  const [answerId, setAnswerId] = useState(0);
 
-  const editAnswer = (id) => {
-    setAnswerId(id);
+  const editAnswer = () => {
     setAnswerEditing(true);
-    setNewAnswer(document.getElementById(`answer-${id}`).innerText);
+    setNewAnswer(document.getElementById(`answer-${answer.id}`).innerText);
   };
 
-  const editAnswerButton = (id) => {
+  const editAnswerButton = () => {
     if (!answerEditing) {
       return (
-        <span onClick={() => editAnswer(id)}>
+        <span onClick={() => editAnswer()}>
           <i className="far fa-edit ml-3"></i>
         </span>
       );
@@ -27,13 +25,11 @@ const SingleAnswer = ({ answer, answerService, getAnswers }) => {
 
   const cancelAnswerEditing = () => {
     setAnswerEditing(false);
-    setAnswerId(0);
   };
 
   const saveAnswerEditing = async () => {
     setAnswerEditing(false);
-    await answerService.setNewContentForAnswer(answerId, newAnswer);
-    setAnswerId(0);
+    await answerService.setNewContentForAnswer(answer.id, newAnswer);
     getAnswers();
   };
 
@@ -64,7 +60,7 @@ const SingleAnswer = ({ answer, answerService, getAnswers }) => {
         )}
       </Col>
       <Col xs={12} lg={1} className="order-5 order-lg-3 preserve-line">
-        {answer.myAnswer ? editAnswerButton(answer.id) : ""}
+        {answer.myAnswer ? editAnswerButton() : ""}
       </Col>
       <Col xs={12} lg={2} className="order-2 order-lg-4 text-center">
         <Link to={`/user/${answer.userId_}`}>{answer.username}</Link>
