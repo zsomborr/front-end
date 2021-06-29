@@ -1,9 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import { Col, Image, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ReactTimeAgo from "react-time-ago/commonjs/ReactTimeAgo";
+import EditAnswerForm from "./EditAnswerForm";
 
-const SingleAnswer = ({ answer, editAnswerContent, editAnswerButton }) => {
+const SingleAnswer = ({ answer, answerService, getAnswers }) => {
+  const [answerEditing, setAnswerEditing] = useState(false);
+  const [newAnswer, setNewAnswer] = useState("");
+  const [answerId, setAnswerId] = useState(0);
+
+  const editAnswer = (id) => {
+    setAnswerId(id);
+    setAnswerEditing(true);
+    setNewAnswer(document.getElementById(`answer-${id}`).innerText);
+  };
+
+  const editAnswerButton = (id) => {
+    if (!answerEditing) {
+      return (
+        <span onClick={() => editAnswer(id)}>
+          <i className="far fa-edit ml-3"></i>
+        </span>
+      );
+    }
+  };
+
+  const cancelAnswerEditing = () => {
+    setAnswerEditing(false);
+    setAnswerId(0);
+  };
+
+  const saveAnswerEditing = async () => {
+    setAnswerEditing(false);
+    await answerService.setNewContentForAnswer(answerId, newAnswer);
+    setAnswerId(0);
+    getAnswers();
+  };
+
   return (
     <Row key={`answer-${answer.id}`} className="mb-5">
       <Col xs={12} lg={2} className="text-center">
@@ -19,7 +52,16 @@ const SingleAnswer = ({ answer, editAnswerContent, editAnswerButton }) => {
         className="order-4 order-lg-2 preserve-line"
         id={`answer-${answer.id}`}
       >
-        {editAnswerContent(answer.content, answer.id)}
+        {!answerEditing ? (
+          answer.content
+        ) : (
+          <EditAnswerForm
+            content={answer.content}
+            setNewAnswer={setNewAnswer}
+            saveAnswerEditing={saveAnswerEditing}
+            cancelAnswerEditing={cancelAnswerEditing}
+          />
+        )}
       </Col>
       <Col xs={12} lg={1} className="order-5 order-lg-3 preserve-line">
         {answer.myAnswer ? editAnswerButton(answer.id) : ""}
