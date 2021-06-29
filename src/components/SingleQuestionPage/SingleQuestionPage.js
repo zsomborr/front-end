@@ -1,18 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  Badge,
-  Button,
-  Container,
-  Row,
-  Col,
-  Image,
-  FormGroup,
-  Form,
-} from "react-bootstrap";
+import { Badge, Button, Container, Row, Col, Image } from "react-bootstrap";
 import NewAnswer from "../modals/NewAnswer";
 import ReactTimeAgo from "react-time-ago";
 import AnswersComponent from "./Answers";
+import EditDescription from "./EditDescription";
+import EditTitle from "./EditTitle";
 
 const SingleQuestionPage = (props) => {
   const [question, setQuestion] = useState({
@@ -75,53 +68,6 @@ const SingleQuestionPage = (props) => {
     setNewDescription(question.description);
   };
 
-  const editDescription = () => {
-    if (!editing) {
-      return (
-        <Col id="description" className="preserve-line">
-          {question.description}
-        </Col>
-      );
-    } else {
-      return (
-        <Col>
-          <FormGroup>
-            <Form.Control
-              as="textarea"
-              rows="5"
-              defaultValue={question.description}
-              onChange={(e) => setNewDescription(e.target.value)}
-            ></Form.Control>
-          </FormGroup>
-        </Col>
-      );
-    }
-  };
-
-  const editTitle = () => {
-    if (!editing) {
-      return <span className="h3 mr-3">{question.title}</span>;
-    } else {
-      return (
-        <FormGroup>
-          <Form.Control
-            as="input"
-            defaultValue={question.title}
-            onChange={(e) => setNewTitle(e.target.value)}
-          ></Form.Control>
-          <div className="mt-2">
-            <Button onClick={saveEditing} className="mr-2">
-              Save
-            </Button>
-            <Button onClick={cancelEditing} className="btn-danger">
-              Cancel
-            </Button>
-          </div>
-        </FormGroup>
-      );
-    }
-  };
-
   const cancelEditing = () => {
     setEditing(false);
   };
@@ -151,7 +97,13 @@ const SingleQuestionPage = (props) => {
         <Col>
           <Row>
             <Col xs={9} lg={10} className="order-2 order-lg-1">
-              {editTitle()}
+              <EditTitle
+                editing={editing}
+                question={question}
+                setNewTitle={setNewTitle}
+                saveEditing={saveEditing}
+                cancelEditing={cancelEditing}
+              />
               <span className="d-none d-sm-inline-block">
                 by:{" "}
                 {question.anonym ? (
@@ -214,7 +166,13 @@ const SingleQuestionPage = (props) => {
                 </Container>
               )}
             </Col>
-            <Col>{editDescription()}</Col>
+            <Col>
+              <EditDescription
+                editing={editing}
+                question={question}
+                setNewDescription={setNewDescription}
+              />
+            </Col>
           </Row>
           <Row>
             <Col xs={12} md={9}>
