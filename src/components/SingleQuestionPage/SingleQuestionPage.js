@@ -175,9 +175,11 @@ const SingleQuestionPage = (props) => {
               <Container>
                 <Row>
                   <Col className="text-center">
-                    <span onClick={toggleVote}>
-                      {question.voted ? <AiTwotoneLike /> : <AiOutlineLike />}
-                    </span>
+                    {!question.myQuestion && (
+                      <span onClick={toggleVote}>
+                        {question.voted ? <AiTwotoneLike /> : <AiOutlineLike />}
+                      </span>
+                    )}
                   </Col>
                 </Row>
               </Container>
