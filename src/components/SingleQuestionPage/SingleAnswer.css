@@ -1,0 +1,7 @@
+.accepted {
+  background-color: lightgreen;
+}
+
+.accept-button {
+  cursor: pointer;
+}
