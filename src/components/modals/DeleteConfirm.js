@@ -1,26 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import { Col, Modal } from "react-bootstrap";
 import AnimatedButton from "../form/AnimatedButton";
 import CloseSymbol from "./CloseSymbol";
 
-const DeleteAnswer = ({ isModalOpen, setIsModalOpen, deleteAnswer }) => {
+const DeleteConfirm = ({
+  isModalOpen,
+  setIsModalOpen,
+  deleteComponent,
+  isLoading,
+}) => {
   return (
     <Modal show={isModalOpen}>
       <Modal.Header>
         <Col>
-          <h4>Are u sure u want to delete this answer?</h4>
+          <h4>Are u sure u want to delete?</h4>
           <CloseSymbol onClick={() => setIsModalOpen(false)} />
         </Col>
       </Modal.Header>
       <Modal.Footer>
         <AnimatedButton
           icon={["far", "paper-plane"]}
-          onClick={() => deleteAnswer()}
+          isLoading={isLoading}
+          onClick={() => deleteComponent()}
         >
           YES
         </AnimatedButton>
         <AnimatedButton
           icon={["far", "paper-plane"]}
+          isLoading={isLoading}
           onClick={() => setIsModalOpen(false)}
         >
           NO
@@ -30,4 +37,4 @@ const DeleteAnswer = ({ isModalOpen, setIsModalOpen, deleteAnswer }) => {
   );
 };
 
-export default DeleteAnswer;
+export default DeleteConfirm;

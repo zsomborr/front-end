@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import DeleteAnswer from "../modals/DeleteAnswer";
+import DeleteConfirm from "../modals/DeleteConfirm";
 import SingleAnswer from "./SingleAnswer";
 import Noty from "noty";
 
@@ -10,6 +10,7 @@ const AnswersComponent = ({
   getAnswers,
   question,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [answerIdToDelete, setAnswerIdToDelete] = useState(0);
 
@@ -19,23 +20,30 @@ const AnswersComponent = ({
   };
 
   const deleteAnswer = async () => {
-    const res = await answerService.deleteAnswerById(answerIdToDelete);
-    new Noty({
-      text: res.data.message,
-      type: "info",
-    }).show();
+    setIsLoading(true);
+    try {
+      const res = await answerService.deleteAnswerById(answerIdToDelete);
+      new Noty({
+        text: res.data.message,
+        type: "info",
+      }).show();
 
-    setAnswers(answers.filter((answer) => answer.id !== answerIdToDelete));
-    setAnswerIdToDelete(0);
-    setIsModalOpen(false);
+      setAnswers(answers.filter((answer) => answer.id !== answerIdToDelete));
+      setAnswerIdToDelete(0);
+      setIsModalOpen(false);
+      setIsLoading(false);
+    } catch (e) {
+      setIsLoading(false);
+    }
   };
 
   return (
     <>
-      <DeleteAnswer
+      <DeleteConfirm
+        isLoading={isLoading}
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-        deleteAnswer={deleteAnswer}
+        deleteComponent={deleteAnswer}
       />
       {answers.length > 0 &&
         answers.map((answer) => (

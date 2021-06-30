@@ -1,23 +1,28 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Badge, Button, Container, Row, Col, Image } from "react-bootstrap";
 import NewAnswer from "../modals/NewAnswer";
 import ReactTimeAgo from "react-time-ago";
 import AnswersComponent from "./Answers";
 import EditDescription from "./EditDescription";
 import EditTitle from "./EditTitle";
+import DeleteConfirm from "../modals/DeleteConfirm";
+import Noty from "noty";
 
 const SingleQuestionPage = (props) => {
   const [question, setQuestion] = useState({
     submissionTime: new Date().toString(),
     technologyTags: [],
   });
+  const [isLoading, setIsLoading] = useState(false);
   const [answers, setAnswers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const questionId = props.match.params.id;
   const [editing, setEditing] = useState(false);
   const [newDescription, setNewDescription] = useState("");
   const [newTitle, setNewTitle] = useState("");
+  const history = useHistory();
 
   const getAnswers = useCallback(async () => {
     const response = await props.answerService.getAnswersByQuestionId(
@@ -62,6 +67,32 @@ const SingleQuestionPage = (props) => {
     }
   };
 
+  const deleteButton = () => {
+    return (
+      <span
+        className="close-container"
+        onClick={() => setIsDeleteModalOpen(true)}
+      >
+        Delete
+      </span>
+    );
+  };
+
+  const deleteQuestion = async () => {
+    setIsLoading(true);
+    try {
+      const res = await props.questionsService.deleteQuestionById(question.id);
+      new Noty({
+        text: res.data.message,
+        type: "info",
+      }).show();
+      setIsModalOpen(false);
+      setIsLoading(false);
+      history.push("/questions");
+    } catch (e) {}
+    setIsLoading(false);
+  };
+
   const editQuestion = () => {
     setEditing(true);
     setNewTitle(question.title);
@@ -94,6 +125,12 @@ const SingleQuestionPage = (props) => {
           answers={answers}
           getAnswers={getAnswers}
         />
+        <DeleteConfirm
+          isLoading={isLoading}
+          isModalOpen={isDeleteModalOpen}
+          setIsModalOpen={setIsDeleteModalOpen}
+          deleteComponent={deleteQuestion}
+        />
         <Col>
           <Row>
             <Col xs={9} lg={10} className="order-2 order-lg-1">
@@ -117,7 +154,8 @@ const SingleQuestionPage = (props) => {
                   </Link>
                 )}
               </span>
-              {question.myQuestion ? editButton() : null}
+              {question.myQuestion && editButton()}
+              {question.myQuestion && deleteButton()}
             </Col>
             <Col
               xs={3}
