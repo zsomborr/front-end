@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Col, Image, Row } from "react-bootstrap";
+import { Badge, Col, Image, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ReactTimeAgo from "react-time-ago/commonjs/ReactTimeAgo";
 import EditAnswerForm from "./EditAnswerForm";
 import "./SingleAnswer.css";
 import { FaCheck, FaBan, FaTrash, FaEdit } from "react-icons/fa";
+import { AiTwotoneLike, AiOutlineLike } from "react-icons/ai";
 
 const SingleAnswer = ({
   answer,
@@ -53,7 +54,6 @@ const SingleAnswer = ({
   };
 
   const acceptAnswerButton = (answer) => {
-    console.log(answer.accepted);
     return (
       <div className="icon ml-3" onClick={() => toggleAccept(answer.id)}>
         {answer.accepted ? <FaBan /> : <FaCheck />}
@@ -62,9 +62,26 @@ const SingleAnswer = ({
   };
 
   const toggleAccept = async (id) => {
-    console.log("accept");
     await answerService.accept(id);
     await getAnswers();
+  };
+
+  const toggleVote = async (answerId) => {
+    await answerService.voteOnAnswerById(answerId);
+    await getAnswers();
+  };
+
+  const voteAnswer = () => {
+    return (
+      <>
+        <div className="ml-3" onClick={() => toggleVote(answer.id)}>
+          {answer.voted ? <AiTwotoneLike /> : <AiOutlineLike />}
+        </div>
+        <div className="ml-3" id="rating">
+          <Badge variant="dark">{answer.votes}</Badge>
+        </div>
+      </>
+    );
   };
 
   return (
@@ -100,10 +117,8 @@ const SingleAnswer = ({
         {question.myQuestion && acceptAnswerButton(answer)}
         {answer.myAnswer && editAnswerButton()}
         {answer.myAnswer && deleteAnswerButton()}
+        {voteAnswer()}
       </Col>
-      {/* <Col xs={12} lg={1} className="order-5 order-lg-3 preserve-line">
-        {answer.myAnswer && deleteAnswerButton()}
-      </Col> */}
       <Col xs={12} lg={2} className="order-2 order-lg-4 text-center">
         <Link to={`/user/${answer.userId_}`}>{answer.username}</Link>
       </Col>
