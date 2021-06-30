@@ -34,7 +34,7 @@ const SingleAnswer = ({
         className="close-container"
         onClick={() => handleDeleteAnswerRequest(answer.id)}
       >
-        X
+        Delete
       </span>
     );
   };
