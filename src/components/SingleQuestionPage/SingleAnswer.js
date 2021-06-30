@@ -4,7 +4,12 @@ import { Link } from "react-router-dom";
 import ReactTimeAgo from "react-time-ago/commonjs/ReactTimeAgo";
 import EditAnswerForm from "./EditAnswerForm";
 
-const SingleAnswer = ({ answer, answerService, getAnswers }) => {
+const SingleAnswer = ({
+  answer,
+  answerService,
+  getAnswers,
+  handleDeleteAnswerRequest,
+}) => {
   const [answerEditing, setAnswerEditing] = useState(false);
   const [newAnswer, setNewAnswer] = useState("");
 
@@ -21,6 +26,17 @@ const SingleAnswer = ({ answer, answerService, getAnswers }) => {
         </span>
       );
     }
+  };
+
+  const deleteAnswerButton = () => {
+    return (
+      <span
+        className="close-container"
+        onClick={() => handleDeleteAnswerRequest(answer.id)}
+      >
+        X
+      </span>
+    );
   };
 
   const cancelAnswerEditing = () => {
@@ -60,7 +76,10 @@ const SingleAnswer = ({ answer, answerService, getAnswers }) => {
         )}
       </Col>
       <Col xs={12} lg={1} className="order-5 order-lg-3 preserve-line">
-        {answer.myAnswer ? editAnswerButton() : ""}
+        {answer.myAnswer && editAnswerButton()}
+      </Col>
+      <Col xs={12} lg={1} className="order-5 order-lg-3 preserve-line">
+        {answer.myAnswer && deleteAnswerButton()}
       </Col>
       <Col xs={12} lg={2} className="order-2 order-lg-4 text-center">
         <Link to={`/user/${answer.userId_}`}>{answer.username}</Link>

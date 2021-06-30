@@ -15,9 +15,7 @@ const SingleQuestionPage = (props) => {
   const [answers, setAnswers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const questionId = props.match.params.id;
-  const [titleEditing, setTitleEditing] = useState(false);
   const [editing, setEditing] = useState(false);
-  const [descriptionEditing, setDescriptionEditing] = useState(false);
   const [newDescription, setNewDescription] = useState("");
   const [newTitle, setNewTitle] = useState("");
 
@@ -99,13 +97,10 @@ const SingleQuestionPage = (props) => {
         <Col>
           <Row>
             <Col xs={9} lg={10} className="order-2 order-lg-1">
-              {!titleEditing ? (
-                <Col id="description" className="preserve-line">
-                  {question.description}
-                </Col>
+              {!editing ? (
+                <span className="h3 mr-3">{question.title}</span>
               ) : (
                 <EditTitle
-                  editing={editing}
                   question={question}
                   setNewTitle={setNewTitle}
                   saveEditing={saveEditing}
@@ -175,13 +170,12 @@ const SingleQuestionPage = (props) => {
               )}
             </Col>
             <Col>
-              {!descriptionEditing ? (
+              {!editing ? (
                 <Col id="description" className="preserve-line">
                   {question.description}
                 </Col>
               ) : (
                 <EditDescription
-                  editing={editing}
                   question={question}
                   setNewDescription={setNewDescription}
                 />
@@ -215,6 +209,7 @@ const SingleQuestionPage = (props) => {
           <span className="h4">Answers</span>
           <AnswersComponent
             answers={answers}
+            setAnswers={setAnswers}
             getAnswers={getAnswers}
             answerService={props.answerService}
           />

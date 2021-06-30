@@ -1,13 +1,7 @@
 import React from "react";
 import { Button, FormGroup, Form } from "react-bootstrap";
 
-const EditTitle = ({
-  editing,
-  question,
-  setNewTitle,
-  saveEditing,
-  cancelEditing,
-}) => {
+const EditTitle = ({ question, setNewTitle, saveEditing, cancelEditing }) => {
   return (
     <FormGroup>
       <Form.Control
