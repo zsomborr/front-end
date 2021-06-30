@@ -27,4 +27,8 @@ export default class AnswerService extends SpringBootService {
   deleteAnswerById(answerId) {
     return axios.delete(`${this.baseURL}/answers/delete/${answerId}`);
   }
+
+  voteOnAnswerById(answerId) {
+    return axios.put(`${this.baseURL}/answers/vote/${answerId}`);
+  }
 }
