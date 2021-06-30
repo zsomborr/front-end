@@ -15,7 +15,6 @@ export default class AnswerService extends SpringBootService {
   }
 
   setNewContentForAnswer(answerId, content) {
-    console.log("content", content);
     return axios.post(`${this.baseURL}/answers/edit/${answerId}`, {
       content: content,
     });
@@ -23,5 +22,9 @@ export default class AnswerService extends SpringBootService {
 
   async accept(answerId) {
     return axios.put(`${this.baseURL}/answers/${answerId}/accept`);
+  }
+
+  deleteAnswerById(answerId) {
+    return axios.delete(`${this.baseURL}/answers/delete/${answerId}`);
   }
 }

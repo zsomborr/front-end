@@ -6,7 +6,13 @@ import EditAnswerForm from "./EditAnswerForm";
 import "./SingleAnswer.css";
 import { FaCheck, FaBan } from "react-icons/fa";
 
-const SingleAnswer = ({ answer, answerService, getAnswers, question }) => {
+const SingleAnswer = ({
+  answer,
+  answerService,
+  getAnswers,
+  handleDeleteAnswerRequest,
+  question,
+}) => {
   const [answerEditing, setAnswerEditing] = useState(false);
   const [newAnswer, setNewAnswer] = useState("");
 
@@ -23,6 +29,17 @@ const SingleAnswer = ({ answer, answerService, getAnswers, question }) => {
         </span>
       );
     }
+  };
+
+  const deleteAnswerButton = () => {
+    return (
+      <span
+        className="close-container"
+        onClick={() => handleDeleteAnswerRequest(answer.id)}
+      >
+        X
+      </span>
+    );
   };
 
   const cancelAnswerEditing = () => {
@@ -83,12 +100,13 @@ const SingleAnswer = ({ answer, answerService, getAnswers, question }) => {
         )}
       </Col>
       <Col xs={12} lg={1} className="order-5 order-lg-3 preserve-line">
-        {answer.myAnswer ? editAnswerButton() : ""}
         {question.myQuestion && acceptAnswerButton(answer)}
-        {/* {question.myQuestion && (
-          <AcceptAnswerButton toggleAccept={toggleAccept} answer={answer} />
-        )} */}
+        {answer.myAnswer && editAnswerButton()}
+        {answer.myAnswer && deleteAnswerButton()}
       </Col>
+      {/* <Col xs={12} lg={1} className="order-5 order-lg-3 preserve-line">
+        {answer.myAnswer && deleteAnswerButton()}
+      </Col> */}
       <Col xs={12} lg={2} className="order-2 order-lg-4 text-center">
         <Link to={`/user/${answer.userId_}`}>{answer.username}</Link>
       </Col>

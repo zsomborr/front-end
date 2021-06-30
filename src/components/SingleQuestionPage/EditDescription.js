@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, FormGroup, Form } from "react-bootstrap";
 
-const EditDescription = ({ editing, question, setNewDescription }) => {
+const EditDescription = ({ question, setNewDescription }) => {
   return (
     <Col>
       <FormGroup>
