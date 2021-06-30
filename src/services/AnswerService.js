@@ -20,4 +20,8 @@ export default class AnswerService extends SpringBootService {
       content: content,
     });
   }
+
+  async accept(answerId) {
+    return axios.put(`${this.baseURL}/answers/${answerId}/accept`);
+  }
 }
