@@ -41,4 +41,8 @@ export default class QuestionsService extends SpringBootService {
       technologyTags: technologies,
     });
   }
+
+  deleteQuestionById(questionId) {
+    return axios.delete(`${this.baseURL}/question/delete/${questionId}`);
+  }
 }
