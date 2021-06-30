@@ -3,8 +3,10 @@ import { Col, Image, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ReactTimeAgo from "react-time-ago/commonjs/ReactTimeAgo";
 import EditAnswerForm from "./EditAnswerForm";
+import "./SingleAnswer.css";
+import { FaCheck, FaBan } from "react-icons/fa";
 
-const SingleAnswer = ({ answer, answerService, getAnswers }) => {
+const SingleAnswer = ({ answer, answerService, getAnswers, question }) => {
   const [answerEditing, setAnswerEditing] = useState(false);
   const [newAnswer, setNewAnswer] = useState("");
 
@@ -33,8 +35,29 @@ const SingleAnswer = ({ answer, answerService, getAnswers }) => {
     getAnswers();
   };
 
+  const acceptAnswerButton = (answer) => {
+    console.log(answer.accepted);
+    return (
+      <div
+        className="accept-button ml-3"
+        onClick={() => toggleAccept(answer.id)}
+      >
+        {answer.accepted ? <FaBan /> : <FaCheck />}
+      </div>
+    );
+  };
+
+  const toggleAccept = async (id) => {
+    console.log("accept");
+    await answerService.accept(id);
+    await getAnswers();
+  };
+
   return (
-    <Row key={`answer-${answer.id}`} className="mb-5">
+    <Row
+      key={`answer-${answer.id}`}
+      className={`mb-5 ${answer.accepted && "accepted"}`}
+    >
       <Col xs={12} lg={2} className="text-center">
         <Image
           className="img-fluid img-thumbnail rounded-circle border"
@@ -61,6 +84,10 @@ const SingleAnswer = ({ answer, answerService, getAnswers }) => {
       </Col>
       <Col xs={12} lg={1} className="order-5 order-lg-3 preserve-line">
         {answer.myAnswer ? editAnswerButton() : ""}
+        {question.myQuestion && acceptAnswerButton(answer)}
+        {/* {question.myQuestion && (
+          <AcceptAnswerButton toggleAccept={toggleAccept} answer={answer} />
+        )} */}
       </Col>
       <Col xs={12} lg={2} className="order-2 order-lg-4 text-center">
         <Link to={`/user/${answer.userId_}`}>{answer.username}</Link>

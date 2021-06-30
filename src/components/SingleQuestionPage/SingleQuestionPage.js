@@ -217,6 +217,7 @@ const SingleQuestionPage = (props) => {
             answers={answers}
             getAnswers={getAnswers}
             answerService={props.answerService}
+            question={question}
           />
         </Col>
       </Row>

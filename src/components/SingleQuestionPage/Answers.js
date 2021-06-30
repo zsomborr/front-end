@@ -1,7 +1,7 @@
 import React from "react";
 import SingleAnswer from "./SingleAnswer";
 
-const AnswersComponent = ({ answers, answerService, getAnswers }) => {
+const AnswersComponent = ({ answers, answerService, getAnswers, question }) => {
   return (
     <>
       {console.log(answers)}
@@ -11,6 +11,7 @@ const AnswersComponent = ({ answers, answerService, getAnswers }) => {
             answer={answer}
             answerService={answerService}
             getAnswers={getAnswers}
+            question={question}
           />
         ))}
     </>
