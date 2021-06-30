@@ -8,6 +8,8 @@ import EditDescription from "./EditDescription";
 import EditTitle from "./EditTitle";
 import DeleteConfirm from "../modals/DeleteConfirm";
 import Noty from "noty";
+import { FaTrash, FaEdit } from "react-icons/fa";
+import "./SingleAnswer.css";
 
 const SingleQuestionPage = (props) => {
   const [question, setQuestion] = useState({
@@ -60,8 +62,8 @@ const SingleQuestionPage = (props) => {
   const editButton = () => {
     if (!editing) {
       return (
-        <span onClick={editQuestion}>
-          <i className="far fa-edit ml-3"></i>
+        <span className="icon ml-3" onClick={editQuestion}>
+          <FaEdit />
         </span>
       );
     }
@@ -69,11 +71,8 @@ const SingleQuestionPage = (props) => {
 
   const deleteButton = () => {
     return (
-      <span
-        className="close-container"
-        onClick={() => setIsDeleteModalOpen(true)}
-      >
-        Delete
+      <span className="icon ml-3" onClick={() => setIsDeleteModalOpen(true)}>
+        <FaTrash />
       </span>
     );
   };

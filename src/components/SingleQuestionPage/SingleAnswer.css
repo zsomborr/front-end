@@ -2,6 +2,11 @@
   background-color: lightgreen;
 }
 
-.accept-button {
+.icon {
   cursor: pointer;
+}
+
+.icon:hover {
+  color: #4f97ca;
+  transition: 0.3s all ease-in;
 }

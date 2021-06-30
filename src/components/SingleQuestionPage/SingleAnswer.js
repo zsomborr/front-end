@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import ReactTimeAgo from "react-time-ago/commonjs/ReactTimeAgo";
 import EditAnswerForm from "./EditAnswerForm";
 import "./SingleAnswer.css";
-import { FaCheck, FaBan } from "react-icons/fa";
+import { FaCheck, FaBan, FaTrash, FaEdit } from "react-icons/fa";
 
 const SingleAnswer = ({
   answer,
@@ -24,8 +24,8 @@ const SingleAnswer = ({
   const editAnswerButton = () => {
     if (!answerEditing) {
       return (
-        <span onClick={() => editAnswer()}>
-          <i className="far fa-edit ml-3"></i>
+        <span className="icon ml-3" onClick={() => editAnswer()}>
+          <FaEdit />
         </span>
       );
     }
@@ -33,12 +33,12 @@ const SingleAnswer = ({
 
   const deleteAnswerButton = () => {
     return (
-      <span
-        className="close-container"
+      <div
+        className="icon ml-3"
         onClick={() => handleDeleteAnswerRequest(answer.id)}
       >
-        Delete
-      </span>
+        <FaTrash />
+      </div>
     );
   };
 
@@ -55,10 +55,7 @@ const SingleAnswer = ({
   const acceptAnswerButton = (answer) => {
     console.log(answer.accepted);
     return (
-      <div
-        className="accept-button ml-3"
-        onClick={() => toggleAccept(answer.id)}
-      >
+      <div className="icon ml-3" onClick={() => toggleAccept(answer.id)}>
         {answer.accepted ? <FaBan /> : <FaCheck />}
       </div>
     );
@@ -73,7 +70,7 @@ const SingleAnswer = ({
   return (
     <Row
       key={`answer-${answer.id}`}
-      className={`mb-5 ${answer.accepted && "accepted"}`}
+      className={`mb-5 p-3 rounded border ${answer.accepted && "accepted"}`}
     >
       <Col xs={12} lg={2} className="text-center">
         <Image
