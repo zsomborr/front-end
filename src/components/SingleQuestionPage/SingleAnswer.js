@@ -74,11 +74,14 @@ const SingleAnswer = ({
   const voteAnswer = () => {
     return (
       <>
-        <div className="ml-3" onClick={() => toggleVote(answer.id)}>
-          {answer.voted ? <AiTwotoneLike /> : <AiOutlineLike />}
-        </div>
+        {!answer.myAnswer && (
+          <div className="ml-3" onClick={() => toggleVote(answer.id)}>
+            {answer.voted ? <AiTwotoneLike /> : <AiOutlineLike />}
+          </div>
+        )}
+
         <div className="ml-3" id="rating">
-          <Badge variant="dark">{answer.votes}</Badge>
+          <Badge variant="dark">{answer.vote}</Badge>
         </div>
       </>
     );
