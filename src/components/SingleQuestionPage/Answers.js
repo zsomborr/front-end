@@ -8,6 +8,7 @@ const AnswersComponent = ({
   setAnswers,
   answerService,
   getAnswers,
+  question,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [answerIdToDelete, setAnswerIdToDelete] = useState(0);
@@ -43,6 +44,7 @@ const AnswersComponent = ({
             answer={answer}
             answerService={answerService}
             getAnswers={getAnswers}
+            question={question}
             handleDeleteAnswerRequest={handleDeleteAnswerRequest}
           />
         ))}

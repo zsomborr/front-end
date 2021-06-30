@@ -212,6 +212,7 @@ const SingleQuestionPage = (props) => {
             setAnswers={setAnswers}
             getAnswers={getAnswers}
             answerService={props.answerService}
+            question={question}
           />
         </Col>
       </Row>
