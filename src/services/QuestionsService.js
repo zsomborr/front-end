@@ -24,9 +24,7 @@ export default class QuestionsService extends SpringBootService {
   }
 
   voteOnQuestionById(questionId, value) {
-    return axios.post(`${this.baseURL}/question/vote/${questionId}`, {
-      vote: value,
-    });
+    return axios.put(`${this.baseURL}/question/vote/${questionId}`);
   }
 
   setNewDataForQuestion(questionId, newTitle, newDescription) {

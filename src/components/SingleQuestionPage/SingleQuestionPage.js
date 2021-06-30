@@ -9,6 +9,7 @@ import EditTitle from "./EditTitle";
 import DeleteConfirm from "../modals/DeleteConfirm";
 import Noty from "noty";
 import { FaTrash, FaEdit } from "react-icons/fa";
+import { AiTwotoneLike, AiOutlineLike } from "react-icons/ai";
 import "./SingleAnswer.css";
 
 const SingleQuestionPage = (props) => {
@@ -49,13 +50,8 @@ const SingleQuestionPage = (props) => {
     getAnswers();
   }, [getAnswers]);
 
-  const upvote = async () => {
-    await props.questionsService.voteOnQuestionById(questionId, 1);
-    getQuestion();
-  };
-
-  const downvote = async () => {
-    await props.questionsService.voteOnQuestionById(questionId, -1);
+  const toggleVote = async () => {
+    await props.questionsService.voteOnQuestionById(questionId);
     getQuestion();
   };
 
@@ -176,35 +172,20 @@ const SingleQuestionPage = (props) => {
           <hr></hr>
           <Row>
             <Col lg={1} md={1} xs={1}>
-              {question.voted ? (
+              <Container>
                 <Row>
-                  <Col className="text-center" id="rating">
-                    <Badge variant="dark">{question.vote}</Badge>
+                  <Col className="text-center">
+                    <span onClick={toggleVote}>
+                      {question.voted ? <AiTwotoneLike /> : <AiOutlineLike />}
+                    </span>
                   </Col>
                 </Row>
-              ) : (
-                <Container>
-                  <Row>
-                    <Col className="text-center">
-                      <span onClick={upvote}>
-                        <i className="far fa-arrow-alt-circle-up"></i>
-                      </span>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col className="text-center" id="rating">
-                      {question.vote}
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col className="text-center">
-                      <span onClick={downvote}>
-                        <i className="far fa-arrow-alt-circle-down"></i>
-                      </span>
-                    </Col>
-                  </Row>
-                </Container>
-              )}
+              </Container>
+              <Row>
+                <Col className="text-center" id="rating">
+                  <Badge variant="dark">{question.vote}</Badge>
+                </Col>
+              </Row>
             </Col>
             <Col>
               {!editing ? (
