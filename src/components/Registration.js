@@ -42,9 +42,9 @@ const Registration = (props) => {
     }
 
     setErrorMessages([]);
-    if (!isFormValid()) {
-      return;
-    }
+    // if (!isFormValid()) {
+    //   return;
+    // }
 
     try {
       await studentService.registration(
@@ -57,12 +57,7 @@ const Registration = (props) => {
       await props.studentService.login(username, password, setIsAuthenticated);
       history.push("/");
     } catch (e) {
-      if (
-        e.response &&
-        (e.response.status === 400 || e.response.status === 403)
-      ) {
-        asError(e.response.data);
-      }
+      asError(e.response.data.message);
     }
   };
 

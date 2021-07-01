@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import { Container } from "react-bootstrap";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import Login from "./components/Login";
 import QuestionsPage from "./components/QuestionsPage";
 import Header from "./components/Header";
@@ -104,6 +104,18 @@ function App() {
               path="/logout"
               render={() => <Logout studentService={studentService} />}
             ></Route>
+            <ProtectedRoute
+              key="/"
+              path="/"
+              exact
+              component={() => (
+                <Redirect
+                  to={{
+                    pathname: "/questions",
+                  }}
+                />
+              )}
+            />
             <ProtectedRoute
               key="questionsPage"
               path="/questions"
