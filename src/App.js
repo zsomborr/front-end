@@ -22,6 +22,9 @@ import Logout from "./components/Logout";
 import TechnologiesService from "./services/TechnologiesService";
 import DiscordService from "./services/DiscordService";
 import Noty from "noty";
+import ReactGA from "react-ga";
+import RouteChangeTracker from "./components/RouteChangeTracker";
+import { hotjar } from "react-hotjar";
 
 function App() {
   axios.defaults.withCredentials = true;
@@ -48,9 +51,13 @@ function App() {
   const answerService = new AnswerService();
   const tagService = new TagService();
   const technologiesService = new TechnologiesService();
+  const TRACKING_ID = process.env.REACT_APP_GA_TRACKING_ID;
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  ReactGA.initialize(TRACKING_ID);
+  hotjar.initialize(2482183, 6);
 
   useEffect(() => {
     const checkAuthentication = async () => {
@@ -80,105 +87,107 @@ function App() {
   }
 
   return (
-    <Fragment>
-      <div className="background">
-        <div></div>
-        <div></div>
-      </div>
-      <Container>
-        <Router>
-          <UserContext.Provider value={[isAuthenticated, setIsAuthenticated]}>
-            <Header />
-            <Route
-              key="registration"
-              path="/registration"
-              render={() => <Registration studentService={studentService} />}
-            ></Route>
-            <Route
-              key="login"
-              path="/login"
-              render={() => <Login studentService={studentService} />}
-            ></Route>
-            <Route
-              key="logout"
-              path="/logout"
-              render={() => <Logout studentService={studentService} />}
-            ></Route>
-            <ProtectedRoute
-              key="/"
-              path="/"
-              exact
-              component={() => (
-                <Redirect
-                  to={{
-                    pathname: "/questions",
-                  }}
-                />
-              )}
-            />
-            <ProtectedRoute
-              key="questionsPage"
-              path="/questions"
-              component={() => (
-                <QuestionsPage
-                  questionsService={questionsService}
-                  technologiesService={technologiesService}
-                />
-              )}
-            />
-            <ProtectedRoute
-              key="singleQuestion"
-              path="/question/:id"
-              component={(props) => (
-                <SingleQuestionPage
-                  questionsService={questionsService}
-                  answerService={answerService}
-                  {...props}
-                />
-              )}
-            />
-            <ProtectedRoute
-              key="searchMentors"
-              path="/mentors"
-              component={(props) => (
-                <SearchMentorPage
-                  mentorService={mentorService}
-                  tagService={tagService}
-                />
-              )}
-            />
-            <ProtectedRoute
-              key="settings"
-              path="/settings"
-              component={() => (
-                <Settings
-                  studentService={studentService}
-                  discordService={discordService}
-                />
-              )}
-            ></ProtectedRoute>
-            <ProtectedRoute
-              key="privateMe"
-              path="/me"
-              component={() => (
-                <UserPrivatePage studentService={studentService} />
-              )}
-            />
-            <ProtectedRoute
-              key="publicUserPage"
-              path="/user/:id"
-              component={(props) => (
-                <PublicUserPage
-                  studentService={studentService}
-                  mentorService={mentorService}
-                  {...props}
-                />
-              )}
-            />
-          </UserContext.Provider>
-        </Router>
-      </Container>
-    </Fragment>
+    <RouteChangeTracker>
+      <Fragment>
+        <div className="background">
+          <div></div>
+          <div></div>
+        </div>
+        <Container>
+          <Router>
+            <UserContext.Provider value={[isAuthenticated, setIsAuthenticated]}>
+              <Header />
+              <Route
+                key="registration"
+                path="/registration"
+                render={() => <Registration studentService={studentService} />}
+              ></Route>
+              <Route
+                key="login"
+                path="/login"
+                render={() => <Login studentService={studentService} />}
+              ></Route>
+              <Route
+                key="logout"
+                path="/logout"
+                render={() => <Logout studentService={studentService} />}
+              ></Route>
+              <ProtectedRoute
+                key="/"
+                path="/"
+                exact
+                component={() => (
+                  <Redirect
+                    to={{
+                      pathname: "/questions",
+                    }}
+                  />
+                )}
+              />
+              <ProtectedRoute
+                key="questionsPage"
+                path="/questions"
+                component={() => (
+                  <QuestionsPage
+                    questionsService={questionsService}
+                    technologiesService={technologiesService}
+                  />
+                )}
+              />
+              <ProtectedRoute
+                key="singleQuestion"
+                path="/question/:id"
+                component={(props) => (
+                  <SingleQuestionPage
+                    questionsService={questionsService}
+                    answerService={answerService}
+                    {...props}
+                  />
+                )}
+              />
+              <ProtectedRoute
+                key="searchMentors"
+                path="/mentors"
+                component={(props) => (
+                  <SearchMentorPage
+                    mentorService={mentorService}
+                    tagService={tagService}
+                  />
+                )}
+              />
+              <ProtectedRoute
+                key="settings"
+                path="/settings"
+                component={() => (
+                  <Settings
+                    studentService={studentService}
+                    discordService={discordService}
+                  />
+                )}
+              ></ProtectedRoute>
+              <ProtectedRoute
+                key="privateMe"
+                path="/me"
+                component={() => (
+                  <UserPrivatePage studentService={studentService} />
+                )}
+              />
+              <ProtectedRoute
+                key="publicUserPage"
+                path="/user/:id"
+                component={(props) => (
+                  <PublicUserPage
+                    studentService={studentService}
+                    mentorService={mentorService}
+                    {...props}
+                  />
+                )}
+              />
+            </UserContext.Provider>
+          </Router>
+        </Container>
+      </Fragment>
+    </RouteChangeTracker>
   );
 }
 
