@@ -13,24 +13,25 @@ const DeleteConfirm = ({
     <Modal show={isModalOpen}>
       <Modal.Header>
         <Col>
-          <h4>Are u sure u want to delete?</h4>
+          <h4>Are you sure you want to delete?</h4>
           <CloseSymbol onClick={() => setIsModalOpen(false)} />
         </Col>
       </Modal.Header>
       <Modal.Footer>
         <AnimatedButton
-          icon={["far", "paper-plane"]}
+          icon={["far", "trash-alt"]}
           isLoading={isLoading}
           onClick={() => deleteComponent()}
         >
-          YES
+          DELETE
         </AnimatedButton>
         <AnimatedButton
-          icon={["far", "paper-plane"]}
+          variant="danger"
+          icon={["fas", "ban"]}
           isLoading={isLoading}
           onClick={() => setIsModalOpen(false)}
         >
-          NO
+          CANCEL
         </AnimatedButton>
       </Modal.Footer>
     </Modal>
