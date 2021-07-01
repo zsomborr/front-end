@@ -68,7 +68,7 @@ const SearchMentorPage = (props) => {
                 }}
               />
             </Col>
-            <Col sm={5}>
+            {/* <Col sm={5}>
               <MultiSelect
                 options={projects}
                 value={selectedProjects}
@@ -80,7 +80,7 @@ const SearchMentorPage = (props) => {
                   selectSomeItems: "Select a project to filter",
                 }}
               />
-            </Col>
+            </Col> */}
             <Col className="text-right">
               <AnimatedButton
                 icon={["fas", "search"]}
