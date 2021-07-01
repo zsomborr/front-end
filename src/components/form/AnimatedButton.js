@@ -6,7 +6,7 @@ import "./AnimatedButton.css";
 const AnimatedButton = (props) => {
   return (
     <Button
-      variant="primary"
+      variant={props.variant ? props.variant : "primary"}
       type="submit"
       className={props.className}
       disabled={props.isLoading}
