@@ -42,9 +42,9 @@ const Registration = (props) => {
     }
 
     setErrorMessages([]);
-    if (!isFormValid()) {
-      return;
-    }
+    // if (!isFormValid()) {
+    //   return;
+    // }
 
     try {
       await studentService.registration(
