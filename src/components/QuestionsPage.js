@@ -162,7 +162,7 @@ const QuestionsPage = (props) => {
                     </Link>
                   )}{" "}
                   | <ReactTimeAgo date={question.submissionTime} /> | Votes:{" "}
-                  {question.vote}
+                  {question.vote} | Answers: {question.numberOfAnswers}
                 </Col>
                 <Col xs={12}>
                   <h6 className="text-truncate">{question.description}</h6>
