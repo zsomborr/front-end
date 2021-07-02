@@ -10,8 +10,8 @@ const GaTracker = ({ history }) => {
   useEffect(() => {
     if (!window.location.href.includes("localhost")) {
       ReactGA.initialize(TRACKING_ID);
+      setInitialized(true);
     }
-    setInitialized(true);
   }, [TRACKING_ID]);
 
   useEffect(() => {
