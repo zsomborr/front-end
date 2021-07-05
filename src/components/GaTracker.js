@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ReactGA from "react-ga";
 
-const GaTracker = ({ history }) => {
+const GaTracker = () => {
   const TRACKING_ID = process.env.REACT_APP_GA_TRACKING_ID;
   const location = useLocation();
   const [initialized, setInitialized] = useState(false);
