@@ -129,7 +129,7 @@ const Settings = (props) => {
         <Col xs={12} lg={6} className="content-container">
           <h2>Application related</h2>
 
-          <Form.Label htmlFor="projects">
+          {/* <Form.Label htmlFor="projects">
             <h4>Projects I can help with</h4>
           </Form.Label>
           <InputGroup className="mb-2 mr-sm-2">
@@ -148,7 +148,7 @@ const Settings = (props) => {
                 onDelete={handleProjectDelete}
               />
             ))}
-          </p>
+          </p> */}
 
           <Form.Label htmlFor="technologies">
             <h4>Technologies I can help with</h4>
