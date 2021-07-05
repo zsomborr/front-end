@@ -22,6 +22,8 @@ import Logout from "./components/Logout";
 import TechnologiesService from "./services/TechnologiesService";
 import DiscordService from "./services/DiscordService";
 import Noty from "noty";
+import { hotjar } from "react-hotjar";
+import GaTracker from "./components/GaTracker";
 
 function App() {
   axios.defaults.withCredentials = true;
@@ -51,6 +53,7 @@ function App() {
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  hotjar.initialize(2482183, 6);
 
   useEffect(() => {
     const checkAuthentication = async () => {
@@ -87,6 +90,7 @@ function App() {
       </div>
       <Container>
         <Router>
+          <GaTracker />
           <UserContext.Provider value={[isAuthenticated, setIsAuthenticated]}>
             <Header />
             <Route
