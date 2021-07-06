@@ -76,6 +76,10 @@ const PublicUserPage = (props) => {
               <Row>
                 <Col className="content-container">
                   <p>
+                    <strong>Rank: </strong>
+                    {user.rank}
+                  </p>
+                  <p>
                     <strong>Name: </strong>
                     {user.firstName} {user.lastName}
                   </p>

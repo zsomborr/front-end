@@ -109,6 +109,7 @@ const SearchMentorPage = (props) => {
                           <Link to={`/user/${user.id}`} className="h5">
                             {user.firstName} {user.lastName}
                           </Link>
+                          <p>Rank: {user.rank}</p>
                         </Col>
                         <Col sm={4} className="mt-1">
                           {user.technologyTags.map((tech) => {
