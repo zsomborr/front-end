@@ -157,7 +157,7 @@ const QuestionsPage = (props) => {
                   {question.anonym ? (
                     "Anonymous"
                   ) : (
-                    <Link to={`/user/${question.userId_}`}>
+                    <Link to={`/user/${question.userId}`}>
                       {question.username}
                     </Link>
                   )}{" "}
