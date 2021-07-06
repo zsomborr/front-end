@@ -123,7 +123,7 @@ const SingleAnswer = ({
         {voteAnswer()}
       </Col>
       <Col xs={12} lg={2} className="order-2 order-lg-4 text-center">
-        <Link to={`/user/${answer.userId_}`}>{answer.username}</Link>
+        <Link to={`/user/${answer.userId}`}>{answer.username}</Link>
       </Col>
       <Col
         xs={12}

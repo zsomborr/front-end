@@ -109,7 +109,7 @@ const UserPrivatePage = (props) => {
                           className="text-truncate font-weight-bold mr-3"
                         >
                           <Link
-                            to={`/question/${answer.questionId_}`}
+                            to={`/question/${answer.questionId}`}
                             title={answer.questionTitle}
                           >
                             {answer.questionTitle}
