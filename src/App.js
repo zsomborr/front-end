@@ -53,7 +53,8 @@ function App() {
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  hotjar.initialize(2482183, 6);
+  const HOTJAR_ID = process.env.REACT_APP_HOTJAR_ID;
+  hotjar.initialize(HOTJAR_ID, 6);
 
   useEffect(() => {
     const checkAuthentication = async () => {
