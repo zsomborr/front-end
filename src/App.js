@@ -24,6 +24,7 @@ import DiscordService from "./services/DiscordService";
 import Noty from "noty";
 import { hotjar } from "react-hotjar";
 import GaTracker from "./components/GaTracker";
+import ForgottenPassword from "./components/ForgottenPassword/ForgottenPassword";
 
 function App() {
   axios.defaults.withCredentials = true;
@@ -108,6 +109,13 @@ function App() {
               key="logout"
               path="/logout"
               render={() => <Logout studentService={studentService} />}
+            ></Route>
+            <Route
+              key="forgotten-password"
+              path="/forgotten-password"
+              render={() => (
+                <ForgottenPassword studentService={studentService} />
+              )}
             ></Route>
             <ProtectedRoute
               key="/"
