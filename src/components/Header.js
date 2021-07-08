@@ -58,7 +58,11 @@ export default function Header() {
               </Fragment>
             ) : (
               <Fragment>
-                <Link to={"/questions"} className="nav-link">
+                <Link
+                  to={"/questions"}
+                  onClick={() => window.location.reload()}
+                  className="nav-link"
+                >
                   Questions
                 </Link>
                 <Link to={"/mentors"} className="nav-link">
