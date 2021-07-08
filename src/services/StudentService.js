@@ -87,4 +87,12 @@ export default class StudentService extends SpringBootService {
   connectWithDiscord(payload) {
     return axios.post(`${this.baseURL}/user/discord`, payload);
   }
+
+  forgottenPassword(email) {
+    return axios.post(`${this.baseURL}/auth/forgotten-password/`, email);
+  }
+
+  saveNewPassword(payload) {
+    return axios.post(`${this.baseURL}/auth/forgotten-password/save`, payload);
+  }
 }
