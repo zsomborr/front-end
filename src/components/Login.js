@@ -103,6 +103,10 @@ const Login = (props) => {
               Login
             </AnimatedButton>
             <p>
+              <Link to={"/forgotten-password"}>Forgot my password!</Link>
+            </p>
+
+            <p>
               Don’t have an account yet?
               <Link to={"/registration"}> Register now!</Link>
             </p>
